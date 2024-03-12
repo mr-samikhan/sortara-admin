@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@vgl/core": ["core/core.ts"],
+      "@vgl/hooks": ["hooks/hooks.ts"],
+      "@vgl/utils": ["utils/utils.ts"],
+      "@vgl/assets": ["public/assets/*"],
+      "@vgl/styles": ["styles/styles.ts"],
+      "@vgl/stores": ["stores/stores.ts"],
+      "@vgl/modules": ["modules/modules.ts"],
+      "@vgl/helpers": ["helpers/helpers.ts"],
+      "@vgl/screens": ["screens/screens.ts"],
+      "@vgl/components": ["components/components.ts"],
+      "@vgl/constants": ["constants/constants.ts"],
+      "@vgl/providers": ["providers/providers.ts"],
+    },
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
