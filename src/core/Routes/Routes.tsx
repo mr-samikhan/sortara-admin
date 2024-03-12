@@ -11,6 +11,8 @@ const Routes = () => {
     <React.Fragment>
       <ReactRoutes>
         <Route path={ROUTES.LOGIN} element={<ManageAuth />} />
+        <Route path={ROUTES.FORGOT_PASSWORD} element={<ManageAuth />} />
+        <Route path={ROUTES.RESET_PASSWORD} element={<ManageAuth />} />
       </ReactRoutes>
 
       <ProtectedRoute isAuthenticated={isLoggedIn} isLoading={false}>

@@ -1,26 +1,42 @@
 import React from 'react'
+import { Theme } from '@emotion/react'
 import { Controller, useFormContext } from 'react-hook-form'
-import { IconButton, InputAdornment, MenuItem, TextField } from '@mui/material'
+import {
+  SxProps,
+  MenuItem,
+  TextField,
+  IconButton,
+  SvgIconProps,
+  InputAdornment,
+} from '@mui/material'
 
 interface CustomTextFieldProps {
-  sx?: any
   rows?: number
   name: string
-  options?: any
-  icon?: string
   select?: boolean
   disabled?: boolean
   fullWidth?: boolean
   multiline?: boolean
   className?: string
+  sx?: SxProps<Theme>
   onClick?: () => void
   placeholder?: string
   defaultValue?: string | number
   type?: 'text' | 'number' | 'password'
+  icon?: React.ComponentType<SvgIconProps>
+  options?: Array<{ value: string | number; label: string }>
 }
 export const CustomTextField = (props: CustomTextFieldProps) => {
-  const { name, className, defaultValue, options, select, icon, sx, onClick } =
-    props || {}
+  const {
+    sx,
+    name,
+    select,
+    options,
+    onClick,
+    className,
+    defaultValue,
+    icon: Icon,
+  } = props || {}
 
   const {
     control,
@@ -48,9 +64,14 @@ export const CustomTextField = (props: CustomTextFieldProps) => {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  {icon && (
+                  {Icon && (
                     <IconButton onClick={onClick}>
-                      <img src={icon || '/assets/icons/check.svg'} alt="eye" />
+                      {Icon && typeof Icon == 'string' && (
+                        <img src={Icon} alt="icon" />
+                      )}
+                      {Icon && typeof Icon !== 'string' && (
+                        <Icon onClick={onClick} />
+                      )}
                     </IconButton>
                   )}
                 </InputAdornment>
@@ -59,11 +80,13 @@ export const CustomTextField = (props: CustomTextFieldProps) => {
             helperText={errors[name] ? <>{errors[name]?.message}</> : ''}
           >
             {select &&
-              options.map((option: any) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+              options?.map(
+                (option: { value: string | number; label: string }) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                )
+              )}
           </TextField>
         )}
       />
