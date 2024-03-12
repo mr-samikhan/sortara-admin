@@ -1,9 +1,4 @@
 import { Routes } from '@vgl/core'
-<<<<<<< HEAD
-
-function App() {
-  return <Routes />
-=======
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@vgl/providers'
@@ -18,7 +13,6 @@ function App() {
       </ThemeProvider>
     </QueryClientProvider>
   )
->>>>>>> becaa3c4053ce9019123be9532c4810ee860cd31
 }
 
 export default App
