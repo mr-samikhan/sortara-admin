@@ -10,6 +10,7 @@
       "@vgl/core": ["core/core.ts"],
       "@vgl/hooks": ["hooks/hooks.ts"],
       "@vgl/utils": ["utils/utils.ts"],
+      "@vgl/types": ["types/types.ts"],
       "@vgl/assets": ["public/assets/*"],
       "@vgl/styles": ["styles/styles.ts"],
       "@vgl/stores": ["stores/stores.ts"],
