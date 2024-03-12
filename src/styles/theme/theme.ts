@@ -1,6 +1,7 @@
 import palette from './palette'
 import typography from './typography'
 import { BoxProps } from '@mui/material/Box'
+import MuiTextField from './overrides/MuiTextField'
 import createTheme from '@mui/material/styles/createTheme'
 import { responsiveFontSizes } from '@mui/material/styles'
 
@@ -58,7 +59,9 @@ declare module '@mui/material/Paper' {
 let theme = createTheme({
   palette,
   typography: typography,
-  components: {},
+  components: {
+    MuiTextField,
+  },
 })
 
 theme = responsiveFontSizes(theme)
