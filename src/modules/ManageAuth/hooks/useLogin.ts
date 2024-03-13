@@ -1,20 +1,37 @@
 import { useState } from 'react'
-import { ILoginForm } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
-import { useForm } from 'react-hook-form'
-import { LoginFormResolver } from '@vgl/utils'
+import { FormTypes } from '@vgl/types'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
+import {
+  LoginFormResolver,
+  ResetPasswordResolver,
+  ForgotPasswordResolver,
+} from '@vgl/utils'
 
-const useLogin = () => {
+interface IuseLogin {
+  onNext?: () => void
+}
+
+const useLogin = (props: IuseLogin) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
+  const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
+  const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD
+
   const [loginValues, setLoginValues] = useState({
     showPassword: false,
+    phone: '',
+    otp: '',
   })
 
-  const methods = useForm({
-    resolver: LoginFormResolver,
+  const methods: UseFormReturn<FormTypes> = useForm({
+    resolver: RESET_PATH_CHECK
+      ? ResetPasswordResolver
+      : FORGOT_PASSWORD_CHECK
+      ? ForgotPasswordResolver
+      : LoginFormResolver,
     mode: 'onChange',
   })
 
@@ -31,10 +48,65 @@ const useLogin = () => {
     navigate(ROUTES.FORGOT_PASSWORD)
   }
 
+  //send Forgot email
+  const sendForgotEmail = () => {
+    console.log('Forgot Password')
+  }
+
+  //reset password
+  const resetPassword = () => {
+    console.log('Password Reset')
+  }
+
   //on Login form submit
-  const onSubmit = (data: ILoginForm) => {
+  const onSubmit = (data: FormTypes) => {
     console.log(data)
-    navigate(ROUTES.USERS)
+    if (FORGOT_PASSWORD_CHECK) {
+      sendForgotEmail()
+    } else if (RESET_PATH_CHECK) {
+      resetPassword()
+    } else {
+      navigate(ROUTES.LOGIN_2FA)
+    }
+  }
+
+  //phone onChange
+  const handlePhoneChange = (value: string) => {
+    setLoginValues((prevState) => ({
+      ...prevState,
+      phone: value,
+    }))
+  }
+
+  //onSend otp
+  const onSendOtp = () => {
+    if (loginValues.phone === '') return
+    props?.onNext && props?.onNext()
+    console.log('Send OTP')
+  }
+
+  //otp change
+  const onOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    let cleanedValue = value.replace(/\D/g, '')
+    if (cleanedValue.length > 3) {
+      cleanedValue = `${cleanedValue.slice(0, 3)}-${cleanedValue.slice(3, 6)}`
+    }
+    setLoginValues((prev) => ({
+      ...prev,
+      otp: cleanedValue,
+    }))
+  }
+
+  //on otp verify
+  const onOTPVerify = () => {
+    console.log('OTP Verify')
+    navigate(ROUTES.PRIVACY)
+  }
+
+  //onresend otp
+  const onResendOtp = () => {
+    console.log('Resend OTP')
   }
 
   return {
@@ -42,7 +114,13 @@ const useLogin = () => {
     onSubmit,
     onForgot,
     pathname,
+    onSendOtp,
     loginValues,
+    onOTPChange,
+    onOTPVerify,
+    onResendOtp,
+    setLoginValues,
+    handlePhoneChange,
     handleClickShowPassword,
   }
 }

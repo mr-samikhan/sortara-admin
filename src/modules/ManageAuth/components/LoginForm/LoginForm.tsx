@@ -1,6 +1,7 @@
-import { COLORS } from '@vgl/constants'
+import React from 'react'
+import { ActionButton } from '../components'
+import { Box, Typography } from '@mui/material'
 import { CustomTextField } from '@vgl/components'
-import { Box, Button, Typography } from '@mui/material'
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
 
@@ -16,7 +17,7 @@ const LoginForm = (props: LoginFormProps) => {
   const { handleClickShowPassword, loginValues, onForgot } = props || {}
 
   return (
-    <Box border={`2px solid ${COLORS.grey.main}`} width={460} p={4}>
+    <React.Fragment>
       <Box mt={2}>
         <Typography my={2} variant="h4">
           Email Address or Phone Number
@@ -53,21 +54,11 @@ const LoginForm = (props: LoginFormProps) => {
       >
         Forgot password?
       </Typography>
-      <Button type="submit" variant="contained" fullWidth sx={buttonStyle}>
-        Sign in
-      </Button>
-    </Box>
+      <Box my={2}>
+        <ActionButton buttonText=" Sign in" />
+      </Box>
+    </React.Fragment>
   )
 }
 
 export default LoginForm
-
-const buttonStyle = {
-  my: 2,
-  height: 48,
-  fontSize: 16,
-  fontWeight: 500,
-  fontFamily: 'DM Sans',
-  bgcolor: COLORS.primary.dark,
-  textTransform: 'capitalize',
-}
