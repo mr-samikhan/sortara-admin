@@ -1,3 +1,4 @@
+import React from 'react'
 import { COLORS } from '@vgl/constants'
 import { CustomTextField } from '@vgl/components'
 import { Box, Button, Typography } from '@mui/material'
@@ -16,7 +17,7 @@ const LoginForm = (props: LoginFormProps) => {
   const { handleClickShowPassword, loginValues, onForgot } = props || {}
 
   return (
-    <Box border={`2px solid ${COLORS.grey.main}`} width={460} p={4}>
+    <React.Fragment>
       <Box mt={2}>
         <Typography my={2} variant="h4">
           Email Address or Phone Number
@@ -56,7 +57,7 @@ const LoginForm = (props: LoginFormProps) => {
       <Button type="submit" variant="contained" fullWidth sx={buttonStyle}>
         Sign in
       </Button>
-    </Box>
+    </React.Fragment>
   )
 }
 

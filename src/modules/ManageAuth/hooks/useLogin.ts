@@ -1,20 +1,31 @@
 import { useState } from 'react'
-import { ILoginForm } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
-import { useForm } from 'react-hook-form'
-import { LoginFormResolver } from '@vgl/utils'
+import { FormTypes } from '@vgl/types'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
+import {
+  LoginFormResolver,
+  ResetPasswordResolver,
+  ForgotPasswordResolver,
+} from '@vgl/utils'
 
 const useLogin = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
+  const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
+  const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD
+
   const [loginValues, setLoginValues] = useState({
     showPassword: false,
   })
 
-  const methods = useForm({
-    resolver: LoginFormResolver,
+  const methods: UseFormReturn<FormTypes> = useForm({
+    resolver: RESET_PATH_CHECK
+      ? ResetPasswordResolver
+      : FORGOT_PASSWORD_CHECK
+      ? ForgotPasswordResolver
+      : LoginFormResolver,
     mode: 'onChange',
   })
 
@@ -32,7 +43,7 @@ const useLogin = () => {
   }
 
   //on Login form submit
-  const onSubmit = (data: ILoginForm) => {
+  const onSubmit = (data: FormTypes) => {
     console.log(data)
     navigate(ROUTES.USERS)
   }
