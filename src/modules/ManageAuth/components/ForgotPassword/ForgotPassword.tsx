@@ -1,7 +1,8 @@
 import React from 'react'
-import { COLORS, FONTS } from '@vgl/constants'
+import { FONTS } from '@vgl/constants'
+import { ActionButton } from '../components'
+import { Box, Typography } from '@mui/material'
 import { CustomTextField } from '@vgl/components'
-import { Box, Button, Typography } from '@mui/material'
 
 const ForgotPassword = () => {
   return (
@@ -26,21 +27,11 @@ const ForgotPassword = () => {
           placeholder="Enter email or phone number"
         />
       </Box>
-
-      <Button type="submit" variant="contained" fullWidth sx={buttonStyle}>
-        Submit
-      </Button>
+      <Box my={2}>
+        <ActionButton buttonText="Submit" />
+      </Box>
     </React.Fragment>
   )
 }
 
 export default ForgotPassword
-const buttonStyle = {
-  my: 2,
-  height: 48,
-  fontSize: 16,
-  fontWeight: 500,
-  fontFamily: 'DM Sans',
-  bgcolor: COLORS.primary.dark,
-  textTransform: 'capitalize',
-}

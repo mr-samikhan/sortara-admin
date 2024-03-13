@@ -42,10 +42,26 @@ const useLogin = () => {
     navigate(ROUTES.FORGOT_PASSWORD)
   }
 
+  //send Forgot email
+  const sendForgotEmail = () => {
+    console.log('Forgot Password')
+  }
+
+  //reset password
+  const resetPassword = () => {
+    console.log('Password Reset')
+  }
+
   //on Login form submit
   const onSubmit = (data: FormTypes) => {
     console.log(data)
-    navigate(ROUTES.USERS)
+    if (FORGOT_PASSWORD_CHECK) {
+      sendForgotEmail()
+    } else if (RESET_PATH_CHECK) {
+      resetPassword()
+    } else {
+      navigate(ROUTES.LOGIN_2FA)
+    }
   }
 
   return {

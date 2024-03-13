@@ -6,6 +6,7 @@ const Routes = {
   USER: '/user/:id',
   ADMINS: '/admins',
   ADMIN: '/admin/:id',
+  LOGIN_2FA: '/login-verification',
   RESET_PASSWORD: '/reset-password',
   FORGOT_PASSWORD: '/forgot-password',
 }
