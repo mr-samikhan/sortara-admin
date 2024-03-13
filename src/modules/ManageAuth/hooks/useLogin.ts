@@ -9,7 +9,11 @@ import {
   ForgotPasswordResolver,
 } from '@vgl/utils'
 
-const useLogin = () => {
+interface IuseLogin {
+  onNext?: () => void
+}
+
+const useLogin = (props: IuseLogin) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
 
@@ -18,6 +22,8 @@ const useLogin = () => {
 
   const [loginValues, setLoginValues] = useState({
     showPassword: false,
+    phone: '',
+    otp: '',
   })
 
   const methods: UseFormReturn<FormTypes> = useForm({
@@ -64,12 +70,57 @@ const useLogin = () => {
     }
   }
 
+  //phone onChange
+  const handlePhoneChange = (value: string) => {
+    setLoginValues((prevState) => ({
+      ...prevState,
+      phone: value,
+    }))
+  }
+
+  //onSend otp
+  const onSendOtp = () => {
+    if (loginValues.phone === '') return
+    props?.onNext && props?.onNext()
+    console.log('Send OTP')
+  }
+
+  //otp change
+  const onOTPChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    let cleanedValue = value.replace(/\D/g, '')
+    if (cleanedValue.length > 3) {
+      cleanedValue = `${cleanedValue.slice(0, 3)}-${cleanedValue.slice(3, 6)}`
+    }
+    setLoginValues((prev) => ({
+      ...prev,
+      otp: cleanedValue,
+    }))
+  }
+
+  //on otp verify
+  const onOTPVerify = () => {
+    console.log('OTP Verify')
+    navigate(ROUTES.PRIVACY)
+  }
+
+  //onresend otp
+  const onResendOtp = () => {
+    console.log('Resend OTP')
+  }
+
   return {
     methods,
     onSubmit,
     onForgot,
     pathname,
+    onSendOtp,
     loginValues,
+    onOTPChange,
+    onOTPVerify,
+    onResendOtp,
+    setLoginValues,
+    handlePhoneChange,
     handleClickShowPassword,
   }
 }

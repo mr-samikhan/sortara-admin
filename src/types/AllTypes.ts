@@ -12,4 +12,8 @@ export type IForgotForm = {
   email: string
 }
 
+export type ISetup2FA = {
+  phoneNumber: string
+}
+
 export type FormTypes = ILoginForm | IForgotForm | IResetForm

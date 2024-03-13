@@ -1,7 +1,7 @@
 import * as yup from 'yup'
 import { Resolver } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { IForgotForm, ILoginForm, IResetForm } from '@vgl/types'
+import { IForgotForm, ILoginForm, IResetForm, ISetup2FA } from '@vgl/types'
 import { VALIDATION_PATTERNS, VALIDATION_MESSAGES } from '@vgl/constants'
 
 export const LoginFormResolver: Resolver<ILoginForm> = yupResolver(
@@ -44,5 +44,11 @@ export const ResetPasswordResolver: Resolver<IResetForm> = yupResolver(
       .string()
       .oneOf([yup.ref('password')], VALIDATION_MESSAGES.PASSWORD_MISMATCH)
       .required(VALIDATION_MESSAGES.REQUIRED_FIELD),
+  })
+)
+
+export const SetupPhoneResolver: Resolver<ISetup2FA> = yupResolver(
+  yup.object().shape({
+    phoneNumber: yup.string().required(VALIDATION_MESSAGES.REQUIRED_FIELD),
   })
 )
