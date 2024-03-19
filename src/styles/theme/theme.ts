@@ -4,6 +4,7 @@ import { BoxProps } from '@mui/material/Box'
 import MuiTextField from './overrides/MuiTextField'
 import createTheme from '@mui/material/styles/createTheme'
 import { responsiveFontSizes } from '@mui/material/styles'
+import { COLORS } from '@vgl/constants'
 
 declare module '@mui/material/styles' {
   interface Theme {}
@@ -61,6 +62,27 @@ let theme = createTheme({
   typography: typography,
   components: {
     MuiTextField,
+    MuiButton: {
+      defaultProps: {
+        variant: 'contained',
+      },
+      styleOverrides: {
+        root: {
+          fontSize: 16,
+          fontWeight: 500,
+          fontFamily: 'DM Sans',
+          textTransform: 'capitalize',
+          '&.rounded-button': {
+            height: 48,
+            fontWeight: 700,
+            borderRadius: '14px',
+            color: COLORS.primary.dark,
+            background: COLORS.lightIndigo,
+            border: `2px solid ${COLORS.primary.dark}`,
+          },
+        },
+      },
+    },
   },
 })
 

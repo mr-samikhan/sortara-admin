@@ -2,19 +2,27 @@ import { Button } from '@mui/material'
 import { COLORS } from '@vgl/constants'
 
 interface IActionButton {
+  color?: string
+  bgcolor?: string
   buttonText: string
   onClick?: () => void
+  borderRadius?: string
 }
 
 const ActionButton = (props: IActionButton) => {
-  const { onClick, buttonText } = props
+  const { onClick, buttonText, borderRadius, bgcolor, color } = props
   return (
     <Button
       fullWidth
       type="submit"
-      sx={buttonStyle}
       onClick={onClick}
       variant="contained"
+      sx={{
+        ...buttonStyle,
+        color: color || 'white',
+        borderRadius: borderRadius || '4px',
+        bgcolor: bgcolor || COLORS.primary.dark,
+      }}
     >
       {buttonText}
     </Button>

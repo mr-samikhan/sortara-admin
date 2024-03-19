@@ -1,3 +1,4 @@
+export * from './contents'
 export { default as FONTS } from './fonts'
 export { default as ROUTES } from './routes'
 export { default as ERRORS } from './errors'

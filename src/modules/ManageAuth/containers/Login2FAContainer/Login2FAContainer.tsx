@@ -11,6 +11,7 @@ const Login2FAContainer = () => {
     onOTPChange,
     onOTPVerify,
     onResendOtp,
+    loginValues,
   } = useLogin({
     onNext,
   })
@@ -29,9 +30,11 @@ const Login2FAContainer = () => {
     case 1:
       return (
         <PhoneVerification
+          phoneNumber="1234"
           methods={methods}
           onSubmit={onSubmit}
           onVerify={onOTPVerify}
+          loginValues={loginValues}
           onResendOtp={onResendOtp}
           onOTPChange={onOTPChange}
         />

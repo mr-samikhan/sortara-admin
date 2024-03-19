@@ -1,10 +1,10 @@
 import * as yup from 'yup'
 import { Resolver } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { IForgotForm, ILoginForm, IResetForm, ISetup2FA } from '@vgl/types'
+import { FormTypes, ISetup2FA } from '@vgl/types'
 import { VALIDATION_PATTERNS, VALIDATION_MESSAGES } from '@vgl/constants'
 
-export const LoginFormResolver: Resolver<ILoginForm> = yupResolver(
+export const LoginFormResolver: any | Resolver<FormTypes> = yupResolver(
   yup.object().shape({
     email: yup
       .string()
@@ -21,7 +21,7 @@ export const LoginFormResolver: Resolver<ILoginForm> = yupResolver(
   })
 )
 
-export const ForgotPasswordResolver: Resolver<IForgotForm> = yupResolver(
+export const ForgotPasswordResolver: any | Resolver<FormTypes> = yupResolver(
   yup.object().shape({
     email: yup
       .string()
@@ -30,7 +30,7 @@ export const ForgotPasswordResolver: Resolver<IForgotForm> = yupResolver(
   })
 )
 
-export const ResetPasswordResolver: Resolver<IResetForm> = yupResolver(
+export const ResetPasswordResolver: any | Resolver<FormTypes> = yupResolver(
   yup.object().shape({
     password: yup
       .string()

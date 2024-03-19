@@ -108,10 +108,20 @@ const useLogin = (props: IuseLogin) => {
   const onResendOtp = () => {
     console.log('Resend OTP')
   }
+  //on go back
+  const onGoBack = () => navigate(ROUTES.LOGIN_2FA)
+
+  //on agree
+  const onAgree = () => {
+    console.log('Agree')
+    navigate(ROUTES.USERS)
+  }
 
   return {
+    onAgree,
     methods,
     onSubmit,
+    onGoBack,
     onForgot,
     pathname,
     onSendOtp,
