@@ -5,6 +5,9 @@ import { Box, TextField, Typography } from '@mui/material'
 import { ActionButton, ParentWrapper } from '../components'
 
 interface PhoneVerificationProps {
+  email?: string
+  isEmail?: boolean
+  phoneNumber?: string
   onVerify: () => void
   onResendOtp: () => void
   methods: UseFormReturn<FormTypes>
@@ -18,13 +21,22 @@ interface PhoneVerificationProps {
 }
 
 const PhoneVerification = (props: PhoneVerificationProps) => {
-  const { methods, onSubmit, onOTPChange, onResendOtp, onVerify, loginValues } =
-    props || {}
+  const {
+    email,
+    methods,
+    onSubmit,
+    isEmail,
+    onVerify,
+    onOTPChange,
+    onResendOtp,
+    loginValues,
+    phoneNumber,
+  } = props || {}
   return (
     <ParentWrapper methods={methods} onSubmit={onSubmit}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h2" style={fontStyle} color="black">
-          Phone Verification
+          {isEmail ? 'Email Verification' : 'Phone Verification'}
         </Typography>
         <Typography
           variant="h6"
@@ -36,7 +48,9 @@ const PhoneVerification = (props: PhoneVerificationProps) => {
         </Typography>
       </Box>
       <Typography variant="h4" style={fontStyle} width={300} mt={0.5}>
-        Input the six digit code sent to your phone number (XXX-XXX-1234)
+        {isEmail
+          ? `Input the six digit code sent to your email (${email})`
+          : `Input the six digit code sent to your phone number (XXX-XXX-${phoneNumber})`}
       </Typography>
       <Box mt={2}>
         <Typography my={0.5} variant="h6">

@@ -30,6 +30,7 @@ const Login2FAContainer = () => {
     case 1:
       return (
         <PhoneVerification
+          phoneNumber="1234"
           methods={methods}
           onSubmit={onSubmit}
           onVerify={onOTPVerify}

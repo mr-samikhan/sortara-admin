@@ -1,11 +1,11 @@
 import { ROUTES } from '@vgl/constants'
 import {
+  Snackbar,
   useLogin,
   LoginForm,
   ParentWrapper,
   ResetPassword,
   ForgotPassword,
-  Snackbar,
 } from '@vgl/modules'
 
 const LoginContainer = () => {
