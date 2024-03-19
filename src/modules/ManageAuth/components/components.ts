@@ -1,4 +1,5 @@
 export { default as Setup2FA } from './Setup2FA/Setup2FA'
+export { default as Snackbar } from './Snackbar/Snackbar'
 export { default as LoginForm } from './LoginForm/LoginForm'
 export { default as BrandImage } from './BrandImage/BrandImage'
 export { default as ActionButton } from './ActionButton/ActionButton'

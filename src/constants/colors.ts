@@ -3,6 +3,7 @@ const Colors = {
     dark: '#6000DA',
     main: '#101036',
   },
+  error: '#A80000',
   dark: '#333333',
   success: '#B4FFB2',
   warning: '#FFDDBE',

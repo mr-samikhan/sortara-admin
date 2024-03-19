@@ -10,10 +10,16 @@ interface PhoneVerificationProps {
   methods: UseFormReturn<FormTypes>
   onSubmit: (data: FormTypes) => void
   onOTPChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  loginValues: {
+    showPassword: boolean
+    phone: string
+    otp: string
+  }
 }
 
 const PhoneVerification = (props: PhoneVerificationProps) => {
-  const { methods, onSubmit, onOTPChange, onResendOtp, onVerify } = props || {}
+  const { methods, onSubmit, onOTPChange, onResendOtp, onVerify, loginValues } =
+    props || {}
   return (
     <ParentWrapper methods={methods} onSubmit={onSubmit}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -36,7 +42,12 @@ const PhoneVerification = (props: PhoneVerificationProps) => {
         <Typography my={0.5} variant="h6">
           Enter six digit code
         </Typography>
-        <TextField onChange={onOTPChange} fullWidth placeholder="000-000" />
+        <TextField
+          fullWidth
+          placeholder="000-000"
+          onChange={onOTPChange}
+          value={loginValues.otp}
+        />
       </Box>
       <Box my={3}>
         <ActionButton buttonText="Verify" onClick={onVerify} />

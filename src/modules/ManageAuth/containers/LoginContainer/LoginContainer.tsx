@@ -5,6 +5,7 @@ import {
   ParentWrapper,
   ResetPassword,
   ForgotPassword,
+  Snackbar,
 } from '@vgl/modules'
 
 const LoginContainer = () => {
@@ -15,7 +16,7 @@ const LoginContainer = () => {
     onForgot,
     loginValues,
     handleClickShowPassword,
-  } = useLogin()
+  } = useLogin({})
   switch (pathname) {
     case ROUTES.LOGIN:
       return (
@@ -24,6 +25,11 @@ const LoginContainer = () => {
             onForgot={onForgot}
             loginValues={loginValues}
             handleClickShowPassword={handleClickShowPassword}
+          />
+          <Snackbar
+            open={false}
+            onClose={() => console.log('close')}
+            message="Your email address and password did not match, Please check your credentials and try again"
           />
         </ParentWrapper>
       )

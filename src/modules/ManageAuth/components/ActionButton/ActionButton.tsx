@@ -4,17 +4,18 @@ import { COLORS } from '@vgl/constants'
 interface IActionButton {
   buttonText: string
   onClick?: () => void
+  borderRadius?: string
 }
 
 const ActionButton = (props: IActionButton) => {
-  const { onClick, buttonText } = props
+  const { onClick, buttonText, borderRadius } = props
   return (
     <Button
       fullWidth
       type="submit"
-      sx={buttonStyle}
       onClick={onClick}
       variant="contained"
+      sx={{ ...buttonStyle, borderRadius: borderRadius || '4px' }}
     >
       {buttonText}
     </Button>

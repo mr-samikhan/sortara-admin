@@ -1,0 +1,20 @@
+{
+  "projects": {
+    "testing-project-bcf79": "testing-project-bcf79",
+    "default": "testing-project-bcf79",
+    "verygoodlist": "testing-project-bcf79",
+    "web": "testing-project-bcf79",
+    "firebase deploy --only hosting:goodlisting --debug": "testing-project-bcf79",
+    "goodlisting": "testing-project-bcf79"
+  },
+  "targets": {
+    "testing-project-bcf79": {
+      "hosting": {
+        "goodlisting": [
+          "testing-project-bcf79"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
