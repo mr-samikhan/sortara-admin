@@ -1,12 +1,13 @@
 import React from 'react'
 import { ROUTES } from '@vgl/constants'
+import { AppLayout } from '@vgl/layout'
 import { ManageAuth } from '@vgl/screens'
-import { Login2FAContainer, PrivacyPolicy } from '@vgl/modules'
 import { ProtectedRoute } from './components/components'
+import { Login2FAContainer, PrivacyPolicy } from '@vgl/modules'
 import { Route, Routes as ReactRoutes } from 'react-router-dom'
 
 const Routes = () => {
-  const isLoggedIn = false
+  const isLoggedIn = true
 
   return (
     <React.Fragment>
@@ -20,7 +21,15 @@ const Routes = () => {
 
       <ProtectedRoute isAuthenticated={isLoggedIn} isLoading={false}>
         <ReactRoutes>
-          <Route path={ROUTES.ROOT} element={<div>Home</div>} />
+          <Route path={ROUTES.ADS} element={<AppLayout isHeader />} />
+          <Route path={ROUTES.ROOT} element={<AppLayout isHeader />} />
+          <Route path={ROUTES.USERS} element={<AppLayout isHeader />} />
+          <Route
+            path={ROUTES.MODERATORS}
+            element={
+              <AppLayout isSidebar isHeader isExportCSV isSearchTextField />
+            }
+          />
         </ReactRoutes>
       </ProtectedRoute>
     </React.Fragment>

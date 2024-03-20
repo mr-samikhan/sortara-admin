@@ -1,5 +1,5 @@
 import { Components } from '@mui/material'
-import { COLORS } from '@vgl/constants'
+import { COLORS, FONTS } from '@vgl/constants'
 
 export const MuiTextField: Components['MuiTextField'] = {
   defaultProps: {
@@ -17,6 +17,24 @@ export const MuiTextField: Components['MuiTextField'] = {
       },
       '& .MuiOutlinedInput-notchedOutline': {
         border: `1px solid ${COLORS.grey.main}`,
+      },
+      '&.search-textField': {
+        '& .MuiOutlinedInput-root': {
+          borderRadius: 30,
+          fontFamily: FONTS.DMSANS,
+          '& input': {
+            height: 40,
+            fontSize: 16,
+            color: COLORS.grey.dark,
+            padding: '10px 0px 10px 10px',
+          },
+          '& .Mui-focused': {
+            backgroundColor: COLORS.grey.light,
+          },
+        },
+        '& .MuiOutlinedInput-notchedOutline': {
+          border: '1px solid #D0D0D0',
+        },
       },
     },
   },

@@ -1,10 +1,11 @@
 import palette from './palette'
 import typography from './typography'
 import { BoxProps } from '@mui/material/Box'
+import MuiButton from './overrides/MuiButton'
+import MuiAvatar from './overrides/MuiAvatar'
 import MuiTextField from './overrides/MuiTextField'
 import createTheme from '@mui/material/styles/createTheme'
 import { responsiveFontSizes } from '@mui/material/styles'
-import { COLORS } from '@vgl/constants'
 
 declare module '@mui/material/styles' {
   interface Theme {}
@@ -58,31 +59,22 @@ declare module '@mui/material/Paper' {
 }
 
 let theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1920,
+    },
+  },
+
   palette,
   typography: typography,
   components: {
     MuiTextField,
-    MuiButton: {
-      defaultProps: {
-        variant: 'contained',
-      },
-      styleOverrides: {
-        root: {
-          fontSize: 16,
-          fontWeight: 500,
-          fontFamily: 'DM Sans',
-          textTransform: 'capitalize',
-          '&.rounded-button': {
-            height: 48,
-            fontWeight: 700,
-            borderRadius: '14px',
-            color: COLORS.primary.dark,
-            background: COLORS.lightIndigo,
-            border: `2px solid ${COLORS.primary.dark}`,
-          },
-        },
-      },
-    },
+    MuiButton,
+    MuiAvatar,
   },
 })
 

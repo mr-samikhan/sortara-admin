@@ -14,6 +14,7 @@
       "@vgl/assets": ["public/assets/*"],
       "@vgl/styles": ["styles/styles.ts"],
       "@vgl/stores": ["stores/stores.ts"],
+      "@vgl/layout": ["layout/layout.ts"],
       "@vgl/modules": ["modules/modules.ts"],
       "@vgl/helpers": ["helpers/helpers.ts"],
       "@vgl/screens": ["screens/screens.ts"],
