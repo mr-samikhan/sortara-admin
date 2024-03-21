@@ -9,6 +9,9 @@ export const palette: PaletteOptions = {
     main: COLORS.primary.main,
     dark: COLORS.primary.dark,
   },
+  secondary: {
+    main: COLORS.pear,
+  },
   info: {
     main: COLORS.blue,
     light: COLORS.lightIndigo,
@@ -18,6 +21,9 @@ export const palette: PaletteOptions = {
   },
   success: {
     main: COLORS.success,
+  },
+  warning: {
+    main: COLORS.pear,
   },
 }
 

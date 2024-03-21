@@ -9,12 +9,14 @@ interface AppLayoutProps {
   isHeader?: boolean
   isSidebar?: boolean
   isExportCSV?: boolean
+  children?: React.ReactNode
   isNavigationIcon?: boolean
   isSearchTextField?: boolean
 }
 
 const AppLayout = (props: AppLayoutProps) => {
   const {
+    children,
     isHeader,
     isSidebar,
     isExportCSV,
@@ -51,7 +53,7 @@ const AppLayout = (props: AppLayoutProps) => {
               isSearchTextField={isSearchTextField}
             />
           )}
-          <AppContent />
+          <AppContent>{children}</AppContent>
         </Grid>
       </Grid>
     </React.Fragment>

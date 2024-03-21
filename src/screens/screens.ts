@@ -1,1 +1,5 @@
+export { default as ManageAds } from './ManageAds/ManageAds'
 export { default as ManageAuth } from './ManageAuth/ManageAuth'
+export { default as ManageUsers } from './ManageUsers/ManageUsers'
+export { default as ManageAnalytics } from './ManageAnalytics/ManageAnalytics'
+export { default as ManageModerators } from './ManageModerators/ManageModerators'
