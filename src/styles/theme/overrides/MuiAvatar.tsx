@@ -1,4 +1,5 @@
 import { COLORS } from '@vgl/constants'
+import { Components } from '@mui/material'
 
 export const MuiAvatar: Components['MuiAvatar'] = {
   styleOverrides: {

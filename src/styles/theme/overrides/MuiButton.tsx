@@ -1,4 +1,5 @@
 import { COLORS, FONTS } from '@vgl/constants'
+import { Components } from '@mui/material'
 
 export const MuiButton: Components['MuiButton'] = {
   defaultProps: {
