@@ -1,8 +1,9 @@
 import palette from './palette'
 import typography from './typography'
 import { BoxProps } from '@mui/material/Box'
-import MuiButton from './overrides/MuiButton'
+import MuiTable from './overrides/MuiTable'
 import MuiAvatar from './overrides/MuiAvatar'
+import MuiButton from './overrides/MuiButton'
 import MuiTextField from './overrides/MuiTextField'
 import createTheme from '@mui/material/styles/createTheme'
 import { responsiveFontSizes } from '@mui/material/styles'
@@ -75,6 +76,7 @@ let theme = createTheme({
     MuiTextField,
     MuiButton,
     MuiAvatar,
+    MuiTable,
   },
 })
 

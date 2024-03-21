@@ -1,9 +1,10 @@
-import { AuthReducer } from '@vgl/stores'
 import { configureStore } from '@reduxjs/toolkit'
+import { AuthReducer, ContextReducer } from '@vgl/stores'
 
 const store = configureStore({
   reducer: {
     auth: AuthReducer,
+    context: ContextReducer,
   },
 })
 

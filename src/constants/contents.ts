@@ -12,3 +12,124 @@ Pellentesque velit sed vulputate pulvinar at augue mauris turpis. Tortor enim ma
 Viverra fringilla pharetra duis sapien placerat nec massa. Ac ut non donec fermentum.
 <br />
 Viverra condimentum scelerisque nisi commodo nec vel id mauris tempus. Convallis aliquam in vulputate nisl. Arcu tristique mi rhoncus integer faucibus turpis enim quis sagittis. `
+
+export const USER_TAB_LABELS = [
+  {
+    label: 'Manage Users',
+    value: 'users',
+  },
+  {
+    label: 'Reports',
+    value: 'reports',
+  },
+
+  {
+    label: 'Suspended Users',
+    value: 'suspended',
+  },
+  {
+    label: 'Resolved',
+    value: 'resolved',
+  },
+]
+
+export const TABLE_HEADERS = [
+  {
+    title: 'Name',
+    key: 'name',
+    icon: '/assets/icons/sort.svg',
+  },
+  {
+    title: 'Username',
+    key: 'username',
+    icon: '/assets/icons/sort.svg',
+  },
+  {
+    title: 'Email',
+    key: 'email',
+    icon: '/assets/icons/sort.svg',
+  },
+  {
+    title: 'Phone',
+    key: 'phone',
+    icon: '',
+  },
+  {
+    title: 'Subscription Type',
+    key: 'sbscriptionType',
+    icon: '',
+  },
+]
+
+export const TABLE_DATA = [
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Jordan Anderson',
+    username: 'JAndo23',
+    email: 'jordan233@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    email: 'Techbranmit@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Alexis Turner',
+    username: 'LexiInnovator',
+    email: 'turner@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+  {
+    name: 'Charlotte Evans',
+    username: 'CharE_CodeQueen',
+    email: 'charecode@gmail.com',
+    phone: '+1 (000) 279-1434',
+    sbscriptionType: 'Free-Trial',
+  },
+]
