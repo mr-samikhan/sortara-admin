@@ -1,10 +1,19 @@
 import React from 'react'
 import { ROUTES } from '@vgl/constants'
-import { AppLayout } from '@vgl/layout'
-import { ManageAuth } from '@vgl/screens'
 import { ProtectedRoute } from './components/components'
-import { Login2FAContainer, PrivacyPolicy } from '@vgl/modules'
 import { Route, Routes as ReactRoutes } from 'react-router-dom'
+import {
+  ManageAds,
+  ManageAuth,
+  ManageUsers,
+  ManageAnalytics,
+  ManageModerators,
+} from '@vgl/screens'
+import {
+  PrivacyPolicy,
+  Login2FAContainer,
+  SingleUserContainer,
+} from '@vgl/modules'
 
 const Routes = () => {
   const isLoggedIn = true
@@ -21,15 +30,12 @@ const Routes = () => {
 
       <ProtectedRoute isAuthenticated={isLoggedIn} isLoading={false}>
         <ReactRoutes>
-          <Route path={ROUTES.ADS} element={<AppLayout isHeader />} />
-          <Route path={ROUTES.ROOT} element={<AppLayout isHeader />} />
-          <Route path={ROUTES.USERS} element={<AppLayout isHeader />} />
-          <Route
-            path={ROUTES.MODERATORS}
-            element={
-              <AppLayout isSidebar isHeader isExportCSV isSearchTextField />
-            }
-          />
+          <Route path={ROUTES.ADS} element={<ManageAds />} />
+          <Route path={ROUTES.ROOT} element={<ManageUsers />} />
+          <Route path={ROUTES.USERS} element={<ManageUsers />} />
+          <Route path={ROUTES.USER} element={<SingleUserContainer />} />
+          <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
+          <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
         </ReactRoutes>
       </ProtectedRoute>
     </React.Fragment>
