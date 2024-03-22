@@ -1,5 +1,11 @@
+import { AppLayout } from '@vgl/layout'
+
 const SingleUserContainer = () => {
-  return <div>SingleUserContainer</div>
+  return (
+    <AppLayout isHeader isSidebar>
+      SingleUserContainer
+    </AppLayout>
+  )
 }
 
 export default SingleUserContainer

@@ -2,20 +2,24 @@ import { ROUTES } from './constants'
 
 const ADMIN_MENUS = [
   {
-    path: ROUTES.MODERATORS,
     title: 'Moderators',
+    path: ROUTES.MODERATORS,
+    singlePath: '/moderator',
   },
   {
-    path: ROUTES.USERS,
     title: 'Users',
+    path: ROUTES.USERS,
+    singlePath: '/user',
   },
   {
     path: ROUTES.ADS,
+    singlePath: '/ad',
     title: 'Manage Ads',
   },
   {
-    path: ROUTES.ANALYTICS || ROUTES.ROOT,
     title: 'Analytics',
+    singlePath: '/analytics',
+    path: ROUTES.ANALYTICS || ROUTES.ROOT,
   },
 ]
 

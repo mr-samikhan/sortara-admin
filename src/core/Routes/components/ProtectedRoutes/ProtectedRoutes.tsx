@@ -1,7 +1,8 @@
 import { ROUTES } from '@vgl/constants'
+import { useSelector } from 'react-redux'
 import React, { useLayoutEffect } from 'react'
 
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface ProtectedRoutesProps {
   isLoading?: boolean
@@ -9,23 +10,22 @@ interface ProtectedRoutesProps {
   children: React.ReactNode
 }
 
-const ProtectedRoutes = ({ children, ...props }: ProtectedRoutesProps) => {
-  const { isAuthenticated, isLoading } = props || {}
+const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
+  const { isAuthenticated } = useSelector((state: any) => state.auth)
 
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
   useLayoutEffect(() => {
     if (isAuthenticated) {
-      navigate(ROUTES.ROOT)
+      navigate(
+        pathname === ROUTES.ROOT || ROUTES.LOGIN ? ROUTES.USERS : pathname
+      )
     } else {
       navigate(ROUTES.LOGIN)
     }
     // eslint-disable-next-line
   }, [isAuthenticated])
-
-  if (isLoading) {
-    return <>Loading...</>
-  }
 
   return isAuthenticated ? <React.Fragment>{children}</React.Fragment> : <></>
 }
