@@ -65,15 +65,16 @@ export const TABLE_DATA = [
   {
     name: 'Brandon Mitchell',
     username: 'B_MitchTech',
-    email: 'Techbranmit@gmail.com',
     phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
     sbscriptionType: 'Free-Trial',
+    status: 'active',
   },
   {
     name: 'Jordan Anderson',
     username: 'JAndo23',
-    email: 'jordan233@gmail.com',
     phone: '+1 (000) 279-1434',
+    email: 'jordan233@gmail.com',
     sbscriptionType: 'Free-Trial',
   },
   {

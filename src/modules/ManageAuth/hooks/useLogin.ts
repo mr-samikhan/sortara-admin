@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { ROUTES } from '@vgl/constants'
 import { FormTypes } from '@vgl/types'
+import { ROUTES } from '@vgl/constants'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -16,6 +16,15 @@ interface IuseLogin {
 const useLogin = (props: IuseLogin) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
+
+  // const { isAuthenticated } = useSelector((state: any) => state.auth)
+
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(ROUTES.USERS)
+  //   }
+  //   // eslint-disable-next-line
+  // }, [isAuthenticated])
 
   const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
   const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD

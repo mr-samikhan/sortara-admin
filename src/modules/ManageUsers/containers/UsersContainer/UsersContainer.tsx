@@ -6,7 +6,7 @@ import { TABLE_DATA } from '@vgl/constants'
 import { CustomTabs, MuiCustomTable } from '@vgl/components'
 
 const UsersContainer = () => {
-  const { onTabChange } = useUsers()
+  const { onTabChange, onRowClick } = useUsers()
   return (
     <React.Fragment>
       <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
@@ -14,10 +14,7 @@ const UsersContainer = () => {
           <CustomTabs onClick={onTabChange} />
         </Box>
         <Box width={{ xs: '100%', sm: '100%', md: 'auto' }} overflow="auto">
-          <MuiCustomTable
-            data={TABLE_DATA}
-            onRowClick={(item) => console.log(item)}
-          />
+          <MuiCustomTable data={TABLE_DATA} onRowClick={onRowClick} />
         </Box>
       </AppLayout>
     </React.Fragment>

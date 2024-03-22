@@ -19,7 +19,7 @@ import { NoRecordFound } from '@vgl/components'
 
 interface MuiCustomTableProps {
   data: unknown[]
-  onRowClick: (row: unknown) => void
+  onRowClick: (row: { id: string }) => void
 }
 
 const MuiCustomTable = (props: MuiCustomTableProps) => {
@@ -97,11 +97,11 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
             </TableRow>
           )}
           {currentItems?.map((user: any, index) => (
-            <React.Fragment>
-              <TableRow key={index}>
+            <React.Fragment key={index}>
+              <TableRow>
                 {TABLE_HEADERS.map(
                   (header: { key: string; title: string; icon: string }) => (
-                    <TableCell>{user[header.key]}</TableCell>
+                    <TableCell key={header.key}>{user[header.key]}</TableCell>
                   )
                 )}
 
@@ -111,7 +111,7 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
                   </IconButton>
                 </TableCell>
               </TableRow>
-              <div style={{ padding: 5 }}></div>
+              <div style={{ padding: 5 }} />
             </React.Fragment>
           ))}
         </TableBody>

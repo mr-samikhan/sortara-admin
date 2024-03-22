@@ -48,6 +48,11 @@ export const MuiButton: Components['MuiButton'] = {
           fontSize: 12,
         },
       },
+      '&.outlined-btn': {
+        background: 'transparent',
+        color: COLORS.primary.dark,
+        border: `1px solid ${COLORS.grey.main}`,
+      },
     }),
   },
 }

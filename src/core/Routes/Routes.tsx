@@ -16,8 +16,6 @@ import {
 } from '@vgl/modules'
 
 const Routes = () => {
-  const isLoggedIn = true
-
   return (
     <React.Fragment>
       <ReactRoutes>
@@ -28,7 +26,7 @@ const Routes = () => {
         <Route path={ROUTES.LOGIN_2FA} element={<Login2FAContainer />} />
       </ReactRoutes>
 
-      <ProtectedRoute isAuthenticated={isLoggedIn} isLoading={false}>
+      <ProtectedRoute>
         <ReactRoutes>
           <Route path={ROUTES.ADS} element={<ManageAds />} />
           <Route path={ROUTES.ROOT} element={<ManageUsers />} />
