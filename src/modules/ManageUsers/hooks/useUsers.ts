@@ -13,7 +13,7 @@ const useUsers = () => {
 
   const onRowClick = (item: { id: string }) => {
     navigate(ROUTES.USER.replace(':id', item.id), {
-      state: { id: { ...item } },
+      state: { ...item },
     })
   }
 
