@@ -2,14 +2,16 @@ import React from 'react'
 import { COLORS, FONTS } from '@vgl/constants'
 import { Box, Chip, Grid, Typography } from '@mui/material'
 import {
-  AllLists,
   Details,
+  AllLists,
   Management,
-  SafetyReports,
   Subscription,
+  SafetyReports,
 } from '../components'
 
 export interface UserAccountDetailsProps {
+  onViewClick: (item: any) => void
+  onRemoveClick: (item: any) => void
   user: {
     name: string
     email: string
@@ -20,7 +22,7 @@ export interface UserAccountDetailsProps {
 }
 
 const UserAccountDetails = (props: UserAccountDetailsProps) => {
-  const { user } = props || {}
+  const { user, onRemoveClick, onViewClick } = props || {}
 
   const Container = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -144,7 +146,18 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
         <br />
         Name at Sortara`}
       />
-      <AllLists count={2} />
+      <AllLists
+        data={[0, 1]}
+        title="All Lists"
+        onViewClick={onViewClick}
+        onRemoveClick={onRemoveClick}
+      />
+      <AllLists
+        data={[0, 1]}
+        title="Items"
+        onViewClick={onViewClick}
+        onRemoveClick={onRemoveClick}
+      />
     </React.Fragment>
   )
 }
