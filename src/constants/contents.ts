@@ -134,3 +134,30 @@ export const TABLE_DATA = [
     sbscriptionType: 'Free-Trial',
   },
 ]
+
+export const USER_DROPDOWN_OPTIONS = [
+  {
+    value: 'all',
+    label: 'All lists',
+  },
+  {
+    value: 'nested',
+    label: 'Nested lists',
+  },
+  {
+    value: 'deleted',
+    label: 'Deleted lists',
+  },
+  {
+    value: 'private',
+    label: 'Private lists',
+  },
+  {
+    value: 'public',
+    label: 'Public lists',
+  },
+  {
+    value: 'shared',
+    label: 'Shared lists',
+  },
+]

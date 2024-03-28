@@ -1,12 +1,14 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { COLORS, FONTS } from '@vgl/constants'
+import { ON_REMOVE_ITEM, ON_VIEW_ITEM } from '@vgl/stores'
 import { Box, Chip, Grid, Typography } from '@mui/material'
 import {
-  AllLists,
   Details,
+  AllLists,
   Management,
-  SafetyReports,
   Subscription,
+  SafetyReports,
 } from '../components'
 
 export interface UserAccountDetailsProps {
@@ -21,6 +23,8 @@ export interface UserAccountDetailsProps {
 
 const UserAccountDetails = (props: UserAccountDetailsProps) => {
   const { user } = props || {}
+
+  const dispatch = useDispatch()
 
   const Container = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -144,7 +148,18 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
         <br />
         Name at Sortara`}
       />
-      <AllLists count={2} />
+      <AllLists
+        data={[0, 1]}
+        title="All Lists"
+        onViewClick={(item) => dispatch(ON_VIEW_ITEM(item))}
+        onRemoveClick={(item) => dispatch(ON_REMOVE_ITEM(item))}
+      />
+      <AllLists
+        data={[0, 1]}
+        title="Items"
+        onViewClick={(item) => dispatch(ON_VIEW_ITEM(item))}
+        onRemoveClick={(item) => dispatch(ON_REMOVE_ITEM(item))}
+      />
     </React.Fragment>
   )
 }

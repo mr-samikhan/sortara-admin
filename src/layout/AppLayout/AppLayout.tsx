@@ -11,7 +11,7 @@ interface AppLayoutProps {
   isHeader?: boolean
   isSidebar?: boolean
   isExportCSV?: boolean
-  navigationText: string
+  navigationText?: string
   children?: React.ReactNode
   isNavigationIcon?: boolean
   isSearchTextField?: boolean
