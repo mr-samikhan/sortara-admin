@@ -8,7 +8,7 @@ export interface IContext {
 }
 
 const initialState: IContext = {
-  rowData: {},
+  rowData: null,
   tabValue: 'users',
   listValue: 'all',
 }

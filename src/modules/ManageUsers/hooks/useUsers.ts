@@ -1,14 +1,17 @@
+import { useSteps } from '@vgl/hooks'
 import { ROUTES } from '@vgl/constants'
-import { ON_TAB_CHANGE } from '@vgl/stores'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { ON_REMOVE_ITEM, ON_TAB_CHANGE, ON_VIEW_ITEM } from '@vgl/stores'
 
 const useUsers = () => {
-  const dipatch = useDispatch()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const { activeStep, onNext } = useSteps()
+
   const onTabChange = (value: string) => {
-    dipatch(ON_TAB_CHANGE(value))
+    dispatch(ON_TAB_CHANGE(value))
   }
 
   const onRowClick = (item: { id: string }) => {
@@ -17,7 +20,17 @@ const useUsers = () => {
     })
   }
 
-  return { onTabChange, onRowClick }
+  const onRemoveClick = (item: any) => {
+    dispatch(ON_VIEW_ITEM(item))
+    onNext()
+  }
+
+  const onViewClick = (item: any) => {
+    dispatch(ON_REMOVE_ITEM(item))
+    onNext()
+  }
+
+  return { onTabChange, onRowClick, onRemoveClick, onViewClick, activeStep }
 }
 
 export default useUsers

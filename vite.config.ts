@@ -27,5 +27,5 @@ export default defineConfig({
     },
   },
   plugins: [react()],
-  base: 'https://goodlisting.web.app',
+  base: 'https://sortara-admin.web.app',
 })

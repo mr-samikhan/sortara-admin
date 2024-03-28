@@ -1,7 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 import { COLORS, FONTS } from '@vgl/constants'
-import { ON_REMOVE_ITEM, ON_VIEW_ITEM } from '@vgl/stores'
 import { Box, Chip, Grid, Typography } from '@mui/material'
 import {
   Details,
@@ -12,6 +10,8 @@ import {
 } from '../components'
 
 export interface UserAccountDetailsProps {
+  onViewClick: (item: any) => void
+  onRemoveClick: (item: any) => void
   user: {
     name: string
     email: string
@@ -22,9 +22,7 @@ export interface UserAccountDetailsProps {
 }
 
 const UserAccountDetails = (props: UserAccountDetailsProps) => {
-  const { user } = props || {}
-
-  const dispatch = useDispatch()
+  const { user, onRemoveClick, onViewClick } = props || {}
 
   const Container = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -151,14 +149,14 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
       <AllLists
         data={[0, 1]}
         title="All Lists"
-        onViewClick={(item) => dispatch(ON_VIEW_ITEM(item))}
-        onRemoveClick={(item) => dispatch(ON_REMOVE_ITEM(item))}
+        onViewClick={onViewClick}
+        onRemoveClick={onRemoveClick}
       />
       <AllLists
         data={[0, 1]}
         title="Items"
-        onViewClick={(item) => dispatch(ON_VIEW_ITEM(item))}
-        onRemoveClick={(item) => dispatch(ON_REMOVE_ITEM(item))}
+        onViewClick={onViewClick}
+        onRemoveClick={onRemoveClick}
       />
     </React.Fragment>
   )

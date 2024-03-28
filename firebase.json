@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "goodlisting",
+    "site": "sortara-admin",
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
