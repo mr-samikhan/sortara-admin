@@ -161,3 +161,15 @@ export const USER_DROPDOWN_OPTIONS = [
     label: 'Shared lists',
   },
 ]
+
+export const SUSPENSION_REASONS = [
+  'Spam',
+  'Impersonation',
+  'Security Risk',
+  'Ban Evasion',
+  'Inappropriate',
+  'Conduct Defrauding',
+  'Exploitation',
+  'Policy Violation',
+  'Abusive Behavior',
+]

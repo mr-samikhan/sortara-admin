@@ -1,5 +1,6 @@
 import React from 'react'
 import { COLORS, FONTS } from '@vgl/constants'
+import { UserValues } from '../../hooks/useUsers'
 import { Box, Chip, Grid, Typography } from '@mui/material'
 import {
   Details,
@@ -10,8 +11,10 @@ import {
 } from '../components'
 
 export interface UserAccountDetailsProps {
+  userValues: UserValues
   onViewClick: (item: any) => void
   onRemoveClick: (item: any) => void
+  setUserValues: React.Dispatch<React.SetStateAction<UserValues>>
   user: {
     name: string
     email: string
@@ -22,7 +25,8 @@ export interface UserAccountDetailsProps {
 }
 
 const UserAccountDetails = (props: UserAccountDetailsProps) => {
-  const { user, onRemoveClick, onViewClick } = props || {}
+  const { user, onRemoveClick, onViewClick, setUserValues, userValues } =
+    props || {}
 
   const Container = ({ children }: { children: React.ReactNode }) => (
     <Box
@@ -88,16 +92,37 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
         </Container>
         <Box>
           <Chip
-            label={user.status ? 'Active' : 'In Active'}
-            color="secondary"
             sx={chipStyle}
+            color="secondary"
+            label={user.status ? 'Active' : 'In Active'}
           />
         </Box>
       </Box>
       <Grid container spacing={3} maxWidth={1200}>
         <Grid item xs={12} md={6}>
           <DetailsWrapper>
-            <Details user={user} onEdit={() => console.log('Edit')} />
+            <Details
+              user={user}
+              isEdit={userValues.isEdit}
+              onCancel={() =>
+                setUserValues((prev) => ({
+                  ...prev,
+                  isEdit: false,
+                }))
+              }
+              onSave={() =>
+                setUserValues((prev) => ({
+                  ...prev,
+                  isEdit: false,
+                }))
+              }
+              onEdit={() =>
+                setUserValues((prev) => ({
+                  ...prev,
+                  isEdit: true,
+                }))
+              }
+            />
           </DetailsWrapper>
         </Grid>
         <Grid item xs={12} md={5.5}>
@@ -107,8 +132,12 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
               isSuspendbtn
               title="User Management"
               btnText="Delete Account"
-              onDelete={() => console.log('Delete')}
-              onSuspend={() => console.log('Suspend')}
+              onDelete={() =>
+                setUserValues((prev) => ({ ...prev, isDeleteModal: true }))
+              }
+              onSuspend={() =>
+                setUserValues((prev) => ({ ...prev, isSuspendModal: true }))
+              }
             />
           </DetailsWrapper>
         </Grid>
@@ -119,7 +148,9 @@ const UserAccountDetails = (props: UserAccountDetailsProps) => {
               isSuspendbtn={false}
               title="Account Security"
               btnText="Reset Password"
-              onResetPassword={() => console.log('Reset Password')}
+              onResetPassword={() =>
+                setUserValues((prev) => ({ ...prev, isResetModal: true }))
+              }
             />
           </DetailsWrapper>
         </Grid>

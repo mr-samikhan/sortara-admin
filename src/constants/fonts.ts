@@ -1,8 +1,9 @@
 const Fonts = {
-  RECOLETA: 'Recoleta',
-  DMSANS: 'DM Sans',
-  INTER: 'Inter',
   LATO: 'Lato',
+  INTER: 'Inter',
+  DMSANS: 'DM Sans',
+  RECOLETA: 'Recoleta',
+  WORK_SANS: 'Work Sans',
 }
 
 export default Fonts
