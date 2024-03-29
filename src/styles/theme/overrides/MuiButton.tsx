@@ -53,6 +53,18 @@ export const MuiButton: Components['MuiButton'] = {
         color: COLORS.primary.dark,
         border: `1px solid ${COLORS.grey.main}`,
       },
+      '&.outlined-blue': {
+        background: 'transparent',
+        color: COLORS.primary.dark,
+        border: `2px solid ${COLORS.primary.dark}`,
+      },
+      '&.contained-blue': {
+        color: COLORS.white,
+        background: COLORS.primary.dark,
+        '&:hover': {
+          background: COLORS.primary.dark,
+        },
+      },
     }),
   },
 }
