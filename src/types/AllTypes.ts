@@ -17,3 +17,13 @@ export type ISetup2FA = {
 }
 
 export type FormTypes = ILoginForm | IForgotForm | IResetForm
+
+export type ITableData = {
+  id: number
+  name: string
+  email: string
+  role?: string
+  status?: string
+  createdAt?: string
+  subscriptionType?: string
+}

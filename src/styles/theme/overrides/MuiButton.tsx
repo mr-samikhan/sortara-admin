@@ -65,6 +65,12 @@ export const MuiButton: Components['MuiButton'] = {
           background: COLORS.primary.dark,
         },
       },
+      '&.filter-btn': {
+        fontSize: 15,
+        fontWeight: 700,
+        textTransform: 'none',
+        color: COLORS.primary.dark,
+      },
     }),
   },
 }

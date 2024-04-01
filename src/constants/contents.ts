@@ -135,6 +135,106 @@ export const TABLE_DATA = [
   },
 ]
 
+export const TABLE_REPORTS_DATA = [
+  {
+    id: 1,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-28T10:00:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-23T17:50:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-28T10:00:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-23T17:50:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-28T10:00:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-23T17:50:00Z',
+  },
+  {
+    id: 2,
+    name: 'Brandon Mitchell',
+    username: 'B_MitchTech',
+    phone: '+1 (000) 279-1434',
+    email: 'Techbranmit@gmail.com',
+    list: 'list',
+    action: 'Unread',
+    createdAt: '2024-03-23T17:50:00Z',
+  },
+]
+
+export const TABLE_REPORTS_HEADERS = [
+  {
+    title: 'Name',
+    key: 'name',
+  },
+  {
+    title: 'Username',
+    key: 'username',
+  },
+  {
+    title: 'Email',
+    key: 'email',
+  },
+  {
+    title: 'Phone',
+    key: 'phone',
+  },
+  {
+    title: 'List',
+    key: 'list',
+  },
+  {
+    title: 'Action',
+    key: 'action',
+  },
+]
+
 export const USER_DROPDOWN_OPTIONS = [
   {
     value: 'all',
@@ -172,4 +272,141 @@ export const SUSPENSION_REASONS = [
   'Exploitation',
   'Policy Violation',
   'Abusive Behavior',
+]
+
+export const SORT_BY_USERS = [
+  { label: 'Name A...Z', value: 'name' },
+  { label: 'Username A...Z', value: 'username' },
+  { label: 'Email A...Z', value: 'email' },
+]
+
+export const SORT_BY_CONTENT = [
+  { label: 'List', value: 'list' },
+  { label: 'Comment', value: 'comment' },
+  { label: 'Item', value: 'item' },
+  { label: 'Profile', value: 'profile' },
+]
+
+export const SORT_BY_STATUS = [
+  {
+    label: 'Unread',
+    value: 'unread',
+  },
+  {
+    label: 'Read',
+    value: 'read',
+  },
+  {
+    label: 'Under Review',
+    value: 'under-review',
+  },
+  {
+    label: 'Resolved',
+    value: 'resolved',
+  },
+]
+
+export const SORT_BY_REASONS = [
+  {
+    label: 'Spam or Scam',
+    value: 'spam',
+  },
+  {
+    label: `Violence or Dangerous Organizations`,
+    value: 'violence',
+  },
+  {
+    label: 'Harassment/Impersonation',
+    value: 'harassment',
+  },
+  {
+    label: 'Child Safety',
+    value: 'safety',
+  },
+  {
+    label: 'Privacy Violations',
+    value: 'privacy',
+  },
+  {
+    label: 'Intellectual Property Violations',
+    value: 'property',
+  },
+  {
+    label: 'Sale of illegal or regulated goods',
+    value: 'sale',
+  },
+  {
+    label: 'Other',
+    value: 'other',
+  },
+]
+
+export const SORT_MODAL_OPTIONS = [
+  { label: 'All time', value: 'all' },
+  { label: 'Today', value: 'today' },
+  {
+    label: 'This week',
+    value: 'week',
+  },
+  {
+    label: 'This month',
+    value: 'month',
+  },
+  {
+    label: '3 months',
+    value: '3months',
+  },
+  {
+    label: '6 months',
+    value: '6months',
+  },
+  {
+    label: 'This year',
+    value: 'year',
+  },
+]
+
+export const TAB_VALUES = {
+  USERS: 'users',
+  REPORTS: 'reports',
+  SUSPENDED_USERS: 'suspended',
+  RESOLVED: 'resolved',
+}
+
+export const SUSPENDED_USER_HEADER = [
+  {
+    title: 'Name',
+    key: 'name',
+  },
+  {
+    title: 'Username',
+    key: 'username',
+  },
+  {
+    title: 'Email',
+    key: 'email',
+  },
+  {
+    title: 'Phone',
+    key: 'phone',
+  },
+  {
+    title: 'CreatedAt',
+    key: 'createdAt',
+  },
+  {
+    title: 'Days',
+    key: 'days',
+  },
+]
+
+export const SUSPENDED_USER_DATA = [
+  {
+    name: 'Megan Thompson',
+    username: 'MegT_87',
+    email: 'megt_87@gmail.com',
+    phone: '+1 (000) 279-1434',
+    createdAt: '1/2/23',
+    days: '7 days',
+  },
 ]

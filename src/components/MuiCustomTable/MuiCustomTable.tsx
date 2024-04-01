@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { usePagination } from '@vgl/hooks'
 import { TABLE_HEADERS } from '@vgl/constants'
+import { NoRecordFound } from '@vgl/components'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import {
@@ -15,15 +16,39 @@ import {
   Pagination,
   PaginationItem,
 } from '@mui/material'
-import { NoRecordFound } from '@vgl/components'
+
+interface ReportDataItem {
+  [key: string]: any
+}
+
+interface HeaderItem {
+  key: string
+  title: string
+  icon?: string
+}
 
 interface MuiCustomTableProps {
-  data: unknown[]
+  isSplit?: boolean
+  isAction?: boolean
+  isHeader?: boolean
+  data?: ReportDataItem[]
+  headerData?: HeaderItem[]
+  Action?: React.ElementType
   onRowClick: (row: { id: string }) => void
+  reportsData?: Record<string, ReportDataItem[]>
 }
 
 const MuiCustomTable = (props: MuiCustomTableProps) => {
-  const { data, onRowClick } = props || {}
+  const {
+    data,
+    Action,
+    isSplit,
+    isAction,
+    isHeader,
+    onRowClick,
+    headerData,
+    reportsData,
+  } = props || {}
 
   const rowsPerPage = 8
   const [sortConfig, setSortConfig] = useState({
@@ -32,9 +57,9 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
   })
 
   const sortedItems = React.useMemo(() => {
-    const sortableItems = [...data]
-    if (sortConfig.key !== null) {
-      sortableItems.sort((a: any, b: any) => {
+    const sortableItems = data ? [...data] : []
+    if (sortConfig?.key !== null) {
+      sortableItems?.sort((a: any, b: any) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'ascending' ? -1 : 1
         }
@@ -66,54 +91,105 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
     setCurrentPage(value - 1)
   }
 
+  const HEADER: any[] = headerData || TABLE_HEADERS
+
   return (
     <React.Fragment>
       <Table>
-        <TableHead>
-          <TableRow>
-            {TABLE_HEADERS.map((header) => (
-              <TableCell key={header.key}>
-                {header.title}&nbsp;
-                <IconButton onClick={() => requestSort(header.key)}>
-                  <img src={header.icon} alt="" />
-                </IconButton>
-              </TableCell>
-            ))}
-            <TableCell
-              sx={{
-                border: 0,
-              }}
-            >
-              <Typography variant="h6" color="textSecondary"></Typography>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {currentItems?.length === 0 && (
+        {isHeader && (
+          <TableHead>
             <TableRow>
-              <TableCell colSpan={TABLE_HEADERS.length + 1}>
+              {HEADER.map((header) => (
+                <TableCell key={header.key}>
+                  {header.title}&nbsp;
+                  <IconButton onClick={() => requestSort(header.key)}>
+                    <img src={header.icon} alt="" />
+                  </IconButton>
+                </TableCell>
+              ))}
+              <TableCell
+                sx={{
+                  border: 0,
+                }}
+              >
+                <Typography variant="h6" color="textSecondary"></Typography>
+              </TableCell>
+            </TableRow>
+          </TableHead>
+        )}
+        <TableBody>
+          {!isSplit && currentItems?.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={HEADER.length + 1}>
                 <NoRecordFound data={data} />
               </TableCell>
             </TableRow>
           )}
-          {currentItems?.map((user: any, index) => (
-            <React.Fragment key={index}>
-              <TableRow>
-                {TABLE_HEADERS.map(
-                  (header: { key: string; title: string; icon: string }) => (
-                    <TableCell key={header.key}>{user[header.key]}</TableCell>
-                  )
-                )}
+          {isSplit && reportsData
+            ? Object.keys(reportsData).map((date: any) => (
+                <React.Fragment key={date}>
+                  <TableRow>
+                    <TableCell sx={tdStyle} colSpan={5}>
+                      {new Date(date)?.toLocaleDateString()}
+                    </TableCell>
+                  </TableRow>
+                  <div style={{ padding: 5 }} />
+                  {reportsData &&
+                    reportsData[date].map((report: any, index: number) => (
+                      <React.Fragment key={index}>
+                        <TableRow key={index}>
+                          {HEADER.map((header) => (
+                            <TableCell key={header.key}>
+                              {report[header.key]}
+                            </TableCell>
+                          ))}
+                          {isAction && (
+                            <TableCell>
+                              <IconButton onClick={() => onRowClick(report)}>
+                                <img
+                                  src="/assets/icons/chevron-right.svg"
+                                  alt=""
+                                />
+                              </IconButton>
+                            </TableCell>
+                          )}
+                        </TableRow>
+                        <div style={{ padding: 5 }} />
+                      </React.Fragment>
+                    ))}
+                </React.Fragment>
+              ))
+            : currentItems?.map((user: any, index) => (
+                <React.Fragment key={index}>
+                  <TableRow>
+                    {HEADER.map(
+                      (header: {
+                        key: string
+                        title: string
+                        icon: string
+                      }) => (
+                        <TableCell key={header.key}>
+                          {user[header.key]}
+                        </TableCell>
+                      )
+                    )}
 
-                <TableCell>
-                  <IconButton onClick={() => onRowClick(user)}>
-                    <img src="/assets/icons/chevron-right.svg" alt="" />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-              <div style={{ padding: 5 }} />
-            </React.Fragment>
-          ))}
+                    {isAction && (
+                      <TableCell>
+                        <IconButton onClick={() => onRowClick(user)}>
+                          <img src="/assets/icons/chevron-right.svg" alt="" />
+                        </IconButton>
+                      </TableCell>
+                    )}
+                    {Action && typeof Action === 'function' && (
+                      <TableCell>
+                        <Action />
+                      </TableCell>
+                    )}
+                  </TableRow>
+                  <div style={{ padding: 5 }} />
+                </React.Fragment>
+              ))}
         </TableBody>
       </Table>
       <Box display="flex" justifyContent="center" mt={0.5}>
@@ -137,3 +213,9 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
 }
 
 export default MuiCustomTable
+
+const tdStyle = {
+  fontWeight: 400,
+  textAlign: 'center',
+  bgcolor: 'transparent !important',
+}

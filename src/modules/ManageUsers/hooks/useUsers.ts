@@ -12,7 +12,10 @@ export interface UserValues {
   isRemoveModal: boolean
   isSuspendModal: boolean
   isDeleteModal?: boolean
+  isFilterModal: boolean
+  isSortModal: boolean
   suspendConfirmation: boolean
+  terminationConfirmation: boolean
 }
 
 const useUsers = () => {
@@ -28,11 +31,15 @@ const useUsers = () => {
     isResetModal: false,
     isDeleteModal: false,
     isSnackbar: false,
+    isFilterModal: false,
+    isSortModal: false,
     suspendConfirmation: false,
+    terminationConfirmation: false,
   })
 
   const onTabChange = (value: string) => {
     dispatch(ON_TAB_CHANGE(value))
+    onCloseModal()
   }
 
   const onRowClick = (item: { id: string }) => {
@@ -61,6 +68,9 @@ const useUsers = () => {
       isRemoveModal: false,
       isResetModal: false,
       isDeleteModal: false,
+      isFilterModal: false,
+      isSortModal: false,
+      terminationConfirmation: false,
     }))
   }
 
@@ -78,6 +88,13 @@ const useUsers = () => {
     }))
   }
 
+  const modalToggler = (modal: string, val: boolean) => {
+    setUserValues((prev) => ({
+      ...prev,
+      [modal]: val,
+    }))
+  }
+
   return {
     onTabChange,
     onRowClick,
@@ -86,6 +103,7 @@ const useUsers = () => {
     onViewClick,
     setUserValues,
     onRemoveClick,
+    modalToggler,
     onCloseModal,
     onShowSnackbar,
     onSuspendConfirmation,

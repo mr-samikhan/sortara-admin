@@ -55,6 +55,7 @@ export const MuiPaper: Components['MuiPaper'] = {
           width: '80%',
         },
       },
+      '&.filter-UI': {},
       [theme.breakpoints.down('md')]: {},
     }),
   },

@@ -1,24 +1,113 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { AppLayout } from '@vgl/layout'
-import { useUsers } from '@vgl/modules'
-import { TABLE_DATA } from '@vgl/constants'
-import { CustomTabs, MuiCustomTable } from '@vgl/components'
+import { RootState } from '@vgl/stores'
+import { useSelector } from 'react-redux'
+import { CustomTabs, MuiCustomTable, SortByUI } from '@vgl/components'
+import { useUsers, Reports, FilterModalUI, SortModalUI } from '@vgl/modules'
+import {
+  TAB_VALUES,
+  TABLE_DATA,
+  TABLE_HEADERS,
+  TABLE_REPORTS_DATA,
+  SUSPENDED_USER_DATA,
+  SUSPENDED_USER_HEADER,
+} from '@vgl/constants'
 
 const UsersContainer = () => {
-  const { onTabChange, onRowClick } = useUsers()
-  return (
-    <React.Fragment>
-      <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
-        <Box my={2}>
-          <CustomTabs onClick={onTabChange} />
-        </Box>
-        <Box width={{ xs: '100%', sm: '100%', md: 'auto' }} overflow="auto">
-          <MuiCustomTable data={TABLE_DATA} onRowClick={onRowClick} />
-        </Box>
-      </AppLayout>
-    </React.Fragment>
+  const { onTabChange, onRowClick, userValues, modalToggler, onCloseModal } =
+    useUsers()
+  const { isFilterModal, isSortModal } = userValues
+
+  const { tabValue } = useSelector((state: RootState) => state.context)
+
+  const sortedReports: any = [...TABLE_REPORTS_DATA].sort(
+    (a, b) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf()
   )
+
+  const groupedByDate: any = sortedReports.reduce((acc: any, report: any) => {
+    const dateKey = new Date(report.createdAt).toDateString()
+    if (!acc[dateKey]) {
+      acc[dateKey] = []
+    }
+    acc[dateKey].push(report)
+    return acc
+  }, {})
+
+  const isNotReport =
+    tabValue === TAB_VALUES.REPORTS ? TAB_VALUES.REPORTS : tabValue
+
+  switch (tabValue) {
+    case isNotReport:
+      return (
+        <React.Fragment>
+          <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
+            <Box
+              my={2}
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              flexDirection={{ xs: 'column', md: 'row' }}
+            >
+              <CustomTabs onClick={onTabChange} />
+              {tabValue !== TAB_VALUES.USERS && (
+                <SortByUI
+                  onFilterClick={() =>
+                    modalToggler('isFilterModal', !isFilterModal)
+                  }
+                  onSortClick={() => modalToggler('isSortModal', true)}
+                />
+              )}
+            </Box>
+            <Box
+              mt={5}
+              position="relative"
+              overflow={isFilterModal ? 'none' : 'auto  '}
+              width={{ xs: '100%', sm: '100%', md: 'auto' }}
+            >
+              <MuiCustomTable
+                headerData={
+                  tabValue === TAB_VALUES.SUSPENDED_USERS
+                    ? SUSPENDED_USER_HEADER
+                    : TABLE_HEADERS
+                }
+                isHeader={tabValue !== TAB_VALUES.SUSPENDED_USERS}
+                isAction={tabValue === TAB_VALUES.USERS}
+                data={
+                  tabValue === TAB_VALUES.SUSPENDED_USERS
+                    ? SUSPENDED_USER_DATA
+                    : TABLE_DATA
+                }
+                onRowClick={onRowClick}
+              />
+              {isFilterModal && (
+                <FilterModalUI
+                  isContent={
+                    tabValue === TAB_VALUES.SUSPENDED_USERS ||
+                    tabValue === TAB_VALUES.RESOLVED
+                      ? false
+                      : true
+                  }
+                  isStatus={tabValue === TAB_VALUES.RESOLVED ? false : true}
+                />
+              )}
+            </Box>
+            {isSortModal && <SortModalUI onClose={onCloseModal} />}
+          </AppLayout>
+        </React.Fragment>
+      )
+    case TAB_VALUES.REPORTS:
+      return (
+        <Reports
+          data={groupedByDate}
+          onRowClick={onRowClick}
+          userValues={userValues}
+          onTabChange={onTabChange}
+          modalToggler={modalToggler}
+          onCloseModal={onCloseModal}
+        />
+      )
+  }
 }
 
 export default UsersContainer
