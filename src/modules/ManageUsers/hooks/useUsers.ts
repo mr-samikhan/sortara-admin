@@ -13,6 +13,7 @@ export interface UserValues {
   isSuspendModal: boolean
   isDeleteModal?: boolean
   suspendConfirmation: boolean
+  terminationConfirmation: boolean
 }
 
 const useUsers = () => {
@@ -29,6 +30,7 @@ const useUsers = () => {
     isDeleteModal: false,
     isSnackbar: false,
     suspendConfirmation: false,
+    terminationConfirmation: false,
   })
 
   const onTabChange = (value: string) => {
@@ -61,6 +63,7 @@ const useUsers = () => {
       isRemoveModal: false,
       isResetModal: false,
       isDeleteModal: false,
+      terminationConfirmation: false,
     }))
   }
 
@@ -78,6 +81,13 @@ const useUsers = () => {
     }))
   }
 
+  const modalToggler = (modal: string, val: boolean) => {
+    setUserValues((prev) => ({
+      ...prev,
+      [modal]: val,
+    }))
+  }
+
   return {
     onTabChange,
     onRowClick,
@@ -86,6 +96,7 @@ const useUsers = () => {
     onViewClick,
     setUserValues,
     onRemoveClick,
+    modalToggler,
     onCloseModal,
     onShowSnackbar,
     onSuspendConfirmation,
