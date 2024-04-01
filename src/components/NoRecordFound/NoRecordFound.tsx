@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 
 interface NoRecordFoundProps {
-  data: unknown[]
+  data: unknown[] | undefined
 }
 const NoRecordFound = ({ data }: NoRecordFoundProps) => {
   return (
