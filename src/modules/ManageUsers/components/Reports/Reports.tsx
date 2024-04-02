@@ -1,7 +1,12 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { AppLayout } from '@vgl/layout'
-import { SortModalUI, FilterModalUI } from '@vgl/modules'
+import {
+  SortModalUI,
+  FilterModalUI,
+  ReportDetailsModal,
+  CustomModal,
+} from '@vgl/modules'
 import { CustomTabs, MuiCustomTable, SortByUI } from '@vgl/components'
 import { TABLE_REPORTS_HEADERS } from '@vgl/constants'
 
@@ -24,7 +29,7 @@ const Reports = (props: ReportsProps) => {
     userValues,
   } = props || {}
 
-  const { isFilterModal, isSortModal } = userValues
+  const { isFilterModal, isSortModal, isReportDetails } = userValues
   return (
     <React.Fragment>
       <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
@@ -61,6 +66,13 @@ const Reports = (props: ReportsProps) => {
           </Box>
         )}
         {isSortModal && <SortModalUI onClose={onCloseModal} />}
+        {isReportDetails && (
+          <CustomModal open={isReportDetails} width="600px !important">
+            <ReportDetailsModal
+              onGoBack={() => modalToggler('isReportDetails', false)}
+            />
+          </CustomModal>
+        )}
       </AppLayout>
     </React.Fragment>
   )

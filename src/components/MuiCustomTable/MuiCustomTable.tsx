@@ -137,7 +137,10 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
                   {reportsData &&
                     reportsData[date].map((report: any, index: number) => (
                       <React.Fragment key={index}>
-                        <TableRow key={index}>
+                        <TableRow
+                          key={index}
+                          onClick={() => onRowClick(report)}
+                        >
                           {HEADER.map((header) => (
                             <TableCell key={header.key}>
                               {report[header.key]}

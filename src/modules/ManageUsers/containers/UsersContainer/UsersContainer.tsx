@@ -17,7 +17,7 @@ import {
 const UsersContainer = () => {
   const { onTabChange, onRowClick, userValues, modalToggler, onCloseModal } =
     useUsers()
-  const { isFilterModal, isSortModal } = userValues
+  const { isFilterModal, isSortModal, isReportDetails } = userValues
 
   const { tabValue } = useSelector((state: RootState) => state.context)
 
@@ -34,11 +34,10 @@ const UsersContainer = () => {
     return acc
   }, {})
 
-  const isNotReport =
-    tabValue === TAB_VALUES.REPORTS ? TAB_VALUES.REPORTS : tabValue
-
   switch (tabValue) {
-    case isNotReport:
+    case TAB_VALUES.USERS:
+    case TAB_VALUES.RESOLVED:
+    case TAB_VALUES.SUSPENDED_USERS:
       return (
         <React.Fragment>
           <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
@@ -100,11 +99,11 @@ const UsersContainer = () => {
       return (
         <Reports
           data={groupedByDate}
-          onRowClick={onRowClick}
           userValues={userValues}
           onTabChange={onTabChange}
           modalToggler={modalToggler}
           onCloseModal={onCloseModal}
+          onRowClick={() => modalToggler('isReportDetails', !isReportDetails)}
         />
       )
   }

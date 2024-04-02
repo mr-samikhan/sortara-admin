@@ -41,6 +41,9 @@ export const MuiPaper: Components['MuiPaper'] = {
         flexDirection: 'column',
         justifyContent: 'center',
         transform: 'translate(-50%, -50%)',
+        [theme.breakpoints.down('md')]: {
+          width: '95% !important',
+        },
       },
       '&.snakbar-style': {
         right: 20,
