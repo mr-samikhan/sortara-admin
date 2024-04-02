@@ -24,6 +24,22 @@ export const MuiMenuItem: Components['MuiMenuItem'] = {
           background: COLORS.magenta,
         },
       },
+      '&.report-menuItem': {
+        '&.MuiMenuItem-root': {
+          margin: 'auto',
+          display: 'flex',
+          padding: '10px',
+          borderRadius: '14px',
+          justifyContent: 'center',
+          background: 'transparent',
+        },
+        '&.Mui-selected': {
+          fontSize: 20,
+          fontWeight: 700,
+          borderRadius: '14px',
+          fontFamily: FONTS.LATO,
+        },
+      },
     },
   },
 }

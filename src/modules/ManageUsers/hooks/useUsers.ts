@@ -7,13 +7,14 @@ import { ON_REMOVE_ITEM, ON_TAB_CHANGE, ON_VIEW_ITEM } from '@vgl/stores'
 
 export interface UserValues {
   isEdit: boolean
+  isSortModal: boolean
   isSnackbar?: boolean
   isResetModal: boolean
   isRemoveModal: boolean
+  isFilterModal: boolean
   isSuspendModal: boolean
   isDeleteModal?: boolean
-  isFilterModal: boolean
-  isSortModal: boolean
+  isReportDetails: boolean
   suspendConfirmation: boolean
   terminationConfirmation: boolean
 }
@@ -35,6 +36,7 @@ const useUsers = () => {
     isSortModal: false,
     suspendConfirmation: false,
     terminationConfirmation: false,
+    isReportDetails: false,
   })
 
   const onTabChange = (value: string) => {
