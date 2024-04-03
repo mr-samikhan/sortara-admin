@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 
 interface ReportDetailsModalProps {
+  btnClassName?: string
   onGoBack: () => void
   buttonText?: string
   onResolve: () => void
@@ -19,7 +20,8 @@ interface ReportDetailsModalProps {
 }
 
 const ReportDetailsModal = (props: ReportDetailsModalProps) => {
-  const { onGoBack, onMailIconClick, buttonText, onResolve } = props || {}
+  const { onGoBack, onMailIconClick, buttonText, onResolve, btnClassName } =
+    props || {}
 
   const [isToolTip, setIsToolTip] = React.useState(false)
   const [isToolTip2, setIsToolTip2] = React.useState(false)
@@ -151,14 +153,15 @@ const ReportDetailsModal = (props: ReportDetailsModalProps) => {
             >
               Last updated by Aubrey Carson at 2:30PM, 1/23/23
             </Typography>
-            <Button
+            <Box
+              component={Button}
               fullWidth
               variant="contained"
               onClick={onResolve}
-              className="contained-blue"
+              className={btnClassName || 'contained-blue'}
             >
               {buttonText || 'Resovle Report'}
-            </Button>
+            </Box>
           </Box>
         </Box>
       </Box>

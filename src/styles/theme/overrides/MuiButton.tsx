@@ -72,6 +72,12 @@ export const MuiButton: Components['MuiButton'] = {
         textTransform: 'none',
         color: COLORS.primary.dark,
       },
+      '&.bordered-btn': {
+        padding: '10px 0px',
+        color: COLORS.primary.dark,
+        background: COLORS.lightIndigo,
+        border: `1px solid ${COLORS.primary.dark}`,
+      },
     }),
   },
 }

@@ -30,18 +30,18 @@ const useUsers = () => {
 
   const [userValues, setUserValues] = React.useState<UserValues>({
     isEdit: false,
-    isSuspendModal: false,
-    isRemoveModal: false,
-    isResetModal: false,
-    isDeleteModal: false,
     isSnackbar: false,
-    isFilterModal: false,
     isSortModal: false,
-    suspendConfirmation: false,
-    terminationConfirmation: false,
+    isResetModal: false,
+    isFilterModal: false,
+    isRemoveModal: false,
+    isDeleteModal: false,
+    isSuspendModal: false,
     isReportDetails: false,
     isEmailTemplate: false,
+    suspendConfirmation: false,
     isConfirmationModal: false,
+    terminationConfirmation: false,
   })
 
   const methods = useForm()
@@ -110,7 +110,9 @@ const useUsers = () => {
       modalToggler('isReportDetails', false)
       onShowSnackbar(true)
     } else {
-      console.log(val)
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      onShowSnackbar(true)
     }
   }
 

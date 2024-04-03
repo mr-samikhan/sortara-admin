@@ -69,7 +69,7 @@ const Reports = (props: ReportsProps) => {
         </Box>
         {!isFilterModal && (
           <Box
-            mt={7}
+            mt={5}
             overflow="auto"
             width={{ xs: '100%', sm: '100%', md: 'auto' }}
           >
