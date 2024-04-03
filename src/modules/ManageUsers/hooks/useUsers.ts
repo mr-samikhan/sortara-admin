@@ -2,9 +2,9 @@ import React from 'react'
 import { useSteps } from '@vgl/hooks'
 import { ROUTES } from '@vgl/constants'
 import { useDispatch } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ON_REMOVE_ITEM, ON_TAB_CHANGE, ON_VIEW_ITEM } from '@vgl/stores'
-import { useForm } from 'react-hook-form'
 
 export interface UserValues {
   isEdit: boolean
@@ -18,6 +18,7 @@ export interface UserValues {
   isReportDetails: boolean
   isEmailTemplate: boolean
   suspendConfirmation: boolean
+  isConfirmationModal: boolean
   terminationConfirmation: boolean
 }
 
@@ -40,6 +41,7 @@ const useUsers = () => {
     terminationConfirmation: false,
     isReportDetails: false,
     isEmailTemplate: false,
+    isConfirmationModal: false,
   })
 
   const methods = useForm()
@@ -102,6 +104,16 @@ const useUsers = () => {
     }))
   }
 
+  const onResolveReport = (val: string) => {
+    if (val === 'resolved') {
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      onShowSnackbar(true)
+    } else {
+      console.log(val)
+    }
+  }
+
   const onSubmit = (data: any) => {
     console.log(data)
   }
@@ -119,6 +131,7 @@ const useUsers = () => {
     modalToggler,
     onCloseModal,
     onShowSnackbar,
+    onResolveReport,
     onSuspendConfirmation,
   }
 }

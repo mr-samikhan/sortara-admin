@@ -3,7 +3,13 @@ import { Box } from '@mui/material'
 import { AppLayout } from '@vgl/layout'
 import { FormProvider } from 'react-hook-form'
 import { TABLE_REPORTS_HEADERS } from '@vgl/constants'
-import { CustomTabs, Form, MuiCustomTable, SortByUI } from '@vgl/components'
+import {
+  Form,
+  SortByUI,
+  CustomTabs,
+  MuiCustomTable,
+  MuiCustomSnackbar,
+} from '@vgl/components'
 import {
   CustomModal,
   SortModalUI,
@@ -17,6 +23,7 @@ interface ReportsProps {
   methods: any
   userValues: any
   onCloseModal: () => void
+  onResolveReport: (val: string) => void
   onSubmit: (data: any) => void
   onTabChange: (value: string) => void
   onRowClick: (row: { id: string }) => void
@@ -33,10 +40,17 @@ const Reports = (props: ReportsProps) => {
     onRowClick,
     onCloseModal,
     userValues,
+    onResolveReport,
   } = props || {}
 
-  const { isFilterModal, isSortModal, isReportDetails, isEmailTemplate } =
-    userValues
+  const {
+    isSnackbar,
+    isSortModal,
+    isFilterModal,
+    isReportDetails,
+    isEmailTemplate,
+    isConfirmationModal,
+  } = userValues
   return (
     <React.Fragment>
       <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
@@ -80,11 +94,21 @@ const Reports = (props: ReportsProps) => {
             onClose={() => modalToggler('isReportDetails', false)}
           >
             <ReportDetailsModal
-              onResolve={() => console.log('resolve')}
               onGoBack={() => modalToggler('isReportDetails', false)}
+              onResolve={() => modalToggler('isConfirmationModal', true)}
               onMailIconClick={() => modalToggler('isEmailTemplate', true)}
             />
           </CustomModal>
+        )}
+        {isConfirmationModal && (
+          <CustomModal
+            title="Resolve Report"
+            open={isConfirmationModal}
+            confirmText="Yes, Resolve"
+            onClose={() => modalToggler('isConfirmationModal', false)}
+            description="Are you sure you want to resolve this report?"
+            onConfirm={() => onResolveReport('resolved')}
+          />
         )}
         {isEmailTemplate && (
           <CustomModal
@@ -106,6 +130,15 @@ const Reports = (props: ReportsProps) => {
               </Form>
             </FormProvider>
           </CustomModal>
+        )}
+        {isSnackbar && (
+          <MuiCustomSnackbar
+            isIcon
+            open={isSnackbar}
+            message="Resolved report"
+            onClose={() => modalToggler('isSnackbar', false)}
+            description="Kelsey Bett’s report has been resolved and updated"
+          />
         )}
       </AppLayout>
     </React.Fragment>

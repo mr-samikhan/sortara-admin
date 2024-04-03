@@ -23,6 +23,7 @@ const UsersContainer = () => {
     onTabChange,
     modalToggler,
     onCloseModal,
+    onResolveReport,
   } = useUsers()
   const { isFilterModal, isSortModal, isReportDetails } = userValues
 
@@ -112,6 +113,7 @@ const UsersContainer = () => {
           onTabChange={onTabChange}
           modalToggler={modalToggler}
           onCloseModal={onCloseModal}
+          onResolveReport={onResolveReport}
           onRowClick={() => modalToggler('isReportDetails', !isReportDetails)}
         />
       )
