@@ -114,6 +114,17 @@ const useUsers = () => {
     }
   }
 
+  const onSuspendUser = (val: string) => {
+    if (val === 'suspend') {
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      modalToggler('isEmailTemplate', false)
+      onShowSnackbar(true)
+    } else {
+      console.log(val)
+    }
+  }
+
   const onSubmit = (data: any) => {
     console.log(data)
   }
@@ -132,6 +143,7 @@ const useUsers = () => {
     onCloseModal,
     onShowSnackbar,
     onResolveReport,
+    onSuspendUser,
     onSuspendConfirmation,
   }
 }

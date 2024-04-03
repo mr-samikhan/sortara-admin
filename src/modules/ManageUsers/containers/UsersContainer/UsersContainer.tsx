@@ -3,8 +3,23 @@ import { Box } from '@mui/material'
 import { AppLayout } from '@vgl/layout'
 import { RootState } from '@vgl/stores'
 import { useSelector } from 'react-redux'
-import { CustomTabs, MuiCustomTable, SortByUI } from '@vgl/components'
-import { useUsers, Reports, FilterModalUI, SortModalUI } from '@vgl/modules'
+import { FormProvider } from 'react-hook-form'
+import {
+  Form,
+  SortByUI,
+  CustomTabs,
+  MuiCustomTable,
+  MuiCustomSnackbar,
+} from '@vgl/components'
+import {
+  Reports,
+  useUsers,
+  SortModalUI,
+  CustomModal,
+  FilterModalUI,
+  EmailTemplateUI,
+  SuspendDetailsModal,
+} from '@vgl/modules'
 import {
   TAB_VALUES,
   TABLE_DATA,
@@ -23,9 +38,17 @@ const UsersContainer = () => {
     onTabChange,
     modalToggler,
     onCloseModal,
+    onSuspendUser,
     onResolveReport,
   } = useUsers()
-  const { isFilterModal, isSortModal, isReportDetails } = userValues
+  const {
+    isSnackbar,
+    isSortModal,
+    isFilterModal,
+    isReportDetails,
+    isEmailTemplate,
+    isConfirmationModal,
+  } = userValues
 
   const { tabValue } = useSelector((state: RootState) => state.context)
 
@@ -85,7 +108,11 @@ const UsersContainer = () => {
                     ? SUSPENDED_USER_DATA
                     : TABLE_DATA
                 }
-                onRowClick={onRowClick}
+                onRowClick={
+                  tabValue !== TAB_VALUES.USERS
+                    ? () => modalToggler('isReportDetails', true)
+                    : onRowClick
+                }
               />
               {isFilterModal && (
                 <FilterModalUI
@@ -100,6 +127,61 @@ const UsersContainer = () => {
               )}
             </Box>
             {isSortModal && <SortModalUI onClose={onCloseModal} />}
+            {/* suspended user tasks */}
+            {tabValue === TAB_VALUES.SUSPENDED_USERS && isReportDetails && (
+              <CustomModal
+                open={isReportDetails}
+                width={'600px !important'}
+                onClose={() => modalToggler('isReportDetails', false)}
+              >
+                <SuspendDetailsModal
+                  onSuspend={() => modalToggler('isConfirmationModal', true)}
+                  onMailUser={() => modalToggler('isEmailTemplate', true)}
+                  onGoBack={() => modalToggler('isReportDetails', false)}
+                />
+              </CustomModal>
+            )}
+            {isEmailTemplate && (
+              <CustomModal
+                open={isEmailTemplate}
+                width="600px !important"
+                onClose={() => modalToggler('isEmailTemplate', false)}
+              >
+                <FormProvider {...methods}>
+                  <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                    <EmailTemplateUI
+                      username="@kelsey"
+                      name="Kelsey Bett"
+                      phone="+1 000-000-0000"
+                      email="example@email.com"
+                      userImage="/assets/images/user.png"
+                      onClose={() => modalToggler('isEmailTemplate', false)}
+                      onGoBack={() => modalToggler('isEmailTemplate', false)}
+                    />
+                  </Form>
+                </FormProvider>
+              </CustomModal>
+            )}
+            {isConfirmationModal && (
+              <CustomModal
+                title="Unsaved progress"
+                confirmText="Yes, exit"
+                open={isConfirmationModal}
+                onConfirm={() => onSuspendUser('suspend')}
+                description="Are you sure you want to exit?"
+                onClose={() => modalToggler('isConfirmationModal', false)}
+              />
+            )}
+            {isSnackbar && (
+              <MuiCustomSnackbar
+                isIcon
+                open={isSnackbar}
+                message="Saved changes"
+                onClose={() => modalToggler('isSnackbar', false)}
+                description="Changes made to Megan Thompson suspension"
+              />
+            )}
+            {/* end */}
           </AppLayout>
         </React.Fragment>
       )

@@ -21,4 +21,5 @@ export { default as ReportContentCard } from './ReportContentCard/ReportContentC
 export { default as ReportDetailsModal } from './ReportDetailsModal/ReportDetailsModal'
 export { default as UserCustomDropDown } from './UserCustomDropDown/UserCustomDropDown'
 export { default as UserAccountDetails } from './UserAccountDetails/UserAccountDetails'
+export { default as SuspendDetailsModal } from './SuspendDetailsModal/SuspendDetailsModal'
 export { default as CommentsAndReactions } from './CommentsAndReactions/CommentsAndReactions'

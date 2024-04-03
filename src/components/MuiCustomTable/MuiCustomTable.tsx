@@ -164,7 +164,7 @@ const MuiCustomTable = (props: MuiCustomTableProps) => {
               ))
             : currentItems?.map((user: any, index) => (
                 <React.Fragment key={index}>
-                  <TableRow>
+                  <TableRow onClick={() => onRowClick(user)}>
                     {HEADER.map(
                       (header: {
                         key: string
