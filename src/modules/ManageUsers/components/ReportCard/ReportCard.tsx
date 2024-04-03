@@ -3,14 +3,16 @@ import { Box, Avatar, Typography, IconButton } from '@mui/material'
 
 interface ReportCardProps {
   isToolTip?: boolean
-  onInfoClick: () => void
+  isAction?: boolean
+  onInfoClick?: () => void
   onMailIconClick?: () => void
-  selectedValue: string | null
-  setSelectedValue: (val: string) => void
+  selectedValue?: string | null
+  setSelectedValue?: (val: string) => void
 }
 
 const ReportCard = (props: ReportCardProps) => {
   const {
+    isAction,
     isToolTip,
     onInfoClick,
     selectedValue,
@@ -103,15 +105,17 @@ const ReportCard = (props: ReportCardProps) => {
           </Typography>
         </Box>
       </Box>
-      <Box position="relative">
-        {isToolTip && <RenderInfoToolTip />}
-        <IconButton onClick={onMailIconClick}>
-          <Box component="img" src="/assets/icons/mail.svg" />
-        </IconButton>
-        <IconButton onClick={onInfoClick}>
-          <Box component="img" src="/assets/icons/info.svg" />
-        </IconButton>
-      </Box>
+      {isAction && (
+        <Box position="relative">
+          {isToolTip && <RenderInfoToolTip />}
+          <IconButton onClick={onMailIconClick}>
+            <Box component="img" src="/assets/icons/mail.svg" />
+          </IconButton>
+          <IconButton onClick={onInfoClick}>
+            <Box component="img" src="/assets/icons/info.svg" />
+          </IconButton>
+        </Box>
+      )}
     </Box>
   )
 }

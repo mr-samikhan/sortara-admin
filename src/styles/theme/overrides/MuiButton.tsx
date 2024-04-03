@@ -59,6 +59,7 @@ export const MuiButton: Components['MuiButton'] = {
         border: `2px solid ${COLORS.primary.dark}`,
       },
       '&.contained-blue': {
+        padding: '10px 0px',
         color: COLORS.white,
         background: COLORS.primary.dark,
         '&:hover': {

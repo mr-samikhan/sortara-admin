@@ -15,8 +15,15 @@ import {
 } from '@vgl/constants'
 
 const UsersContainer = () => {
-  const { onTabChange, onRowClick, userValues, modalToggler, onCloseModal } =
-    useUsers()
+  const {
+    methods,
+    onSubmit,
+    onRowClick,
+    userValues,
+    onTabChange,
+    modalToggler,
+    onCloseModal,
+  } = useUsers()
   const { isFilterModal, isSortModal, isReportDetails } = userValues
 
   const { tabValue } = useSelector((state: RootState) => state.context)
@@ -98,6 +105,8 @@ const UsersContainer = () => {
     case TAB_VALUES.REPORTS:
       return (
         <Reports
+          methods={methods}
+          onSubmit={onSubmit}
           data={groupedByDate}
           userValues={userValues}
           onTabChange={onTabChange}

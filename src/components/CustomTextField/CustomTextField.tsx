@@ -24,6 +24,20 @@ interface CustomTextFieldProps {
   defaultValue?: string | number
   type?: 'text' | 'number' | 'password'
   icon?: React.ComponentType<SvgIconProps>
+  rules?:
+    | { required: string }
+    | {
+        pattern: {
+          value: RegExp
+          message: string
+        }
+      }
+    | { required: string; minLength: number }
+    | { required: string; maxLength: number }
+    | { required: string; min: number }
+    | { required: string; max: number }
+    | { required: string; validate: (value: string) => boolean }
+
   options?: Array<{ value: string | number; label: string }>
 }
 export const CustomTextField = (props: CustomTextFieldProps) => {
@@ -49,6 +63,11 @@ export const CustomTextField = (props: CustomTextFieldProps) => {
         name={name}
         control={control}
         defaultValue={defaultValue || ''}
+        rules={
+          props.rules || {
+            required: `${name} is required`,
+          }
+        }
         render={({ field }) => (
           <TextField
             {...props}

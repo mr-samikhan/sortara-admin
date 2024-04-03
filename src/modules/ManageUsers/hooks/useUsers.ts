@@ -4,6 +4,7 @@ import { ROUTES } from '@vgl/constants'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { ON_REMOVE_ITEM, ON_TAB_CHANGE, ON_VIEW_ITEM } from '@vgl/stores'
+import { useForm } from 'react-hook-form'
 
 export interface UserValues {
   isEdit: boolean
@@ -15,6 +16,7 @@ export interface UserValues {
   isSuspendModal: boolean
   isDeleteModal?: boolean
   isReportDetails: boolean
+  isEmailTemplate: boolean
   suspendConfirmation: boolean
   terminationConfirmation: boolean
 }
@@ -37,7 +39,10 @@ const useUsers = () => {
     suspendConfirmation: false,
     terminationConfirmation: false,
     isReportDetails: false,
+    isEmailTemplate: false,
   })
+
+  const methods = useForm()
 
   const onTabChange = (value: string) => {
     dispatch(ON_TAB_CHANGE(value))
@@ -97,7 +102,13 @@ const useUsers = () => {
     }))
   }
 
+  const onSubmit = (data: any) => {
+    console.log(data)
+  }
+
   return {
+    methods,
+    onSubmit,
     onTabChange,
     onRowClick,
     activeStep,

@@ -13,10 +13,13 @@ import {
 
 interface ReportDetailsModalProps {
   onGoBack: () => void
+  buttonText?: string
+  onResolve: () => void
+  onMailIconClick: () => void
 }
 
 const ReportDetailsModal = (props: ReportDetailsModalProps) => {
-  const { onGoBack } = props || {}
+  const { onGoBack, onMailIconClick, buttonText, onResolve } = props || {}
 
   const [isToolTip, setIsToolTip] = React.useState(false)
   const [isToolTip2, setIsToolTip2] = React.useState(false)
@@ -28,7 +31,7 @@ const ReportDetailsModal = (props: ReportDetailsModalProps) => {
         width="100%"
         elevation={0}
         component={Paper}
-        maxHeight={isToolTip || isToolTip2 ? '100%' : 700}
+        maxHeight={isToolTip || isToolTip2 ? 800 : 700}
         overflow={isToolTip || isToolTip2 ? 'none' : 'auto'}
       >
         <IconButton onClick={onGoBack}>
@@ -58,8 +61,10 @@ const ReportDetailsModal = (props: ReportDetailsModalProps) => {
         </Box>
 
         <ReportCard
+          isAction
           isToolTip={isToolTip}
           selectedValue={selectedValue}
+          onMailIconClick={onMailIconClick}
           onInfoClick={() => setIsToolTip(!isToolTip)}
           setSelectedValue={(val) => setSelectedValue(val)}
         />
@@ -71,8 +76,10 @@ const ReportDetailsModal = (props: ReportDetailsModalProps) => {
           Report Recipient
         </Typography>
         <ReportCard
+          isAction
           isToolTip={isToolTip2}
           selectedValue={selectedValue}
+          onMailIconClick={onMailIconClick}
           onInfoClick={() => setIsToolTip2(!isToolTip2)}
           setSelectedValue={(val) => setSelectedValue(val)}
         />
@@ -137,14 +144,20 @@ const ReportDetailsModal = (props: ReportDetailsModalProps) => {
           </Box>
           <Box my={2}>
             <Typography
+              my={2}
               fontWeight={400}
               textAlign="center"
               fontSize={{ xs: 14, md: 18 }}
             >
               Last updated by Aubrey Carson at 2:30PM, 1/23/23
             </Typography>
-            <Button variant="contained" className="contained-blue" fullWidth>
-              Resovle Report
+            <Button
+              fullWidth
+              variant="contained"
+              onClick={onResolve}
+              className="contained-blue"
+            >
+              {buttonText || 'Resovle Report'}
             </Button>
           </Box>
         </Box>

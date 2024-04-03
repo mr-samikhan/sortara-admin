@@ -1,19 +1,23 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { AppLayout } from '@vgl/layout'
+import { FormProvider } from 'react-hook-form'
+import { TABLE_REPORTS_HEADERS } from '@vgl/constants'
+import { CustomTabs, Form, MuiCustomTable, SortByUI } from '@vgl/components'
 import {
+  CustomModal,
   SortModalUI,
   FilterModalUI,
+  EmailTemplateUI,
   ReportDetailsModal,
-  CustomModal,
 } from '@vgl/modules'
-import { CustomTabs, MuiCustomTable, SortByUI } from '@vgl/components'
-import { TABLE_REPORTS_HEADERS } from '@vgl/constants'
 
 interface ReportsProps {
-  userValues: any
   data: any
+  methods: any
+  userValues: any
   onCloseModal: () => void
+  onSubmit: (data: any) => void
   onTabChange: (value: string) => void
   onRowClick: (row: { id: string }) => void
   modalToggler: (key: string, val: boolean) => void
@@ -21,15 +25,18 @@ interface ReportsProps {
 
 const Reports = (props: ReportsProps) => {
   const {
+    data,
+    methods,
+    onSubmit,
     onTabChange,
     modalToggler,
-    onCloseModal,
     onRowClick,
-    data,
+    onCloseModal,
     userValues,
   } = props || {}
 
-  const { isFilterModal, isSortModal, isReportDetails } = userValues
+  const { isFilterModal, isSortModal, isReportDetails, isEmailTemplate } =
+    userValues
   return (
     <React.Fragment>
       <AppLayout isSidebar isHeader isExportCSV isSearchTextField>
@@ -67,10 +74,37 @@ const Reports = (props: ReportsProps) => {
         )}
         {isSortModal && <SortModalUI onClose={onCloseModal} />}
         {isReportDetails && (
-          <CustomModal open={isReportDetails} width="600px !important">
+          <CustomModal
+            open={isReportDetails}
+            width="600px !important"
+            onClose={() => modalToggler('isReportDetails', false)}
+          >
             <ReportDetailsModal
+              onResolve={() => console.log('resolve')}
               onGoBack={() => modalToggler('isReportDetails', false)}
+              onMailIconClick={() => modalToggler('isEmailTemplate', true)}
             />
+          </CustomModal>
+        )}
+        {isEmailTemplate && (
+          <CustomModal
+            open={isEmailTemplate}
+            width="600px !important"
+            onClose={() => modalToggler('isEmailTemplate', false)}
+          >
+            <FormProvider {...methods}>
+              <Form onSubmit={methods.handleSubmit(onSubmit)}>
+                <EmailTemplateUI
+                  username="@kelsey"
+                  name="Kelsey Bett"
+                  phone="+1 000-000-0000"
+                  email="example@email.com"
+                  userImage="/assets/images/user.png"
+                  onClose={() => modalToggler('isEmailTemplate', false)}
+                  onGoBack={() => modalToggler('isEmailTemplate', false)}
+                />
+              </Form>
+            </FormProvider>
           </CustomModal>
         )}
       </AppLayout>
