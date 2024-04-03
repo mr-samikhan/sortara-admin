@@ -59,6 +59,7 @@ export const MuiButton: Components['MuiButton'] = {
         border: `2px solid ${COLORS.primary.dark}`,
       },
       '&.contained-blue': {
+        padding: '10px 0px',
         color: COLORS.white,
         background: COLORS.primary.dark,
         '&:hover': {
@@ -70,6 +71,12 @@ export const MuiButton: Components['MuiButton'] = {
         fontWeight: 700,
         textTransform: 'none',
         color: COLORS.primary.dark,
+      },
+      '&.bordered-btn': {
+        padding: '10px 0px',
+        color: COLORS.primary.dark,
+        background: COLORS.lightIndigo,
+        border: `1px solid ${COLORS.primary.dark}`,
       },
     }),
   },

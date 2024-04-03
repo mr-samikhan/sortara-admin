@@ -2,6 +2,7 @@ import React from 'react'
 import { useSteps } from '@vgl/hooks'
 import { ROUTES } from '@vgl/constants'
 import { useDispatch } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { ON_REMOVE_ITEM, ON_TAB_CHANGE, ON_VIEW_ITEM } from '@vgl/stores'
 
@@ -15,7 +16,9 @@ export interface UserValues {
   isSuspendModal: boolean
   isDeleteModal?: boolean
   isReportDetails: boolean
+  isEmailTemplate: boolean
   suspendConfirmation: boolean
+  isConfirmationModal: boolean
   terminationConfirmation: boolean
 }
 
@@ -27,17 +30,21 @@ const useUsers = () => {
 
   const [userValues, setUserValues] = React.useState<UserValues>({
     isEdit: false,
-    isSuspendModal: false,
-    isRemoveModal: false,
-    isResetModal: false,
-    isDeleteModal: false,
     isSnackbar: false,
-    isFilterModal: false,
     isSortModal: false,
-    suspendConfirmation: false,
-    terminationConfirmation: false,
+    isResetModal: false,
+    isFilterModal: false,
+    isRemoveModal: false,
+    isDeleteModal: false,
+    isSuspendModal: false,
     isReportDetails: false,
+    isEmailTemplate: false,
+    suspendConfirmation: false,
+    isConfirmationModal: false,
+    terminationConfirmation: false,
   })
+
+  const methods = useForm()
 
   const onTabChange = (value: string) => {
     dispatch(ON_TAB_CHANGE(value))
@@ -97,7 +104,36 @@ const useUsers = () => {
     }))
   }
 
+  const onResolveReport = (val: string) => {
+    if (val === 'resolved') {
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      onShowSnackbar(true)
+    } else {
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      onShowSnackbar(true)
+    }
+  }
+
+  const onSuspendUser = (val: string) => {
+    if (val === 'suspend') {
+      modalToggler('isConfirmationModal', false)
+      modalToggler('isReportDetails', false)
+      modalToggler('isEmailTemplate', false)
+      onShowSnackbar(true)
+    } else {
+      console.log(val)
+    }
+  }
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+  }
+
   return {
+    methods,
+    onSubmit,
     onTabChange,
     onRowClick,
     activeStep,
@@ -108,6 +144,8 @@ const useUsers = () => {
     modalToggler,
     onCloseModal,
     onShowSnackbar,
+    onResolveReport,
+    onSuspendUser,
     onSuspendConfirmation,
   }
 }
