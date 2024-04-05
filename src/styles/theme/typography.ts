@@ -68,9 +68,9 @@ export const typography: TypographyOptions = {
     wordWrap: 'break-word',
   },
   body2: {
-    //fm=24px
+    //fm=20px
     fontWeight: 700,
-    fontSize: '1.5rem',
+    fontSize: '1.25rem',
     wordWrap: 'break-word',
   },
 

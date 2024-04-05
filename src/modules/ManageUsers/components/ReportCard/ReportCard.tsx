@@ -35,7 +35,7 @@ const ReportCard = (props: ReportCardProps) => {
               my={1}
               textAlign="center"
               fontSize={{ xs: 15, md: 20 }}
-              onClick={() => setSelectedValue(option)}
+              onClick={() => setSelectedValue && setSelectedValue(option)}
               fontWeight={selectedValue === option ? 700 : 400}
             >
               {option}

@@ -410,3 +410,48 @@ export const SUSPENDED_USER_DATA = [
     days: '7 days',
   },
 ]
+
+export const MODERATOR_CARD_DATA = [
+  {
+    name: 'Jaclyn Wands',
+    role: 'CEO & Founder',
+    email: 'jaclyn@sortara.com',
+    status: 'Active',
+    userImage: '/assets/images/user.svg',
+  },
+  {
+    name: 'Aubrey Carson',
+    role: 'Chief Technology Officer',
+    email: 'aubrey@sortara.com',
+    status: 'Activation Pending',
+    userImage: '/assets/images/user.svg',
+  },
+  {
+    name: 'Morgan Harrington',
+    role: 'Data Scientist',
+    email: 'morgan@sortara.com',
+    status: 'Active',
+    userImage: '/assets/images/user.svg',
+  },
+  {
+    name: 'Morgan Harrington',
+    role: 'Data Scientist',
+    email: 'morgan@sortara.com',
+    status: 'Active',
+    userImage: '/assets/images/user.svg',
+  },
+  {
+    name: 'Jaclyn Wands',
+    role: 'CEO & Founder',
+    email: 'jaclyn@sortara.com',
+    status: 'Active',
+    userImage: '/assets/images/user.svg',
+  },
+  {
+    name: 'Jaclyn Wands',
+    role: 'CEO & Founder',
+    email: 'jaclyn@sortara.com',
+    status: 'Active',
+    userImage: '/assets/images/user.svg',
+  },
+]
