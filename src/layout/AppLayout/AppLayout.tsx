@@ -51,7 +51,7 @@ const AppLayout = (props: AppLayoutProps) => {
         <Grid
           item
           xs={12}
-          sm={12}
+          sm={10}
           md={!isSidebar ? 12 : 10.5}
           px={px || { xs: 2, md: !isSidebar ? 10 : 8, sm: 2 }}
         >
