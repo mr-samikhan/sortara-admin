@@ -455,3 +455,48 @@ export const MODERATOR_CARD_DATA = [
     userImage: '/assets/images/user.svg',
   },
 ]
+
+export const ACTIVITY_DATA = [
+  {
+    title: 'Created a new advertisement',
+    date: 'March 13th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Cloned advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Deleted advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Deleted advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Deleted advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Deleted advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+  {
+    title: 'Deleted advertisement',
+    date: 'March 12th, 2025 at 12:00 PM EST',
+    advertisementMessage: 'View advertisement in',
+    advertisementLink: 'Manage Ads',
+  },
+]

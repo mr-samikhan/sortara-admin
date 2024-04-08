@@ -11,7 +11,8 @@ import {
 } from '@vgl/modules'
 
 const ModeratorContainer = () => {
-  const { modalToggler, moderatorStates, methods, onSubmit } = useModerator()
+  const { modalToggler, moderatorStates, methods, onSubmit, onRowClick } =
+    useModerator()
   const { isAddModal, isSnackbar, isEditModal, isRemoveModal, isConfirmation } =
     moderatorStates
 
@@ -22,6 +23,7 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => console.log('View Inactive Admins')}
       />
       <ModeratorCard
+        onSingleItem={onRowClick}
         data={MODERATOR_CARD_DATA}
         onUpdateDetails={() => modalToggler('isEditModal', true)}
         onResetPassword={(item) => console.log('Reset Password', item)}

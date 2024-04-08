@@ -23,12 +23,13 @@ export interface ModeratorCard {
 interface ModeratorCardProps {
   data: ModeratorCard[]
   onInfoClick?: () => void
+  onSingleItem: (id: string) => void
   onUpdateDetails: (item: ModeratorCard) => void
   onResetPassword: (item: ModeratorCard) => void
 }
 
 const ModeratorCard = (props: ModeratorCardProps) => {
-  const { data, onResetPassword, onUpdateDetails } = props || {}
+  const { data, onResetPassword, onUpdateDetails, onSingleItem } = props || {}
 
   const { mobileMode } = useBreakPoints()
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null)
@@ -58,6 +59,7 @@ const ModeratorCard = (props: ModeratorCardProps) => {
               alignItems="center"
               borderRadius="10px"
               flexDirection="column"
+              onClick={() => onSingleItem(item.name)}
               padding={{ xs: '5px', md: '10px' }}
               border={`1px solid ${COLORS.grey.main}`}
             >

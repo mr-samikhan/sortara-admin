@@ -1,7 +1,11 @@
+import { ROUTES } from '@vgl/constants'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
 const useModerator = () => {
+  const navigate = useNavigate()
+
   const [moderatorStates, setModeratorStates] = React.useState({
     isAddModal: false,
     isSnackbar: false,
@@ -33,6 +37,14 @@ const useModerator = () => {
     }))
   }
 
+  const onRowClick = (id: string) => {
+    navigate(`${ROUTES.MODERATOR}${id}`)
+  }
+
+  const onGoBack = () => {
+    navigate(-1)
+  }
+
   const onSubmit = (data: unknown) => {
     setModeratorStates({
       ...moderatorStates,
@@ -47,6 +59,8 @@ const useModerator = () => {
   return {
     methods,
     onSubmit,
+    onGoBack,
+    onRowClick,
     modalToggler,
     moderatorStates,
     setModeratorStates,
