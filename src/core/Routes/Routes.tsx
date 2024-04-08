@@ -11,6 +11,7 @@ import {
 } from '@vgl/screens'
 import {
   PrivacyPolicy,
+  SingleModerator,
   Login2FAContainer,
   SingleUserContainer,
 } from '@vgl/modules'
@@ -33,6 +34,7 @@ const Routes = () => {
         <Route path={ROUTES.USERS} element={<ManageUsers />} />
         <Route path={ROUTES.USER} element={<SingleUserContainer />} />
         <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
+        <Route path={ROUTES.MODERATOR} element={<SingleModerator />} />
         <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
       </ReactRoutes>
       {/* </ProtectedRoute> */}

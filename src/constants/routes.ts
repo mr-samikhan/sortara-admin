@@ -9,6 +9,7 @@ const Routes = {
   PRIVACY: '/privacy',
   ANALYTICS: '/analytics',
   MODERATORS: '/moderators',
+  MODERATOR: '/moderator/:id',
   LOGIN_2FA: '/login-verification',
   RESET_PASSWORD: '/reset-password',
   FORGOT_PASSWORD: '/forgot-password',
