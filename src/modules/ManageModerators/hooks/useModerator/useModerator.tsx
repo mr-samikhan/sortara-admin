@@ -6,6 +6,8 @@ const useModerator = () => {
     isAddModal: false,
     isSnackbar: false,
     isEditModal: false,
+    isRemoveModal: false,
+    isConfirmation: false,
   })
 
   const methods = useForm({
@@ -25,10 +27,10 @@ const useModerator = () => {
   }, [moderatorStates.isEditModal])
 
   const modalToggler = (key: string, val: boolean) => {
-    return setModeratorStates({
-      ...moderatorStates,
+    setModeratorStates((prevState) => ({
+      ...prevState,
       [key]: val,
-    })
+    }))
   }
 
   const onSubmit = (data: unknown) => {
@@ -36,6 +38,7 @@ const useModerator = () => {
       ...moderatorStates,
       isAddModal: false,
       isEditModal: false,
+      isConfirmation: false,
       isSnackbar: true,
     })
     console.log(data)

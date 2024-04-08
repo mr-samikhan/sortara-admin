@@ -3,8 +3,10 @@ import { COLORS, FONTS } from '@vgl/constants'
 import { Box, Button, Modal, Paper, Typography } from '@mui/material'
 
 interface CustomModalProps {
-  title?: string
   open: boolean
+  title?: string
+  cancelSx?: object
+  confirmSx?: object
   position?: boolean
   className?: string
   description?: string
@@ -21,7 +23,9 @@ const CustomModal = (props: CustomModalProps) => {
     open,
     title,
     width,
+    cancelSx,
     onClose,
+    confirmSx,
     onCancel,
     onConfirm,
     children,
@@ -69,24 +73,28 @@ const CustomModal = (props: CustomModalProps) => {
                 display="flex"
                 px={position ? 0 : 2}
               >
-                <Button
+                <Box
                   fullWidth
+                  sx={cancelSx}
                   color="primary"
+                  component={Button}
                   variant="contained"
                   className="outlined-blue"
                   onClick={onCancel || onClose}
                 >
                   Cancel
-                </Button>
-                <Button
+                </Box>
+                <Box
                   fullWidth
+                  sx={confirmSx}
                   color="primary"
+                  component={Button}
                   variant="contained"
                   onClick={onConfirm}
                   className="contained-blue"
                 >
                   {confirmText || 'Yes, I confirm'}
-                </Button>
+                </Box>
               </Box>
             </React.Fragment>
           )}

@@ -2,8 +2,8 @@ import React from 'react'
 import 'react-phone-input-2/lib/style.css'
 import PhoneInput from 'react-phone-input-2'
 import { COLORS, FONTS } from '@vgl/constants'
-import { Box, Button, Typography } from '@mui/material'
 import { Controller, FormProvider } from 'react-hook-form'
+import { Box, Button, Link, Typography } from '@mui/material'
 import { CustomSwitchButton, CustomTextField, Form } from '@vgl/components'
 
 interface AddModeratorModalProps {
@@ -13,6 +13,7 @@ interface AddModeratorModalProps {
   isLoading?: boolean
   buttonText?: string
   onCancel?: () => void
+  onRemove?: () => void
   onSubmit: (data: unknown) => void
 }
 
@@ -21,6 +22,7 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
     title,
     methods,
     onSubmit,
+    onRemove,
     onCancel,
     disabled,
     isLoading,
@@ -32,13 +34,20 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
       <Box width="100%">
         <FormProvider {...methods}>
           <Form onSubmit={methods.handleSubmit(onSubmit)}>
+            {onRemove && (
+              <Box textAlign="center">
+                <Link onClick={onRemove} sx={linkStyle}>
+                  Remove moderator
+                </Link>
+              </Box>
+            )}
             <Typography mt={1.5} variant="h2">
               {title || 'Add new moderator'}
             </Typography>
             <Typography variant="body2" my={1.5}>
               Moderator Details
             </Typography>
-            <Box maxHeight={600} overflow="auto">
+            <Box maxHeight={550} overflow="auto">
               <Box>
                 <Typography variant="body2" my={1}>
                   First name
@@ -178,3 +187,9 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
 }
 
 export default AddModeratorModal
+
+const linkStyle = {
+  fontSize: 20,
+  fontWeight: 700,
+  fontFamily: FONTS.LATO,
+}

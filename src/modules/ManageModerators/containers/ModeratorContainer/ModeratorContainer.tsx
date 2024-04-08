@@ -1,17 +1,19 @@
 import { AppLayout } from '@vgl/layout'
-import { MODERATOR_CARD_DATA } from '@vgl/constants'
+import { MuiCustomSnackbar } from '@vgl/components'
+import { COLORS, MODERATOR_CARD_DATA } from '@vgl/constants'
 import {
   CustomModal,
   useModerator,
   ModeratorCard,
   ModeratorHeader,
   AddModeratorModal,
+  RemoveConfirmModal,
 } from '@vgl/modules'
-import { MuiCustomSnackbar } from '@vgl/components'
 
 const ModeratorContainer = () => {
   const { modalToggler, moderatorStates, methods, onSubmit } = useModerator()
-  const { isAddModal, isSnackbar, isEditModal } = moderatorStates
+  const { isAddModal, isSnackbar, isEditModal, isRemoveModal, isConfirmation } =
+    moderatorStates
 
   return (
     <AppLayout isHeader isSearchTextField isSidebar>
@@ -44,9 +46,44 @@ const ModeratorContainer = () => {
           <AddModeratorModal
             methods={methods}
             onSubmit={onSubmit}
-            title="Update details"
             buttonText="Update"
+            title="Update details"
+            onRemove={() => modalToggler('isRemoveModal', true)}
             onCancel={() => modalToggler('isEditModal', false)}
+          />
+        </CustomModal>
+      )}
+
+      {isRemoveModal && (
+        <CustomModal
+          open={isRemoveModal}
+          title="Removing Moderator"
+          onClose={() => modalToggler('isRemoveModal', false)}
+          description="Are you sure? Actions are not reversable."
+          cancelSx={{
+            border: `2px solid ${COLORS.black.dark} !important`,
+            color: `${COLORS.black.dark} !important`,
+          }}
+          confirmSx={{
+            bgcolor: `${COLORS.black.dark} !important`,
+          }}
+          onConfirm={() => {
+            modalToggler('isEditModal', false)
+            modalToggler('isRemoveModal', false)
+            modalToggler('isConfirmation', true)
+          }}
+        />
+      )}
+
+      {isConfirmation && (
+        <CustomModal
+          open={isConfirmation}
+          onClose={() => modalToggler('isConfirmation', false)}
+        >
+          <RemoveConfirmModal
+            methods={methods}
+            onSubmit={onSubmit}
+            onCancel={() => modalToggler('isConfirmation', false)}
           />
         </CustomModal>
       )}
