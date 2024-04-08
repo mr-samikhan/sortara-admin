@@ -1,5 +1,5 @@
-import { ROUTES } from '@vgl/constants'
 import React from 'react'
+import { ROUTES } from '@vgl/constants'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,6 +12,7 @@ const useModerator = () => {
     isEditModal: false,
     isRemoveModal: false,
     isConfirmation: false,
+    isInactiveAdmins: false,
   })
 
   const methods = useForm({

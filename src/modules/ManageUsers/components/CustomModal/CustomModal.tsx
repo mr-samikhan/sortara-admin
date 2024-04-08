@@ -3,6 +3,7 @@ import { COLORS, FONTS } from '@vgl/constants'
 import { Box, Button, Modal, Paper, Typography } from '@mui/material'
 
 interface CustomModalProps {
+  sx?: object
   open: boolean
   title?: string
   cancelSx?: object
@@ -20,6 +21,7 @@ interface CustomModalProps {
 
 const CustomModal = (props: CustomModalProps) => {
   const {
+    sx,
     open,
     title,
     width,
@@ -39,7 +41,7 @@ const CustomModal = (props: CustomModalProps) => {
       <Modal
         open={open}
         onClose={onClose}
-        sx={modalBgStyle}
+        sx={sx || modalBgStyle}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

@@ -8,19 +8,26 @@ import {
   ModeratorHeader,
   AddModeratorModal,
   RemoveConfirmModal,
+  ViewInActiveModal,
 } from '@vgl/modules'
 
 const ModeratorContainer = () => {
   const { modalToggler, moderatorStates, methods, onSubmit, onRowClick } =
     useModerator()
-  const { isAddModal, isSnackbar, isEditModal, isRemoveModal, isConfirmation } =
-    moderatorStates
+  const {
+    isAddModal,
+    isSnackbar,
+    isEditModal,
+    isRemoveModal,
+    isConfirmation,
+    isInactiveAdmins,
+  } = moderatorStates
 
   return (
     <AppLayout isHeader isSearchTextField isSidebar>
       <ModeratorHeader
         onAddNewModerator={() => modalToggler('isAddModal', true)}
-        onViewInactiveAdmins={() => console.log('View Inactive Admins')}
+        onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
         onSingleItem={onRowClick}
@@ -86,6 +93,19 @@ const ModeratorContainer = () => {
             methods={methods}
             onSubmit={onSubmit}
             onCancel={() => modalToggler('isConfirmation', false)}
+          />
+        </CustomModal>
+      )}
+
+      {isInactiveAdmins && (
+        <CustomModal
+          open={isInactiveAdmins}
+          className="inActive-modal"
+          sx={{ backgroundColor: 'transparent !important' }}
+          onClose={() => modalToggler('isInactiveAdmins', false)}
+        >
+          <ViewInActiveModal
+            onClose={() => modalToggler('isInactiveAdmins', false)}
           />
         </CustomModal>
       )}
