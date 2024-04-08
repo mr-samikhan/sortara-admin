@@ -4,15 +4,17 @@ import { COLORS, FONTS } from '@vgl/constants'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 
 interface MuiCustomSnackbarProps {
+  sx: object
   open: boolean
   isIcon: boolean
   message: string
   description: string
   onClose: () => void
+  descWidth?: number | string
 }
 
 const MuiCustomSnackbar = (props: MuiCustomSnackbarProps) => {
-  const { onClose, message, description, isIcon } = props
+  const { onClose, message, description, isIcon, sx, descWidth } = props
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
@@ -25,7 +27,7 @@ const MuiCustomSnackbar = (props: MuiCustomSnackbarProps) => {
 
   return (
     <React.Fragment>
-      <Paper className="snakbar-style">
+      <Box component={Paper} className="snakbar-style" sx={sx}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h5" fontWeight={700} fontFamily={FONTS.DMSANS}>
             {message}
@@ -48,14 +50,14 @@ const MuiCustomSnackbar = (props: MuiCustomSnackbarProps) => {
         </Box>
         <Typography
           mt={1}
-          width={329}
+          width={descWidth || 329}
           variant="h5"
           fontWeight={500}
           fontFamily={FONTS.DMSANS}
         >
           {description}
         </Typography>
-      </Paper>
+      </Box>
     </React.Fragment>
   )
 }

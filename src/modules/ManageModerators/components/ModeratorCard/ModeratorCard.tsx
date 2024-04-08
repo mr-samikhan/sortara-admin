@@ -23,11 +23,12 @@ export interface ModeratorCard {
 interface ModeratorCardProps {
   data: ModeratorCard[]
   onInfoClick?: () => void
+  onUpdateDetails: (item: ModeratorCard) => void
+  onResetPassword: (item: ModeratorCard) => void
 }
 
 const ModeratorCard = (props: ModeratorCardProps) => {
-  const { data, onInfoClick } = props || {}
-  console.log(onInfoClick)
+  const { data, onResetPassword, onUpdateDetails } = props || {}
 
   const { mobileMode } = useBreakPoints()
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null)
@@ -68,8 +69,14 @@ const ModeratorCard = (props: ModeratorCardProps) => {
               {selectedIndex === index && (
                 <Box position="absolute" right={10} top={50} zIndex={1}>
                   <ModeratorTooltip
-                    onUpdateDetails={() => console.log('update details')}
-                    onResetPassword={() => console.log('reset password')}
+                    onUpdateDetails={() => {
+                      onUpdateDetails(item)
+                      setSelectedIndex(null)
+                    }}
+                    onResetPassword={() => {
+                      onResetPassword(item)
+                      setSelectedIndex(null)
+                    }}
                   />
                 </Box>
               )}
