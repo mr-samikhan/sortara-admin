@@ -6,6 +6,7 @@ const Routes = {
   USER: '/user/:id',
   ADMINS: '/admins',
   ADMIN: '/admin/:id',
+  PROFILE: '/profile',
   PRIVACY: '/privacy',
   ANALYTICS: '/analytics',
   MODERATORS: '/moderators',

@@ -6,6 +6,7 @@ import {
   ManageAds,
   ManageAuth,
   ManageUsers,
+  ManageProfile,
   ManageAnalytics,
   ManageModerators,
 } from '@vgl/screens'
@@ -15,6 +16,7 @@ import {
   Login2FAContainer,
   SingleUserContainer,
 } from '@vgl/modules'
+import { ProtectedRoute } from './components/components'
 
 const Routes = () => {
   return (
@@ -25,19 +27,20 @@ const Routes = () => {
         <Route path={ROUTES.FORGOT_PASSWORD} element={<ManageAuth />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<ManageAuth />} />
         <Route path={ROUTES.LOGIN_2FA} element={<Login2FAContainer />} />
-        {/* </ReactRoutes>
+      </ReactRoutes>
 
       <ProtectedRoute>
-        <ReactRoutes> */}
-        <Route path={ROUTES.ADS} element={<ManageAds />} />
-        <Route path={ROUTES.ROOT} element={<ManageUsers />} />
-        <Route path={ROUTES.USERS} element={<ManageUsers />} />
-        <Route path={ROUTES.USER} element={<SingleUserContainer />} />
-        <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
-        <Route path={ROUTES.MODERATOR} element={<SingleModerator />} />
-        <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
-      </ReactRoutes>
-      {/* </ProtectedRoute> */}
+        <ReactRoutes>
+          <Route path={ROUTES.ADS} element={<ManageAds />} />
+          <Route path={ROUTES.ROOT} element={<ManageUsers />} />
+          <Route path={ROUTES.USERS} element={<ManageUsers />} />
+          <Route path={ROUTES.ADMIN} element={<ManageProfile />} />
+          <Route path={ROUTES.USER} element={<SingleUserContainer />} />
+          <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
+          <Route path={ROUTES.MODERATOR} element={<SingleModerator />} />
+          <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
+        </ReactRoutes>
+      </ProtectedRoute>
     </React.Fragment>
   )
 }

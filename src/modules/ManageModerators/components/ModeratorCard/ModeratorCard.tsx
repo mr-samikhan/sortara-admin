@@ -59,7 +59,6 @@ const ModeratorCard = (props: ModeratorCardProps) => {
               alignItems="center"
               borderRadius="10px"
               flexDirection="column"
-              onClick={() => onSingleItem(item.name)}
               padding={{ xs: '5px', md: '10px' }}
               border={`1px solid ${COLORS.grey.main}`}
             >
@@ -88,6 +87,7 @@ const ModeratorCard = (props: ModeratorCardProps) => {
                 height={120}
                 component={Avatar}
                 src={item.userImage}
+                onClick={() => onSingleItem(item.name)}
               />
               <Typography variant={mobileMode ? 'body1' : 'body2'}>
                 {item.name}
