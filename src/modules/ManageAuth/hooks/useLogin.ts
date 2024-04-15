@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FormTypes } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
 import { UseFormReturn, useForm } from 'react-hook-form'
@@ -8,6 +8,8 @@ import {
   ResetPasswordResolver,
   ForgotPasswordResolver,
 } from '@vgl/utils'
+import { loginSuccess } from '@vgl/stores'
+import { useDispatch, useSelector } from 'react-redux'
 
 interface IuseLogin {
   onNext?: () => void
@@ -15,16 +17,17 @@ interface IuseLogin {
 
 const useLogin = (props: IuseLogin) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  // const { isAuthenticated } = useSelector((state: any) => state.auth)
+  const { isAuthenticated } = useSelector((state: any) => state.auth)
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate(ROUTES.USERS)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [isAuthenticated])
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate(ROUTES.USERS)
+    }
+    // eslint-disable-next-line
+  }, [])
 
   const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
   const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD
@@ -68,7 +71,7 @@ const useLogin = (props: IuseLogin) => {
   }
 
   //on Login form submit
-  const onSubmit = (data: FormTypes) => {
+  const onSubmit = (data: FormTypes | any) => {
     console.log(data)
     if (FORGOT_PASSWORD_CHECK) {
       sendForgotEmail()
@@ -124,6 +127,12 @@ const useLogin = (props: IuseLogin) => {
   const onAgree = () => {
     console.log('Agree')
     navigate(ROUTES.USERS)
+    dispatch(
+      loginSuccess({
+        email: 'test@test.com',
+        password: 'Abcd@123',
+      })
+    )
   }
 
   return {

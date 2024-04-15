@@ -1,3 +1,4 @@
+export { default as DetailsModal } from './DetailsModal/DetailsModal'
 export { default as ModeratorHero } from './ModeratorHero/ModeratorHero'
 export { default as ModeratorCard } from './ModeratorCard/ModeratorCard'
 export { default as ModeratorHeader } from './ModeratorHeader/ModeratorHeader'

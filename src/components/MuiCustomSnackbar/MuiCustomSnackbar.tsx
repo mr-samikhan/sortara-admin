@@ -4,7 +4,7 @@ import { COLORS, FONTS } from '@vgl/constants'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 
 interface MuiCustomSnackbarProps {
-  sx: object
+  sx?: object
   open: boolean
   isIcon: boolean
   message: string

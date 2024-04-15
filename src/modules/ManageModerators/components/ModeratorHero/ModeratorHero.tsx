@@ -9,11 +9,24 @@ interface ModeratorHeroProps {
   userName: string
   userImage: string
   onGoBack: () => void
+  onReset: () => void
   joinedAt: string | Date
+  onUpdate2FA: () => void
+  onUpdateDetails: () => void
 }
 
 const ModeratorHero = (props: ModeratorHeroProps) => {
-  const { onGoBack, userImage, userName, role, joinedAt, email } = props
+  const {
+    role,
+    email,
+    onReset,
+    joinedAt,
+    userName,
+    onGoBack,
+    userImage,
+    onUpdate2FA,
+    onUpdateDetails,
+  } = props
 
   return (
     <React.Fragment>
@@ -27,6 +40,9 @@ const ModeratorHero = (props: ModeratorHeroProps) => {
       </Box>
       <Box my={2}>
         <Hero
+          onUpdate2FA={onUpdate2FA}
+          onReset={onReset}
+          onUpdateDetails={onUpdateDetails}
           user={{
             role,
             email,

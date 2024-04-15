@@ -13,6 +13,7 @@ const useModerator = () => {
     isRemoveModal: false,
     isConfirmation: false,
     isInactiveAdmins: false,
+    isDetailsModal: false,
   })
 
   const methods = useForm({
@@ -42,8 +43,8 @@ const useModerator = () => {
     navigate(`${ROUTES.MODERATOR}${id}`)
   }
 
-  const onGoBack = () => {
-    navigate(-1)
+  const onGoBack = (path: string | number) => {
+    navigate(path)
   }
 
   const onSubmit = (data: unknown) => {

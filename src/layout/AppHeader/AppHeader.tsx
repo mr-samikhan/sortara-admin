@@ -1,11 +1,12 @@
 import React from 'react'
+import { FONTS } from '@vgl/constants'
 import MobileHeader from './MobileHeader'
+import { CustomModal } from '@vgl/modules'
 import { useBreakPoints } from '@vgl/hooks'
-import { FONTS, ROUTES } from '@vgl/constants'
 import { useNavigate } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
-import { SearchTextField } from '@vgl/components'
 import { Avatar, Box, Grid, IconButton, Typography } from '@mui/material'
+import { CustomTooltip, LogoutModal, SearchTextField } from '@vgl/components'
 
 interface AppHeaderProps {
   title: string
@@ -33,7 +34,11 @@ const AppHeader = (props: AppHeaderProps) => {
 
   const [state, setState] = React.useState({
     top: false,
+    isTooltip: false,
+    isLogoutModal: false,
   })
+
+  const { isLogoutModal, isTooltip } = state
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -48,6 +53,13 @@ const AppHeader = (props: AppHeaderProps) => {
 
       setState({ ...state, [anchor]: open })
     }
+
+  const modalToggler = (key: string, val: boolean) => {
+    setState((prevState) => ({
+      ...prevState,
+      [key]: val,
+    }))
+  }
 
   return (
     <Box mt={4}>
@@ -71,9 +83,10 @@ const AppHeader = (props: AppHeaderProps) => {
           </Typography>
         </Box>
         <Box display="flex" gap={2}>
-          <Avatar
+          <Box
+            component={Avatar}
             className="profile-pic"
-            onClick={() => navigate(ROUTES.ADMIN)}
+            onClick={() => modalToggler('isTooltip', !isTooltip)}
             src={profileImage || '/assets/icons/girl.svg'}
           />
           {smallScreen && (
@@ -105,6 +118,34 @@ const AppHeader = (props: AppHeaderProps) => {
               src="/assets/icons/export.svg"
             />
           </Grid>
+        )}
+        {isTooltip && (
+          <CustomTooltip
+            onLogout={() => {
+              modalToggler('isTooltip', false)
+              modalToggler('isLogoutModal', true)
+            }}
+          />
+        )}
+        {isLogoutModal && (
+          <CustomModal
+            onClose={() => modalToggler('isLogoutModal', false)}
+            open={isLogoutModal}
+            sx={{
+              '& .MuiDialog-paper': {
+                width: '100%',
+                maxWidth: '100%',
+                borderRadius: '8px',
+              },
+            }}
+          >
+            <LogoutModal
+              onCancel={() => {
+                modalToggler('isTooltip', false)
+                modalToggler('isLogoutModal', false)
+              }}
+            />
+          </CustomModal>
         )}
       </Grid>
     </Box>
