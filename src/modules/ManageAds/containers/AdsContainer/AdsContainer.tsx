@@ -1,9 +1,11 @@
-import { Ads } from '@vgl/modules'
 import { AppLayout } from '@vgl/layout'
-import { ADS_DATA } from '@vgl/constants'
+import { Ads, useAds } from '@vgl/modules'
 import { Box, Button } from '@mui/material'
+import { ADS_DATA, ROUTES } from '@vgl/constants'
 
 const AdsContainer = () => {
+  const { navigate } = useAds()
+
   return (
     <AppLayout isHeader isSidebar isSearchTextField navigationText="Manage Ads">
       <Box my={2}>
@@ -13,6 +15,7 @@ const AdsContainer = () => {
           variant="contained"
           textTransform="unset"
           className="contained-blue"
+          onClick={() => navigate(ROUTES.CREATE_AD)}
         >
           Create a new advertisement
         </Box>
