@@ -29,6 +29,8 @@ const AppHeader = (props: AppHeaderProps) => {
 
   const navigate = useNavigate()
 
+  const { pathname } = window.location
+
   const { tabMode, mobileMode } = useBreakPoints()
   const smallScreen = mobileMode || tabMode
 
@@ -101,9 +103,11 @@ const AppHeader = (props: AppHeaderProps) => {
           <Grid item md={!isExportCSV ? 12 : 7} xs={12} sm={12}>
             <SearchTextField
               fullWidth
+              placeholder={pathname === '/ads' ? 'Search' : ''}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: '0px !important',
+                  borderRadius:
+                    pathname === '/ads' ? '14px !important' : '0px !important',
                 },
               }}
             />

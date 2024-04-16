@@ -43,7 +43,7 @@ const useModerator = () => {
     navigate(`${ROUTES.MODERATOR}${id}`)
   }
 
-  const onGoBack = (path: string | number) => {
+  const onGoBack = (path: any) => {
     navigate(path)
   }
 

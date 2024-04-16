@@ -15,6 +15,7 @@ import {
   SingleModerator,
   Login2FAContainer,
   SingleUserContainer,
+  CreateAdContainer,
 } from '@vgl/modules'
 import { ProtectedRoute } from './components/components'
 
@@ -39,6 +40,7 @@ const Routes = () => {
           <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
           <Route path={ROUTES.MODERATOR} element={<SingleModerator />} />
           <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
+          <Route path={ROUTES.CREATE_AD} element={<CreateAdContainer />} />
         </ReactRoutes>
       </ProtectedRoute>
     </React.Fragment>

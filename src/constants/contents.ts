@@ -500,3 +500,22 @@ export const ACTIVITY_DATA = [
     advertisementLink: 'Manage Ads',
   },
 ]
+
+export const ADS_DATA = [
+  {
+    advertisementTitle: 'Title of the advertisement',
+    location: 'Location',
+    rank: 'Rank Priority',
+    startDate: '2021-10-10',
+    endDate: '2021-10-20',
+    status: 'Live',
+  },
+  {
+    advertisementTitle: 'Title of the advertisement',
+    location: 'Location',
+    rank: 'Rank Priority',
+    startDate: '2021-10-10',
+    endDate: '2021-10-20',
+    status: 'Live',
+  },
+]
