@@ -6,7 +6,7 @@ interface SearchTextFieldProps {
   className?: string
   fullWidth?: boolean
   placeholder?: string
-  sx?: React.CSSProperties | any
+  sx?: React.CSSProperties | object
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
