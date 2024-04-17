@@ -519,3 +519,16 @@ export const ADS_DATA = [
     status: 'Live',
   },
 ]
+
+export const ADV_LOCATION_OPTIONS = [
+  'Bottom of item screen',
+  'Top of social page',
+  'Pop-up overlay on homepage',
+]
+
+export const ADV_RANK_OPTIONS = [
+  'Show occasionally (1x a week)',
+  'Show frequently (5x a week)',
+  'Show daily (1-2x a day)',
+  'Show rarely (once every other week)',
+]

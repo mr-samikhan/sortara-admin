@@ -73,10 +73,6 @@ export const typography: TypographyOptions = {
     fontSize: '1.25rem',
     wordWrap: 'break-word',
   },
-
-  button: {
-    fontFamily: 'Nunito',
-  },
 }
 
 export default typography

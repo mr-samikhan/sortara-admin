@@ -40,6 +40,21 @@ export const MuiMenuItem: Components['MuiMenuItem'] = {
           fontFamily: FONTS.LATO,
         },
       },
+      '&.custom-dropdown': {
+        '&.MuiMenuItem-root': {
+          height: 34,
+          fontSize: 20,
+          display: 'flex',
+          fontWeight: 400,
+          alignSelf: 'center',
+          justifyContent: 'center',
+          fontFamily: FONTS.DMSANS,
+        },
+        '&.Mui-selected': {
+          color: COLORS.primary.dark,
+          fontWeight: 700,
+        },
+      },
     },
   },
 }

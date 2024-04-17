@@ -78,6 +78,10 @@ export const MuiButton: Components['MuiButton'] = {
         background: COLORS.lightIndigo,
         border: `1px solid ${COLORS.primary.dark}`,
       },
+      '&:hover': {
+        color: COLORS.primary.dark,
+        backgroundColor: COLORS.lightIndigo,
+      },
     }),
   },
 }
