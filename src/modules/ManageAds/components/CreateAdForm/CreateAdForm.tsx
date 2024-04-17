@@ -1,8 +1,14 @@
 import React from 'react'
-import { COLORS, FONTS } from '@vgl/constants'
-import { FormProvider } from 'react-hook-form'
-import { CustomTextField, Form } from '@vgl/components'
+import { UploadImageButton } from '../components'
+import { Controller, FormProvider } from 'react-hook-form'
 import { Box, Button, Grid, Typography } from '@mui/material'
+import { CustomDropdown, CustomTextField, Form } from '@vgl/components'
+import {
+  COLORS,
+  FONTS,
+  ADV_RANK_OPTIONS,
+  ADV_LOCATION_OPTIONS,
+} from '@vgl/constants'
 
 interface CreateAdFormProps {
   methods: any
@@ -32,26 +38,49 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <CustomTextField
-                  fullWidth
+                <Controller
                   name="location"
-                  placeholder="Location for Advertisement"
+                  defaultValue=""
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <CustomDropdown
+                      {...field}
+                      options={ADV_LOCATION_OPTIONS}
+                      optionsTitle="Location for advertisement"
+                      error={methods?.formState?.errors?.location}
+                      helperText={
+                        methods?.formState?.errors?.location &&
+                        'Location Required'
+                      }
+                    />
+                  )}
                 />
                 <CustomTextField name="title" placeholder="Title" fullWidth />
                 <CustomTextField
+                  fullWidth
                   name="website"
                   placeholder="Website URL"
-                  fullWidth
                 />
                 <CustomTextField
+                  fullWidth
                   name="start-end-date"
                   placeholder="Start Date (mm/dd/year)  - End Date (mm/dd/year )"
-                  fullWidth
                 />
-                <CustomTextField
+                <Controller
                   name="rank"
-                  placeholder="Priority Ranking (Show occassionally, etc)"
-                  fullWidth
+                  defaultValue=""
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <CustomDropdown
+                      {...field}
+                      optionsTitle="Priority Ranking"
+                      options={ADV_RANK_OPTIONS}
+                      error={methods?.formState?.errors?.rank}
+                      helperText={
+                        methods?.formState?.errors?.rank && 'Rank Required'
+                      }
+                    />
+                  )}
                 />
               </Box>
             </Grid>
@@ -77,9 +106,38 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                   borderRadius="16px"
                   variant="contained"
                   bgcolor={COLORS.pear}
+                  sx={{
+                    color: COLORS.black.main,
+                  }}
                   startIcon={<img src="/assets/icons/save-alt.svg" />}
                 >
                   Save
+                </Box>
+              </Box>
+              <Box my={2}>
+                <Typography variant="h3" fontFamily={FONTS.DMSANS}>
+                  Images
+                </Typography>
+                <Box my={2}>
+                  <UploadImageButton title="Image for Web" />
+                </Box>
+                <Box my={2}>
+                  <UploadImageButton title="Image for Mobile" />
+                </Box>
+                <Box my={2}>
+                  <UploadImageButton title="Image for Tablet" />
+                </Box>
+                <Box my={2}>
+                  <UploadImageButton
+                    buttonText="Add a button"
+                    bgcolor={COLORS.lightIndigo}
+                    title="(optional) Add a Button"
+                  />
+                </Box>
+                <Box my={2}>
+                  <Typography variant="h3" fontFamily={FONTS.DMSANS}>
+                    Target Users
+                  </Typography>
                 </Box>
               </Box>
             </Grid>
