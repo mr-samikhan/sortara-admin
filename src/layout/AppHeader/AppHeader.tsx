@@ -125,6 +125,7 @@ const AppHeader = (props: AppHeaderProps) => {
         )}
         {isTooltip && (
           <CustomTooltip
+            onClose={() => modalToggler('isTooltip', false)}
             onLogout={() => {
               modalToggler('isTooltip', false)
               modalToggler('isLogoutModal', true)

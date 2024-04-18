@@ -1,14 +1,24 @@
 import React from 'react'
-import { UploadImageButton } from '../components'
+import { useBreakPoints } from '@vgl/hooks'
+import CheckIcon from '@mui/icons-material/Check'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Box, Button, Grid, Typography } from '@mui/material'
-import { CustomDropdown, CustomTextField, Form } from '@vgl/components'
+import { RecurringAds, UploadImageButton } from '../components'
 import {
-  COLORS,
+  Form,
+  CustomDropdown,
+  CustomTextField,
+  CustomAutoComplete,
+} from '@vgl/components'
+import {
   FONTS,
+  DAYS,
+  TIME,
+  COLORS,
   ADV_RANK_OPTIONS,
   ADV_LOCATION_OPTIONS,
 } from '@vgl/constants'
+import { useAds } from '@vgl/modules'
 
 interface CreateAdFormProps {
   methods: any
@@ -17,12 +27,24 @@ interface CreateAdFormProps {
 
 const CreateAdForm = (props: CreateAdFormProps) => {
   const { methods, onSubmit } = props
+
+  const { adValues, setAdValues } = useAds()
+
+  const { mobileMode } = useBreakPoints()
   return (
     <React.Fragment>
       <FormProvider {...methods}>
         <Form onSubmit={methods.handleSubmit(onSubmit)}>
-          <Grid container justifyContent="center" mt={15} spacing={5}>
-            <Grid item md={5}>
+          <Grid
+            container
+            justifyContent="center"
+            mt={{
+              xs: 0,
+              md: 15,
+            }}
+            spacing={5}
+          >
+            <Grid item md={5} xs={12}>
               <Typography
                 my={2}
                 variant="h1"
@@ -31,6 +53,37 @@ const CreateAdForm = (props: CreateAdFormProps) => {
               >
                 Create a new advertisement
               </Typography>
+              {mobileMode && (
+                <Box display="flex" gap={2} my={2}>
+                  <Box
+                    disabled
+                    fullWidth
+                    height={50}
+                    color="primary"
+                    component={Button}
+                    variant="contained"
+                    borderRadius="16px"
+                  >
+                    Go Live
+                  </Box>
+                  <Box
+                    type="submit"
+                    fullWidth
+                    height={50}
+                    color="primary"
+                    component={Button}
+                    borderRadius="16px"
+                    variant="contained"
+                    bgcolor={COLORS.pear}
+                    sx={{
+                      color: COLORS.black.main,
+                    }}
+                    startIcon={<img src="/assets/icons/save-alt.svg" />}
+                  >
+                    Save
+                  </Box>
+                </Box>
+              )}
               <Box
                 gap={2}
                 display="flex"
@@ -83,42 +136,52 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                   )}
                 />
               </Box>
+              {methods.watch('rank') !== '' && (
+                <React.Fragment>
+                  <RecurringAds options={DAYS} />
+                  <RecurringAds options={TIME} label="Select time (s):" />
+                </React.Fragment>
+              )}
             </Grid>
-            <Grid item md={5}>
-              <Box display="flex" gap={2} my={2}>
-                <Box
-                  disabled
-                  fullWidth
-                  height={50}
-                  color="primary"
-                  component={Button}
-                  variant="contained"
-                  borderRadius="16px"
-                >
-                  Go Live
+            <Grid item md={5} xs={12}>
+              {!mobileMode && (
+                <Box display="flex" gap={2} my={2}>
+                  <Box
+                    // disabled
+                    fullWidth
+                    height={50}
+                    color="primary"
+                    component={Button}
+                    variant="contained"
+                    borderRadius="16px"
+                    startIcon={<CheckIcon />}
+                    bgcolor={COLORS.blue}
+                  >
+                    Go Live
+                  </Box>
+                  <Box
+                    type="submit"
+                    fullWidth
+                    height={50}
+                    color="primary"
+                    component={Button}
+                    borderRadius="16px"
+                    variant="contained"
+                    bgcolor={COLORS.pear}
+                    sx={{
+                      color: COLORS.black.main,
+                    }}
+                    startIcon={<img src="/assets/icons/save-alt.svg" />}
+                  >
+                    Save
+                  </Box>
                 </Box>
-                <Box
-                  type="submit"
-                  fullWidth
-                  height={50}
-                  color="primary"
-                  component={Button}
-                  borderRadius="16px"
-                  variant="contained"
-                  bgcolor={COLORS.pear}
-                  sx={{
-                    color: COLORS.black.main,
-                  }}
-                  startIcon={<img src="/assets/icons/save-alt.svg" />}
-                >
-                  Save
-                </Box>
-              </Box>
+              )}
               <Box my={2}>
                 <Typography variant="h3" fontFamily={FONTS.DMSANS}>
                   Images
                 </Typography>
-                <Box my={2}>
+                {/* <Box my={2}>
                   <UploadImageButton title="Image for Web" />
                 </Box>
                 <Box my={2}>
@@ -126,18 +189,94 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                 </Box>
                 <Box my={2}>
                   <UploadImageButton title="Image for Tablet" />
-                </Box>
+                </Box> */}
+                {adValues?.buttons.map((option, index) => (
+                  <Box my={2} key={index}>
+                    <UploadImageButton
+                      options={adValues.buttons}
+                      index={index}
+                      adValues={adValues}
+                      setAdValues={setAdValues}
+                      title={option.label}
+                      buttonText="Add Image"
+                    />
+                  </Box>
+                ))}
                 <Box my={2}>
                   <UploadImageButton
                     buttonText="Add a button"
                     bgcolor={COLORS.lightIndigo}
                     title="(optional) Add a Button"
+                    adValues={adValues}
+                    setAdValues={setAdValues}
+                    onClick={() =>
+                      setAdValues((prev) => ({
+                        ...prev,
+                        isaddButton: true,
+                        isRemoveButton: true,
+                      }))
+                    }
                   />
                 </Box>
                 <Box my={2}>
                   <Typography variant="h3" fontFamily={FONTS.DMSANS}>
                     Target Users
                   </Typography>
+                </Box>
+                <Box display="flex" gap={2} flexDirection="column">
+                  <Controller
+                    name="country"
+                    defaultValue=""
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <CustomAutoComplete
+                        {...field}
+                        name="country"
+                        methods={methods}
+                        error={methods?.formState?.errors?.country}
+                        helperText={
+                          methods?.formState?.errors?.country &&
+                          'Country Required'
+                        }
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="state"
+                    defaultValue=""
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <CustomAutoComplete
+                        {...field}
+                        name="state"
+                        title="State"
+                        methods={methods}
+                        placeholder="State"
+                        error={methods?.formState?.errors?.state}
+                        helperText={
+                          methods?.formState?.errors?.state && 'State Required'
+                        }
+                      />
+                    )}
+                  />
+                  <Controller
+                    name="city"
+                    defaultValue=""
+                    rules={{ required: true }}
+                    render={({ field }) => (
+                      <CustomAutoComplete
+                        {...field}
+                        title="City"
+                        name="city"
+                        methods={methods}
+                        placeholder="City"
+                        error={methods?.formState?.errors?.city}
+                        helperText={
+                          methods?.formState?.errors?.city && 'City Required'
+                        }
+                      />
+                    )}
+                  />
                 </Box>
               </Box>
             </Grid>
