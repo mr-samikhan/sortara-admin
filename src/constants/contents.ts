@@ -532,3 +532,38 @@ export const ADV_RANK_OPTIONS = [
   'Show daily (1-2x a day)',
   'Show rarely (once every other week)',
 ]
+
+export const DAYS = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+]
+
+export const TIME = [
+  '6AM-9AM',
+  '9AM-12PM',
+  '12PM-3PM',
+  '3PM-6PM',
+  '6PM-9PM',
+  '9PM-12AM',
+  '12AM-6AM',
+]
+
+export const BUTTONS_ARRAY = [
+  {
+    label: 'Image for Web',
+    file: null,
+  },
+  {
+    label: 'Image for Mobile',
+    file: null,
+  },
+  {
+    label: 'Image for Tablet',
+    file: null,
+  },
+]
