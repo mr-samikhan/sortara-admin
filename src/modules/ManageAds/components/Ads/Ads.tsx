@@ -13,10 +13,12 @@ interface AdsData {
 interface AdsProps {
   title: string
   data: AdsData[]
+  onEdit?: (item: any) => void
+  onClone?: (item: any) => void
 }
 
 const Ads = (props: AdsProps) => {
-  const { title, data } = props || {}
+  const { title, data, onEdit, onClone } = props || {}
   return (
     <React.Fragment>
       <Box my={2}>
@@ -41,10 +43,10 @@ const Ads = (props: AdsProps) => {
                     {advertisementTitle}
                   </Typography>
                   <Box display="flex" gap={2}>
-                    <IconButton>
+                    <IconButton onClick={() => onEdit && onEdit(data[index])}>
                       <Box component="img" src="/assets/icons/blue-edit.svg" />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => onClone && onClone(data[index])}>
                       <Box component="img" src="/assets/icons/blue-copy.svg" />
                     </IconButton>
                   </Box>

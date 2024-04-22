@@ -1,9 +1,11 @@
 import React from 'react'
+import { useAds } from '@vgl/modules'
 import { useBreakPoints } from '@vgl/hooks'
+import { useLocation } from 'react-router-dom'
 import CheckIcon from '@mui/icons-material/Check'
 import { Controller, FormProvider } from 'react-hook-form'
-import { Box, Button, Grid, Typography } from '@mui/material'
 import { RecurringAds, UploadImageButton } from '../components'
+import { Box, Button, Grid, IconButton, Typography } from '@mui/material'
 import {
   Form,
   CustomDropdown,
@@ -18,19 +20,23 @@ import {
   ADV_RANK_OPTIONS,
   ADV_LOCATION_OPTIONS,
 } from '@vgl/constants'
-import { useAds } from '@vgl/modules'
 
 interface CreateAdFormProps {
   methods: any
   onSubmit: any
+  onLivePress?: () => void
+  onDeletePress?: (key: string, val: boolean) => void
 }
 
 const CreateAdForm = (props: CreateAdFormProps) => {
-  const { methods, onSubmit } = props
+  const { methods, onSubmit, onDeletePress, onLivePress } = props
+
+  const { state } = useLocation()
 
   const { adValues, setAdValues } = useAds()
 
   const { mobileMode } = useBreakPoints()
+
   return (
     <React.Fragment>
       <FormProvider {...methods}>
@@ -45,14 +51,24 @@ const CreateAdForm = (props: CreateAdFormProps) => {
             spacing={5}
           >
             <Grid item md={5} xs={12}>
-              <Typography
-                my={2}
-                variant="h1"
-                fontWeight={900}
-                fontFamily={FONTS.RECOLETA}
-              >
-                Create a new advertisement
-              </Typography>
+              <Box display="flex" gap={2} alignItems="center" my={2}>
+                <Typography
+                  variant="h1"
+                  fontWeight={900}
+                  fontFamily={FONTS.RECOLETA}
+                >
+                  {state?.isEdit ? 'Edit' : 'Create a new'} advertisement
+                </Typography>
+                {state?.isEdit && (
+                  <IconButton
+                    onClick={() =>
+                      onDeletePress && onDeletePress('isDelete', true)
+                    }
+                  >
+                    <Box component="img" src="/assets/icons/delete-icon.svg" />
+                  </IconButton>
+                )}
+              </Box>
               {mobileMode && (
                 <Box display="flex" gap={2} my={2}>
                   <Box
@@ -154,6 +170,7 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                     component={Button}
                     variant="contained"
                     borderRadius="16px"
+                    onClick={onLivePress}
                     startIcon={<CheckIcon />}
                     bgcolor={COLORS.blue}
                   >
