@@ -55,6 +55,26 @@ export const MuiMenuItem: Components['MuiMenuItem'] = {
           fontWeight: 700,
         },
       },
+      '&.analytics-dropdown': {
+        '&.MuiMenuItem-root': {
+          margin: 'auto',
+          width: 232,
+          height: 34,
+          fontSize: 18,
+          display: 'flex',
+          fontWeight: 400,
+          alignSelf: 'center',
+          justifyContent: 'center',
+          fontFamily: FONTS.DMSANS,
+        },
+        '&.Mui-selected': {
+          fontSize: 20,
+          fontWeight: 700,
+          borderRadius: '14px',
+          fontFamily: FONTS.LATO,
+          background: COLORS.lightIndigo,
+        },
+      },
     },
   },
 }

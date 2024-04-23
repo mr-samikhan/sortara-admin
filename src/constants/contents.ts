@@ -567,3 +567,31 @@ export const BUTTONS_ARRAY = [
     file: null,
   },
 ]
+
+export const ANALYTICS_TABS = [
+  {
+    label: 'Users',
+    value: 'users',
+  },
+  {
+    label: 'In-App Activity',
+    value: 'in-app-activity',
+  },
+  {
+    label: 'Advertisements',
+    value: 'advertisements',
+  },
+  {
+    label: 'Notification',
+    value: 'notification',
+  },
+]
+
+export const ANALYTICS_ADVERTISEMENT_OPT = [
+  { label: 'Active In-App Ads', value: 'active' },
+  { label: 'Created In-App Ads', value: 'created' },
+  {
+    label: 'Advertisement Summary',
+    value: 'summary',
+  },
+]
