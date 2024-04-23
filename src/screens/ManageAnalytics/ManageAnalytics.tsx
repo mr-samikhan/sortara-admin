@@ -1,5 +1,7 @@
+import { AnalyticsContainer } from '@vgl/modules'
+
 const ManageAnalytics = () => {
-  return <div>ManageAnalytics</div>
+  return <AnalyticsContainer />
 }
 
 export default ManageAnalytics
