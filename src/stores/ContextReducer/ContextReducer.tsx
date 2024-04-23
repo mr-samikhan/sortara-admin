@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface IContext {
   rowData: any
   listValue: string
-  tabValue: 'users' | 'reports' | 'suspended' | 'resolved'
+  tabValue: 'users' | 'reports' | 'suspended' | 'resolved' | string
 }
 
 const initialState: IContext = {

@@ -15,7 +15,7 @@ const initialState: IAdmin = {
   user: null,
   isError: false,
   isLoading: false,
-  isAuthenticated: false,
+  isAuthenticated: true,
 }
 
 const authReducer = createSlice({

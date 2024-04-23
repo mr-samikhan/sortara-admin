@@ -149,6 +149,7 @@ export default function CustomAutoComplete(props: CustomAutoCompleteProps) {
                 event: React.ChangeEvent<{}>,
                 reason: AutocompleteCloseReason
               ) => {
+                console.log(event)
                 if (reason === 'escape') {
                   handleClose()
                 }
