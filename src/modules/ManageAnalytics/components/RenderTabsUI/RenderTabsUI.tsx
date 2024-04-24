@@ -7,16 +7,22 @@ import {
   AnalyticAdvertisments,
 } from '../components'
 
-const RenderTabsUI = () => {
+interface RenderTabsUIProps {
+  analyticValues?: any
+}
+
+const RenderTabsUI = (props: RenderTabsUIProps) => {
+  const { analyticValues } = props || {}
+
   const { tabValue } = useSelector((state: RootState) => state.context)
 
   switch (tabValue) {
     case 'users':
       return <AnalyticUsersTab />
     case 'in-app-activity':
-      return <AnalyticAppActivity />
+      return <AnalyticAppActivity analyticValues={analyticValues} />
     case 'advertisements':
-      return <AnalyticAdvertisments />
+      return <AnalyticAdvertisments advertisementValue={analyticValues} />
     case 'notification':
       return <AnalyticNotifications />
   }

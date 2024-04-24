@@ -11,14 +11,15 @@ interface AdsData {
   advertisementTitle: string
 }
 interface AdsProps {
-  title: string
+  title?: string
   data: AdsData[]
+  hideCloneIcon?: boolean
   onEdit?: (item: any) => void
   onClone?: (item: any) => void
 }
 
 const Ads = (props: AdsProps) => {
-  const { title, data, onEdit, onClone } = props || {}
+  const { title, data, onEdit, onClone, hideCloneIcon = false } = props || {}
   return (
     <React.Fragment>
       <Box my={2}>
@@ -46,9 +47,16 @@ const Ads = (props: AdsProps) => {
                     <IconButton onClick={() => onEdit && onEdit(data[index])}>
                       <Box component="img" src="/assets/icons/blue-edit.svg" />
                     </IconButton>
-                    <IconButton onClick={() => onClone && onClone(data[index])}>
-                      <Box component="img" src="/assets/icons/blue-copy.svg" />
-                    </IconButton>
+                    {!hideCloneIcon && (
+                      <IconButton
+                        onClick={() => onClone && onClone(data[index])}
+                      >
+                        <Box
+                          component="img"
+                          src="/assets/icons/blue-copy.svg"
+                        />
+                      </IconButton>
+                    )}
                   </Box>
                 </Box>
                 <Box display="flex" gap={2}>
