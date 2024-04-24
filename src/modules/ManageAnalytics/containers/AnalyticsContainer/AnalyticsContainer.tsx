@@ -4,18 +4,26 @@ import { Box, Typography } from '@mui/material'
 import {
   COLORS,
   ANALYTICS_TABS,
+  ANALYTICS_FILTER_OPTIONS,
   ANALYTICS_ADVERTISEMENT_OPT,
+  ANALYTICS_INAPP_OPTIONS,
 } from '@vgl/constants'
 import {
   CustomSelect,
   RenderTabsUI,
   useAnalytics,
+  DateRangePicker,
   CustomFilterBox,
   AnalyticsButtons,
 } from '@vgl/modules'
+import { useSelector } from 'react-redux'
+import { RootState } from '@vgl/stores'
 
 const AnalyticsContainer = () => {
-  const { onTabChange } = useAnalytics()
+  const { onTabChange, onFilterChange, analyticValues, onDropdownChange } =
+    useAnalytics()
+
+  const { tabValue } = useSelector((state: RootState) => state.context)
 
   return (
     <AppLayout isHeader isSidebar>
@@ -46,7 +54,14 @@ const AnalyticsContainer = () => {
         flexDirection={{ xs: 'column', md: 'row' }}
       >
         <Box>
-          <CustomSelect options={ANALYTICS_ADVERTISEMENT_OPT} />
+          <CustomSelect
+            onChange={onDropdownChange}
+            options={
+              tabValue === 'advertisements'
+                ? ANALYTICS_ADVERTISEMENT_OPT
+                : ANALYTICS_INAPP_OPTIONS
+            }
+          />
           <Box display="flex" alignItems="center" gap={0.5} mt={1}>
             <Typography variant="subtitle2" fontWeight={400}>
               Total count:
@@ -56,11 +71,20 @@ const AnalyticsContainer = () => {
             </Typography>
           </Box>
         </Box>
-        <Box width={{ xs: 'auto', md: 350 }}>
-          <CustomFilterBox />
+        <Box display="flex" gap={2} alignItems="center">
+          <Box width={{ xs: 'auto', md: 350 }}>
+            <CustomFilterBox
+              onChange={onFilterChange}
+              value={analyticValues.value}
+            />
+          </Box>
+          {analyticValues.value ===
+            ANALYTICS_FILTER_OPTIONS[ANALYTICS_FILTER_OPTIONS.length - 1] && (
+            <DateRangePicker />
+          )}
         </Box>
       </Box>
-      <RenderTabsUI />
+      <RenderTabsUI analyticValues={analyticValues} />
     </AppLayout>
   )
 }

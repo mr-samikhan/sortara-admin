@@ -595,3 +595,39 @@ export const ANALYTICS_ADVERTISEMENT_OPT = [
     value: 'summary',
   },
 ]
+
+export const ANALYTICS_FILTER_OPTIONS = [
+  'All',
+  'Today',
+  'Yesterday',
+  'Last 7 days',
+  'Last 30 days',
+  'Custom time range',
+]
+
+export const ANALYTICS_INAPP_OPTIONS = [
+  {
+    label: 'Lists created',
+    value: 'created',
+  },
+  {
+    label: 'Items Added',
+    value: 'added',
+  },
+  {
+    label: 'Likes Added',
+    value: 'likesAdded',
+  },
+  {
+    label: 'Items Shared',
+    value: 'shared',
+  },
+  {
+    label: 'Lists Shared',
+    value: 'listShared',
+  },
+  {
+    label: 'In-App Activity Summary',
+    value: 'summary',
+  },
+]
