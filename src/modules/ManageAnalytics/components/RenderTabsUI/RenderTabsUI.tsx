@@ -18,7 +18,7 @@ const RenderTabsUI = (props: RenderTabsUIProps) => {
 
   switch (tabValue) {
     case 'users':
-      return <AnalyticUsersTab />
+      return <AnalyticUsersTab analyticValues={analyticValues} />
     case 'in-app-activity':
       return <AnalyticAppActivity analyticValues={analyticValues} />
     case 'advertisements':

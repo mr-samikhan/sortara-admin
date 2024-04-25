@@ -15,7 +15,7 @@ interface ReportDetailsModalProps {
   btnClassName?: string
   onGoBack: () => void
   buttonText?: string
-  onResolve: () => void
+  onResolve?: () => void
   onMailIconClick: () => void
 }
 

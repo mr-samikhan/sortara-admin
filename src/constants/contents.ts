@@ -631,3 +631,26 @@ export const ANALYTICS_INAPP_OPTIONS = [
     value: 'summary',
   },
 ]
+
+export const ANALYTICS_USER_OPTIONS = [
+  {
+    label: 'Active Enterprise Accounts',
+    value: 'active',
+  },
+  {
+    label: 'Registered Users',
+    value: 'registered',
+  },
+  {
+    label: 'Deactivated Users',
+    value: 'deactivated',
+  },
+  {
+    label: 'Submitted Safety Reports',
+    value: 'reports',
+  },
+  {
+    label: 'User Reports Summary',
+    value: 'summary',
+  },
+]
