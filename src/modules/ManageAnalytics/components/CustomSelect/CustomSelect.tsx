@@ -16,6 +16,7 @@ const CustomSelect = (props: CustomSelectProps) => {
   return (
     <Select
       sx={selectStyle}
+      MenuProps={menuProps}
       defaultValue={options[0].value}
       onChange={(e) => onChange(e.target.value)}
     >
@@ -36,8 +37,9 @@ export default CustomSelect
 
 const selectStyle = {
   height: 30,
+  width: 300,
   '& .MuiSvgIcon-root': {
-    left: 300,
+    // left: 300,
     bottom: 10,
     fontSize: 40,
     alignSelf: 'center',
@@ -49,5 +51,13 @@ const selectStyle = {
   },
   '& .MuiOutlinedInput-notchedOutline': {
     border: 'none',
+  },
+}
+
+const menuProps = {
+  sx: {
+    '& .MuiPaper-root': {
+      p: 2,
+    },
   },
 }

@@ -7,6 +7,7 @@ import {
   ANALYTICS_FILTER_OPTIONS,
   ANALYTICS_ADVERTISEMENT_OPT,
   ANALYTICS_INAPP_OPTIONS,
+  ANALYTICS_USER_OPTIONS,
 } from '@vgl/constants'
 import {
   CustomSelect,
@@ -57,7 +58,9 @@ const AnalyticsContainer = () => {
           <CustomSelect
             onChange={onDropdownChange}
             options={
-              tabValue === 'advertisements'
+              tabValue === 'users'
+                ? ANALYTICS_USER_OPTIONS
+                : tabValue === 'advertisements'
                 ? ANALYTICS_ADVERTISEMENT_OPT
                 : ANALYTICS_INAPP_OPTIONS
             }

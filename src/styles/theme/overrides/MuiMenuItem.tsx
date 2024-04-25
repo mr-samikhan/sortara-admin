@@ -58,7 +58,6 @@ export const MuiMenuItem: Components['MuiMenuItem'] = {
       '&.analytics-dropdown': {
         '&.MuiMenuItem-root': {
           margin: 'auto',
-          width: 232,
           height: 34,
           fontSize: 18,
           display: 'flex',

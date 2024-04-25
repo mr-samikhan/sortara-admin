@@ -16,10 +16,18 @@ interface AdsProps {
   hideCloneIcon?: boolean
   onEdit?: (item: any) => void
   onClone?: (item: any) => void
+  onRowClick?: (item: any) => void
 }
 
 const Ads = (props: AdsProps) => {
-  const { title, data, onEdit, onClone, hideCloneIcon = false } = props || {}
+  const {
+    title,
+    data,
+    onEdit,
+    onClone,
+    onRowClick,
+    hideCloneIcon = false,
+  } = props || {}
   return (
     <React.Fragment>
       <Box my={2}>
@@ -34,7 +42,11 @@ const Ads = (props: AdsProps) => {
             index
           ) => (
             <React.Fragment key={index}>
-              <Box component={Paper} p={2}>
+              <Box
+                p={2}
+                component={Paper}
+                onClick={() => onRowClick && onRowClick(data[index])}
+              >
                 <Box
                   display="flex"
                   justifyContent="space-between"
