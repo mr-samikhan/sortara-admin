@@ -24,7 +24,7 @@ const RenderTabsUI = (props: RenderTabsUIProps) => {
     case 'advertisements':
       return <AnalyticAdvertisments advertisementValue={analyticValues} />
     case 'notification':
-      return <AnalyticNotifications />
+      return <AnalyticNotifications analyticValues={analyticValues} />
   }
 }
 

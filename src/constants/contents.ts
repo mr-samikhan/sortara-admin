@@ -654,3 +654,22 @@ export const ANALYTICS_USER_OPTIONS = [
     value: 'summary',
   },
 ]
+
+export const ANALYTICS_NOTIFICATION_OPTIONS = [
+  {
+    label: 'Active Email Notifications',
+    value: 'email',
+  },
+  {
+    label: 'Active In-App Notifications',
+    value: 'app-notification',
+  },
+  {
+    label: 'Active Push Notifications',
+    value: 'push-notification',
+  },
+  {
+    label: 'Notifications Summary',
+    value: 'summary',
+  },
+]
