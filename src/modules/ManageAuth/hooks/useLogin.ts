@@ -9,7 +9,7 @@ import {
   ForgotPasswordResolver,
 } from '@vgl/utils'
 import { loginSuccess } from '@vgl/stores'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 interface IuseLogin {
   onNext?: () => void
@@ -20,14 +20,14 @@ const useLogin = (props: IuseLogin) => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  const { isAuthenticated } = useSelector((state: any) => state.auth)
+  // const { isAuthenticated } = useSelector((state: any) => state.auth)
 
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate(ROUTES.USERS)
-    }
-    // eslint-disable-next-line
-  }, [])
+  // React.useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(ROUTES.USERS)
+  //   }
+  //   // eslint-disable-next-line
+  // }, [])
 
   const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
   const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD

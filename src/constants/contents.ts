@@ -673,3 +673,69 @@ export const ANALYTICS_NOTIFICATION_OPTIONS = [
     value: 'summary',
   },
 ]
+
+export const CHART_DATA = [
+  {
+    seoul: 21,
+    day: 'Mon',
+  },
+  {
+    seoul: 99,
+    day: 'Tue',
+  },
+  {
+    seoul: 28,
+    day: 'Wed',
+  },
+  {
+    seoul: 28,
+    day: 'Thur',
+  },
+  {
+    seoul: 28,
+    day: 'Fri',
+  },
+  {
+    seoul: 28,
+    day: 'Sat',
+  },
+  {
+    seoul: 28,
+    day: 'Sun',
+  },
+]
+
+export const ADVERTISEMENT_CARD_DATA = [
+  {
+    count: 12,
+    title: 'Click Rate',
+    percentage: 20,
+  },
+  {
+    count: 12,
+    title: 'Viewers',
+    percentage: 20,
+  },
+  {
+    count: 0.03,
+    title: 'Average time duration',
+    percentage: 20,
+  },
+]
+
+export const ADVERTISEMENT_CARD_DATA_2 = [
+  {
+    title: 'John Doe viewed for 5s',
+    username: 'johndoe',
+    email: 'johndoe@gmail.com',
+    phone: '+1 000-000-0000',
+    location: 'New York City',
+  },
+  {
+    title: 'John Doe viewed for 5s',
+    username: 'johndoe',
+    email: 'johndoe@gmail.com',
+    phone: '+1 000-000-0000',
+    location: 'New York City',
+  },
+]

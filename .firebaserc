@@ -6,7 +6,8 @@
     "web": "testing-project-bcf79",
     "firebase deploy --only hosting:goodlisting --debug": "testing-project-bcf79",
     "goodlisting": "testing-project-bcf79",
-    "sortara-298f4": "sortara-298f4"
+    "sortara-298f4": "sortara-298f4",
+    "sortara": "sortara-298f4"
   },
   "targets": {
     "testing-project-bcf79": {

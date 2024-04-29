@@ -8,3 +8,5 @@ export { default as AdvertisementCard } from './AdvertisementCard/AdvertisementC
 export { default as AnalyticAppActivity } from './AnalyticAppActivity/AnalyticAppActivity'
 export { default as AnalyticAdvertisments } from './AnalyticAdvertisments/AnalyticAdvertisments'
 export { default as AnalyticNotifications } from './AnalyticNotifications/AnalyticNotifications'
+export { default as AdvertisementDetailsUI } from './AdvertisementDetailsUI/AdvertisementDetailsUI'
+export { default as AdvertisementSummaryUI } from './AdvertisementSummaryUI/AdvertisementSummaryUI'

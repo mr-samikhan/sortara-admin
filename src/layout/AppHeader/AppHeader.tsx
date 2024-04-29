@@ -1,5 +1,5 @@
 import React from 'react'
-import { FONTS } from '@vgl/constants'
+import { COLORS, FONTS, ROUTES } from '@vgl/constants'
 import MobileHeader from './MobileHeader'
 import { CustomModal } from '@vgl/modules'
 import { useBreakPoints } from '@vgl/hooks'
@@ -75,6 +75,28 @@ const AppHeader = (props: AppHeaderProps) => {
         justifyContent="space-between"
       >
         <Box display="flex" gap={2}>
+          {window.location.pathname === ROUTES.ADVERTISEMENT_DETAILS && (
+            <Box
+              gap={1}
+              p={0.5}
+              display="flex"
+              borderRadius="14px"
+              alignItems="center"
+              bgcolor={COLORS.white}
+              height={{ xs: 'auto', md: 34 }}
+            >
+              <IconButton onClick={() => navigate(-1)}>
+                <Box
+                  alt="arrow"
+                  component="img"
+                  src="/assets/icons/arrow-left.svg"
+                />
+              </IconButton>
+              <Typography variant="body2">
+                Go back to Advertisement Analytics
+              </Typography>
+            </Box>
+          )}
           {isNavigationIcon && (
             <IconButton onClick={() => navigate(-1)}>
               <img src="/assets/icons/back-arrow.svg" />

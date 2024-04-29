@@ -1,5 +1,5 @@
 import React from 'react'
-import { FONTS } from '@vgl/constants'
+import { COLORS, FONTS } from '@vgl/constants'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 
 interface AdsData {
@@ -44,7 +44,9 @@ const Ads = (props: AdsProps) => {
             <React.Fragment key={index}>
               <Box
                 p={2}
+                elevation={0}
                 component={Paper}
+                border={`1px solid ${COLORS.grey.main}`}
                 onClick={() => onRowClick && onRowClick(data[index])}
               >
                 <Box

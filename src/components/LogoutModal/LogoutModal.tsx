@@ -1,7 +1,8 @@
 import React from 'react'
 import { logout } from '@vgl/stores'
 import { useDispatch } from 'react-redux'
-import { COLORS, FONTS } from '@vgl/constants'
+import { useNavigate } from 'react-router-dom'
+import { COLORS, FONTS, ROUTES } from '@vgl/constants'
 import { Box, Button, Paper, Typography } from '@mui/material'
 
 interface LogoutModalProps {
@@ -10,6 +11,8 @@ interface LogoutModalProps {
 
 const LogoutModal = (props: LogoutModalProps) => {
   const { onCancel } = props || {}
+
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   return (
@@ -30,7 +33,10 @@ const LogoutModal = (props: LogoutModalProps) => {
             component={Button}
             variant="contained"
             bgcolor={COLORS.black.dark}
-            onClick={() => dispatch(logout())}
+            onClick={() => {
+              navigate(ROUTES.LOGIN)
+              dispatch(logout())
+            }}
           >
             Logout
           </Box>

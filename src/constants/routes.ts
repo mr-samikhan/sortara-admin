@@ -15,6 +15,7 @@ const Routes = {
   LOGIN_2FA: '/login-verification',
   RESET_PASSWORD: '/reset-password',
   FORGOT_PASSWORD: '/forgot-password',
+  ADVERTISEMENT_DETAILS: '/advertisement-details',
 }
 
 export default Routes
