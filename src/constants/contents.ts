@@ -739,3 +739,5 @@ export const ADVERTISEMENT_CARD_DATA_2 = [
     location: 'New York City',
   },
 ]
+
+export const test = {}
