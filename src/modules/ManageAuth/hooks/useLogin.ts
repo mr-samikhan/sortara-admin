@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import { Api } from '@vgl/services'
 import { FormTypes } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
+import React, { useState } from 'react'
+import { useMutation } from 'react-query'
+import { RootState, loginSuccess } from '@vgl/stores'
+import { useDispatch, useSelector } from 'react-redux'
 import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
@@ -8,8 +12,6 @@ import {
   ResetPasswordResolver,
   ForgotPasswordResolver,
 } from '@vgl/utils'
-import { loginSuccess } from '@vgl/stores'
-import { useDispatch } from 'react-redux'
 
 interface IuseLogin {
   onNext?: () => void
@@ -20,14 +22,14 @@ const useLogin = (props: IuseLogin) => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  // const { isAuthenticated } = useSelector((state: any) => state.auth)
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
 
-  // React.useEffect(() => {
-  //   if (isAuthenticated) {
-  //     navigate(ROUTES.USERS)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [])
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate(ROUTES.USERS)
+    }
+    // eslint-disable-next-line
+  }, [])
 
   const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
   const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD
@@ -45,6 +47,15 @@ const useLogin = (props: IuseLogin) => {
       ? ForgotPasswordResolver
       : LoginFormResolver,
     mode: 'onChange',
+  })
+
+  const { mutate: onLogin } = useMutation(Api.auth.login, {
+    onSuccess: (data) => {
+      dispatch(loginSuccess(data))
+    },
+    onError: (error) => {
+      console.log(error)
+    },
   })
 
   //show and hide password text
@@ -78,7 +89,8 @@ const useLogin = (props: IuseLogin) => {
     } else if (RESET_PATH_CHECK) {
       resetPassword()
     } else {
-      navigate(ROUTES.LOGIN_2FA)
+      onLogin(data)
+      // navigate(ROUTES.LOGIN_2FA)
     }
   }
 

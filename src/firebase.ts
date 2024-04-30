@@ -15,6 +15,7 @@ import {
 
 import {
   doc,
+  where,
   query,
   getDoc,
   addDoc,
@@ -51,6 +52,7 @@ export {
   doc,
   ref,
   auth,
+  where,
   query,
   addDoc,
   getDoc,

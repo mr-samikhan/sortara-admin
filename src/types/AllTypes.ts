@@ -27,3 +27,25 @@ export type ITableData = {
   createdAt?: string
   subscriptionType?: string
 }
+
+export type ICreatedAt = {
+  seconds: number
+  nanoseconds: number
+}
+
+export type ICurrentUser = {
+  uid: string
+  email: string
+  name: string
+  role: string
+  status: string
+  firstName?: string
+  lastName?: string
+  createdAt: ICreatedAt
+  isPhoneVerified?: boolean
+}
+
+export type FirebaseError = {
+  code?: string
+  message?: string
+}

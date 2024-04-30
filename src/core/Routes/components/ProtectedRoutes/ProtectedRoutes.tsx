@@ -1,7 +1,8 @@
 import { ROUTES } from '@vgl/constants'
+import { RootState } from '@vgl/stores'
 import { useSelector } from 'react-redux'
 import React, { useLayoutEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface ProtectedRoutesProps {
   isLoading?: boolean
@@ -10,19 +11,16 @@ interface ProtectedRoutesProps {
 }
 
 const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
-  const { isAuthenticated } = useSelector((state: any) => state.auth)
+  const { isAuthenticated, isLoading } = useSelector(
+    (state: RootState) => state.auth
+  )
 
   const navigate = useNavigate()
-  // const { pathname } = useLocation()
+  const { pathname } = useLocation()
 
   useLayoutEffect(() => {
-    if (isAuthenticated) {
-      navigate(
-        ROUTES.USERS
-        // pathname === ROUTES.ROOT || ROUTES.LOGIN ? ROUTES.USERS : pathname
-      )
-    } else {
-      navigate(ROUTES.LOGIN)
+    if (!isLoading && isAuthenticated) {
+      navigate(pathname || ROUTES.USERS)
     }
     // eslint-disable-next-line
   }, [isAuthenticated])
