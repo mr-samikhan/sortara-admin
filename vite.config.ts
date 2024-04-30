@@ -10,6 +10,7 @@ export default defineConfig({
       '@vgl/core': path.resolve(__dirname, './src/core/core.ts'),
       '@vgl/hooks': path.resolve(__dirname, './src/hooks/hooks.ts'),
       '@vgl/utils': path.resolve(__dirname, './src/utils/utils.ts'),
+      '@vgl/firebase': path.resolve(__dirname, './src/firebase.ts'),
       '@vgl/types': path.resolve(__dirname, './src/types/types.ts'),
       '@vgl/layout': path.resolve(__dirname, './src/layout/layout.ts'),
       '@vgl/stores': path.resolve(__dirname, './src/stores/stores.ts'),
