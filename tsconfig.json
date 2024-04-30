@@ -21,6 +21,8 @@
       "@vgl/components": ["components/components.ts"],
       "@vgl/constants": ["constants/constants.ts"],
       "@vgl/providers": ["providers/providers.ts"],
+      "@vgl/services": ["services/services.ts"],
+      "@vgl/firebase": ["firebase.ts"],
     },
 
     /* Bundler mode */
