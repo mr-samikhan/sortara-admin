@@ -1,21 +1,20 @@
+import { auth } from '@vgl/firebase'
+import { ICurrentUser } from '@vgl/types'
 import { createSlice } from '@reduxjs/toolkit'
 import { RootState } from 'stores/ReduxStore/ReduxStore'
 
 export interface IAdmin {
-  user: {
-    email: string
-    password: string
-  } | null
   isError: boolean
   isLoading: boolean
   isAuthenticated: boolean
+  user: ICurrentUser | null
 }
 
 const initialState: IAdmin = {
   user: null,
   isError: false,
   isLoading: false,
-  isAuthenticated: true,
+  isAuthenticated: false,
 }
 
 const authReducer = createSlice({
@@ -36,8 +35,10 @@ const authReducer = createSlice({
       state.isError = true
     },
     logout: (state) => {
-      state.isAuthenticated = false
+      auth.signOut()
       state.user = null
+      state.isLoading = false
+      state.isAuthenticated = false
     },
   },
 })

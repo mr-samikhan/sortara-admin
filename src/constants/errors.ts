@@ -1,16 +1,35 @@
-const ERROR = {
-  USER_DISABLED: 'auth/user-disabled',
-  INVALID_EMAIL: 'auth/invalid-email',
-  ACCOUNT_LOCKED: 'auth/account-locked',
-  USER_NOT_EXIST: 'auth/user-not-found',
-  TOKEN_EXPIRES: 'auth/id-token-expired',
-  EMAIL_EXIST: 'auth/email-already-exists',
-  INVALID_PASSWORD: 'auth/wrong-password',
-  INVALID_CODE: 'auth/invalid-action-code',
-  INVALID_PHONE: 'auth/invalid-phone-number',
-  NETWORK_FAILED: 'auth/network-request-failed',
-  EMAIL_ALREADY_USED: 'auth/email-already-in-use',
-  AUTH_TO_MANY_REQUEST: 'auth/too-many-requests',
+import { FirebaseError } from '@vgl/types'
+
+const getErrorMessage = (error: FirebaseError | string): string => {
+  const errorCode =
+    typeof error === 'string' ? error : error.code || error.message || ''
+
+  switch (errorCode) {
+    case 'auth/user-not-found':
+      return 'This email is not registered!'
+    case 'auth/user-disabled':
+      return 'Your account has been disabled by admin!'
+    case 'auth/invalid-email':
+      return 'That email address is invalid!'
+    case 'auth/wrong-password':
+      return 'Invalid Password'
+    case 'auth/too-many-requests':
+      return 'Access to this account has been temporarily disabled due to too many requests. Please try again later.'
+    case 'auth/network-request-failed':
+      return 'Network error: Please check your internet connection!'
+    case 'auth/internal-error':
+      return 'An internal error has occurred, please try again!'
+    case 'auth/email-already-in-use':
+      return 'Email is already in use!'
+    case 'auth/invalid-credential':
+      return 'Your email address and password did not match. Please check your credentials and try again!'
+    case 'auth/not-admin':
+      return 'You are not an admin user!'
+    case 'permission-error':
+      return 'You don`t have permission to delete Administrator!'
+    default:
+      return 'An unexpected error occurred.'
+  }
 }
 
-export default ERROR
+export default getErrorMessage
