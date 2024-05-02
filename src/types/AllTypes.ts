@@ -39,10 +39,12 @@ export type ICurrentUser = {
   name: string
   role: string
   status: string
+  isNewUser: boolean
   firstName?: string
   lastName?: string
   createdAt: ICreatedAt
   isPhoneVerified?: boolean
+  isPrivacypolicyAccepted?: boolean
 }
 
 export type FirebaseError = {

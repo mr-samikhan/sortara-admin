@@ -11,19 +11,23 @@ interface ProtectedRoutesProps {
 }
 
 const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
-  const { isAuthenticated, isLoading } = useSelector(
+  const { isAuthenticated, isLoading, user } = useSelector(
     (state: RootState) => state.auth
   )
 
   const navigate = useNavigate()
   const { pathname } = useLocation()
+  console.log('protected-routes')
 
   useLayoutEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    if (isLoading) return
+    if (isAuthenticated && user) {
       navigate(pathname || ROUTES.USERS)
+    } else if (isAuthenticated && !user) {
+      navigate(ROUTES.LOGIN_2FA)
     }
     // eslint-disable-next-line
-  }, [isAuthenticated])
+  }, [isAuthenticated, user, isLoading])
 
   return isAuthenticated ? <React.Fragment>{children}</React.Fragment> : <></>
 }

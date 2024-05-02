@@ -15,6 +15,7 @@ const LoginContainer = () => {
     onSubmit,
     onForgot,
     loginValues,
+    loginLoading,
     handleClickShowPassword,
   } = useLogin({})
   switch (pathname) {
@@ -23,6 +24,7 @@ const LoginContainer = () => {
         <ParentWrapper methods={methods} onSubmit={onSubmit}>
           <LoginForm
             onForgot={onForgot}
+            isLoading={loginLoading}
             loginValues={loginValues}
             handleClickShowPassword={handleClickShowPassword}
           />

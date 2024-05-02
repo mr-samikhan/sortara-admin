@@ -1,37 +1,52 @@
-import { useEffect } from 'react'
 import { Api } from '@vgl/services'
 import { auth } from '@vgl/firebase'
 import { ROUTES } from '@vgl/constants'
+import React, { useEffect } from 'react'
+import { ICurrentUser } from '@vgl/types'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState, login, loginSuccess, logout } from '@vgl/stores'
+import { RootState, loginSuccess, logout } from '@vgl/stores'
 
 export const useAuth = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { user, isAuthenticated, isLoading } = useSelector(
+  const [isLoading, setIsLoading] = React.useState(false)
+
+  const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.auth
   )
 
   useEffect(() => {
+    setIsLoading(true)
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
-      dispatch(login())
       if (currentUser) {
         const data = await Api.auth.getUserProfile(currentUser.uid)
         dispatch(loginSuccess(data))
+        navigateBasedOnUserData(data)
       } else {
         dispatch(logout())
         navigate(ROUTES.LOGIN)
-        console.log('no user')
       }
+      setIsLoading(false)
     })
 
-    return () => {
-      unsubscribe()
-    }
+    return () => unsubscribe()
+
     // eslint-disable-next-line
-  }, [auth, dispatch])
+  }, [dispatch, auth.currentUser])
+
+  const navigateBasedOnUserData = (userData: ICurrentUser) => {
+    if (userData.isNewUser) {
+      navigate(ROUTES.RESET_PASSWORD)
+    } else if (!userData.isPhoneVerified) {
+      navigate(ROUTES.LOGIN_2FA)
+    }
+
+    if (!userData.isPrivacypolicyAccepted) {
+      navigate(ROUTES.PRIVACY)
+    }
+  }
 
   return { user, isLoading, isAuthenticated }
 }

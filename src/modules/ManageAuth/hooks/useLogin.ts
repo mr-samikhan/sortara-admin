@@ -1,4 +1,5 @@
 import { Api } from '@vgl/services'
+import { auth } from '@vgl/firebase'
 import { FormTypes } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
 import React, { useState } from 'react'
@@ -22,14 +23,23 @@ const useLogin = (props: IuseLogin) => {
   const dispatch = useDispatch()
   const { pathname } = useLocation()
 
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
+  const { isAuthenticated, user, isLoading } = useSelector(
+    (state: RootState) => state.auth
+  )
+  console.log(user, isAuthenticated, '::::user login')
 
   React.useEffect(() => {
-    if (isAuthenticated) {
+    if (isLoading) return
+
+    if (!auth.currentUser) {
+      navigate(ROUTES.LOGIN)
+    } else if (auth.currentUser && pathname === ROUTES.LOGIN) {
       navigate(ROUTES.USERS)
+    } else if (auth.currentUser) {
+      navigate(pathname || ROUTES.USERS)
     }
     // eslint-disable-next-line
-  }, [])
+  }, [isAuthenticated, isLoading, auth.currentUser])
 
   const RESET_PATH_CHECK = pathname === ROUTES.RESET_PASSWORD
   const FORGOT_PASSWORD_CHECK = pathname === ROUTES.FORGOT_PASSWORD
@@ -49,14 +59,17 @@ const useLogin = (props: IuseLogin) => {
     mode: 'onChange',
   })
 
-  const { mutate: onLogin } = useMutation(Api.auth.login, {
-    onSuccess: (data) => {
-      dispatch(loginSuccess(data))
-    },
-    onError: (error) => {
-      console.log(error)
-    },
-  })
+  const { mutate: onLogin, isLoading: loginLoading } = useMutation(
+    Api.auth.login,
+    {
+      onSuccess: (data) => {
+        dispatch(loginSuccess(data))
+      },
+      onError: (error) => {
+        console.log(error)
+      },
+    }
+  )
 
   //show and hide password text
   const handleClickShowPassword = () => {
@@ -139,12 +152,6 @@ const useLogin = (props: IuseLogin) => {
   const onAgree = () => {
     console.log('Agree')
     navigate(ROUTES.USERS)
-    dispatch(
-      loginSuccess({
-        email: 'test@test.com',
-        password: 'Abcd@123',
-      })
-    )
   }
 
   return {
@@ -159,6 +166,7 @@ const useLogin = (props: IuseLogin) => {
     onOTPChange,
     onOTPVerify,
     onResendOtp,
+    loginLoading,
     setLoginValues,
     handlePhoneChange,
     handleClickShowPassword,
