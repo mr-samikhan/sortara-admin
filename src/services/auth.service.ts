@@ -1,5 +1,5 @@
 import { ICurrentUser } from '@vgl/types'
-import { getErrorMessage } from '@vgl/constants'
+import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
 import {
   auth,
   where,
@@ -32,6 +32,7 @@ class Auth {
           role: adminData.role,
           email: user.email || '',
           status: adminData.status,
+          isNewUser: adminData.isNewUser || false,
           name: `${adminData.firstName} ${adminData.lastName}`,
           isPhoneVerified: adminData.isPhoneVerified || false,
           createdAt:
@@ -47,7 +48,10 @@ class Auth {
   }
 
   checkAdminStatus = async (uid: string) => {
-    const q = query(collection(firestore, 'admins'), where('uid', '==', uid))
+    const q = query(
+      collection(firestore, COLLECTIONS.ADMIN),
+      where('uid', '==', uid)
+    )
     const querySnapshot = await getDocs(q)
 
     if (querySnapshot.empty) {

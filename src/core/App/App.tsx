@@ -1,25 +1,17 @@
-import React from 'react'
 import { Routes } from '@vgl/core'
 import { useAuth } from '@vgl/hooks'
+import { MuiLoader } from '@vgl/components'
 import { ThemeProvider } from '@vgl/providers'
-import { useNavigate } from 'react-router-dom'
 import CssBaseline from '@mui/material/CssBaseline'
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App() {
   const queryClient = new QueryClient()
-  const navigate = useNavigate()
 
-  const { user, isLoading } = useAuth()
+  const { user, isLoading, isAuthenticated } = useAuth()
+  console.log(user, isAuthenticated, '::::user-app')
 
-  React.useEffect(() => {
-    if (!isLoading && user?.isPhoneVerified) {
-      navigate('/users')
-    }
-    // eslint-disable-next-line
-  }, [])
-
-  if (isLoading) return <div>Loading...</div>
+  if (isLoading) return <MuiLoader />
 
   return (
     <QueryClientProvider client={queryClient}>

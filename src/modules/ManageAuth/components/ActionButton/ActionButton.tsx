@@ -5,16 +5,18 @@ interface IActionButton {
   color?: string
   bgcolor?: string
   buttonText: string
+  disabled?: boolean
   onClick?: () => void
   borderRadius?: string
 }
 
 const ActionButton = (props: IActionButton) => {
-  const { onClick, buttonText, borderRadius, bgcolor, color } = props
+  const { onClick, buttonText, borderRadius, bgcolor, color, disabled } = props
   return (
     <Button
       fullWidth
       type="submit"
+      disabled={disabled}
       onClick={onClick}
       variant="contained"
       sx={{

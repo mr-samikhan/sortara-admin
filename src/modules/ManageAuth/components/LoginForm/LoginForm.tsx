@@ -7,6 +7,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 
 interface LoginFormProps {
   onForgot: () => void
+  isLoading: boolean
   handleClickShowPassword: () => void
   loginValues: {
     showPassword: boolean
@@ -14,7 +15,8 @@ interface LoginFormProps {
 }
 
 const LoginForm = (props: LoginFormProps) => {
-  const { handleClickShowPassword, loginValues, onForgot } = props || {}
+  const { handleClickShowPassword, loginValues, onForgot, isLoading } =
+    props || {}
 
   return (
     <React.Fragment>
@@ -55,7 +57,10 @@ const LoginForm = (props: LoginFormProps) => {
         Forgot password?
       </Typography>
       <Box my={2}>
-        <ActionButton buttonText=" Sign in" />
+        <ActionButton
+          disabled={isLoading}
+          buttonText={isLoading ? 'Loading...' : 'Sign in'}
+        />
       </Box>
     </React.Fragment>
   )

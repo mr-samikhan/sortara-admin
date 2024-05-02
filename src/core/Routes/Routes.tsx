@@ -1,6 +1,8 @@
 import React from 'react'
 import { ROUTES } from '@vgl/constants'
+import { NotFound } from '@vgl/components'
 import { Route, Routes as ReactRoutes } from 'react-router-dom'
+import SecureRoutes from './components/SecureRoutes/SecureRoutes'
 import {
   ManageAds,
   ManageAuth,
@@ -13,11 +15,10 @@ import {
   PrivacyPolicy,
   SingleModerator,
   Login2FAContainer,
-  SingleUserContainer,
   CreateAdContainer,
+  SingleUserContainer,
   AdvertisementContainer,
 } from '@vgl/modules'
-import { ProtectedRoute } from './components/components'
 
 const Routes = () => {
   return (
@@ -28,10 +29,7 @@ const Routes = () => {
         <Route path={ROUTES.FORGOT_PASSWORD} element={<ManageAuth />} />
         <Route path={ROUTES.RESET_PASSWORD} element={<ManageAuth />} />
         <Route path={ROUTES.LOGIN_2FA} element={<Login2FAContainer />} />
-      </ReactRoutes>
-
-      <ProtectedRoute>
-        <ReactRoutes>
+        <Route element={<SecureRoutes />}>
           <Route path={ROUTES.ADS} element={<ManageAds />} />
           <Route path={ROUTES.ROOT} element={<ManageUsers />} />
           <Route path={ROUTES.USERS} element={<ManageUsers />} />
@@ -45,8 +43,9 @@ const Routes = () => {
             path={ROUTES.ADVERTISEMENT_DETAILS}
             element={<AdvertisementContainer />}
           />
-        </ReactRoutes>
-      </ProtectedRoute>
+        </Route>
+        <Route path="*" element={<NotFound />} />
+      </ReactRoutes>
     </React.Fragment>
   )
 }
