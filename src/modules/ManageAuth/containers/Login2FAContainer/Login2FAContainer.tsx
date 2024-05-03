@@ -6,14 +6,16 @@ const Login2FAContainer = () => {
   const {
     methods,
     onSubmit,
-    handlePhoneChange,
     onSendOtp,
     onOTPChange,
     onOTPVerify,
     onResendOtp,
     loginValues,
+    isLoading,
+    handlePhoneChange,
   } = useLogin({
     onNext,
+    activeStep,
   })
 
   switch (activeStep) {
@@ -23,6 +25,8 @@ const Login2FAContainer = () => {
           methods={methods}
           onSubmit={onSubmit}
           onSendOtp={onSendOtp}
+          isLoading={isLoading}
+          loginValues={loginValues}
           handlePhoneChange={handlePhoneChange}
         />
       )
@@ -33,6 +37,7 @@ const Login2FAContainer = () => {
           phoneNumber="1234"
           methods={methods}
           onSubmit={onSubmit}
+          isLoading={isLoading}
           onVerify={onOTPVerify}
           loginValues={loginValues}
           onResendOtp={onResendOtp}

@@ -21,7 +21,11 @@ const LoginContainer = () => {
   switch (pathname) {
     case ROUTES.LOGIN:
       return (
-        <ParentWrapper methods={methods} onSubmit={onSubmit}>
+        <ParentWrapper
+          methods={methods}
+          onSubmit={onSubmit}
+          error={loginValues.error}
+        >
           <LoginForm
             onForgot={onForgot}
             isLoading={loginLoading}

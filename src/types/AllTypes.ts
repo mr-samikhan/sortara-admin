@@ -51,3 +51,12 @@ export type FirebaseError = {
   code?: string
   message?: string
 }
+
+export type ILoginValues = {
+  otp: string
+  phone: string
+  error: string
+  isRecaptcha: boolean
+  showPassword: boolean
+  confirmationObj: object
+}

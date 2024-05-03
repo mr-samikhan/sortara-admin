@@ -1,12 +1,14 @@
-import { FormTypes } from '@vgl/types'
 import 'react-phone-input-2/lib/style.css'
 import PhoneInput from 'react-phone-input-2'
 import { COLORS, FONTS } from '@vgl/constants'
 import { Box, Typography } from '@mui/material'
 import { UseFormReturn } from 'react-hook-form'
+import { FormTypes, ILoginValues } from '@vgl/types'
 import { ActionButton, ParentWrapper } from '../components'
 
 interface Setup2FAProps {
+  isLoading: boolean
+  loginValues?: ILoginValues
   onSendOtp: () => void
   methods: UseFormReturn<FormTypes>
   onSubmit: (data: FormTypes) => void
@@ -14,10 +16,21 @@ interface Setup2FAProps {
 }
 
 const Setup2FA = (prpos: Setup2FAProps) => {
-  const { methods, onSubmit, handlePhoneChange, onSendOtp } = prpos || {}
+  const {
+    methods,
+    onSubmit,
+    handlePhoneChange,
+    onSendOtp,
+    isLoading,
+    loginValues,
+  } = prpos || {}
 
   return (
-    <ParentWrapper methods={methods} onSubmit={onSubmit}>
+    <ParentWrapper
+      methods={methods}
+      onSubmit={onSubmit}
+      error={loginValues?.error || ''}
+    >
       <Box my={6}>
         <Typography variant="h2">Set up 2FA</Typography>
         <Typography variant="h4" mt={1}>
@@ -46,8 +59,17 @@ const Setup2FA = (prpos: Setup2FAProps) => {
             country={'us'}
           />
         </Box>
+
+        <Box display="flex" justifyContent="center" my={2}>
+          <div id="id" />
+        </Box>
         <Box my={4}>
-          <ActionButton buttonText="Submit" onClick={onSendOtp} />
+          <ActionButton
+            buttonText="Submit"
+            onClick={onSendOtp}
+            disabled={isLoading}
+            isLoading={isLoading}
+          />
         </Box>
       </Box>
     </ParentWrapper>

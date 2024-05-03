@@ -8,7 +8,15 @@ import {
   firestore,
   collection,
   signInWithEmailAndPassword,
+  doc,
+  updateDoc,
 } from '@vgl/firebase'
+import {
+  PhoneAuthProvider,
+  RecaptchaVerifier,
+  linkWithCredential,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
 
 interface ILogin {
   email: string
@@ -58,6 +66,69 @@ class Auth {
       throw new Error('auth/not-admin')
     } else {
       return querySnapshot.docs[0].data() as ICurrentUser
+    }
+  }
+
+  sendOtp = async (
+    values: object = {
+      phone: '',
+      setConfirmationObject: () => {},
+      // setClearCaptcha: () => {},
+    }
+  ) => {
+    const { phone, setConfirmationObject } = values as any
+    const recaptchaVerifier = new RecaptchaVerifier(auth, 'id', {})
+    try {
+      const phoneNumberWithCountryCode = '+' + phone
+      const appVerifier = recaptchaVerifier
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        phoneNumberWithCountryCode,
+        appVerifier
+      )
+      setConfirmationObject((prev: any) => ({
+        ...prev,
+        confirmationObj: confirmationResult,
+      }))
+
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear()
+      }
+      return true
+    } catch (error: any) {
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear()
+      }
+      console.log(error, 'error while sending code')
+      throw new Error(getErrorMessage(error.code || error.message || error))
+    }
+  }
+
+  verifyOtp: any = async (
+    values: any = { confirmationObject: '', otp: '' }
+  ) => {
+    const { confirmationObject, otp } = values as any
+
+    const currentUser: any = auth.currentUser
+
+    try {
+      const credential = PhoneAuthProvider.credential(
+        confirmationObject.verificationId,
+        otp.replace(/-/g, '')
+      )
+      const userCreds = await linkWithCredential(currentUser, credential)
+      const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
+      await updateDoc(adminRef, {
+        phoneNumber: userCreds.user.phoneNumber,
+        isNewUser: false,
+        isPhoneVerified: true,
+      })
+
+      return true
+    } catch (error: any) {
+      console.log('Error while verifying', error)
+      throw new Error(getErrorMessage(error.code || error.message || error))
     }
   }
 }

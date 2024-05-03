@@ -27,6 +27,10 @@ const getErrorMessage = (error: FirebaseError | string): string => {
       return 'You are not an admin user!'
     case 'permission-error':
       return 'You don`t have permission to delete Administrator!'
+    case 'auth/invalid-phone-number':
+      return 'Mobile number wasn’t entered properly. Please try again'
+    case 'auth/provider-already-linked':
+      return 'This phone number is already linked with another account'
     default:
       return 'An unexpected error occurred.'
   }
