@@ -8,7 +8,15 @@ import {
   firestore,
   collection,
   signInWithEmailAndPassword,
+  doc,
+  updateDoc,
 } from '@vgl/firebase'
+import {
+  PhoneAuthProvider,
+  RecaptchaVerifier,
+  linkWithCredential,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
 
 interface ILogin {
   email: string
@@ -58,6 +66,63 @@ class Auth {
       throw new Error('auth/not-admin')
     } else {
       return querySnapshot.docs[0].data() as ICurrentUser
+    }
+  }
+
+  sendOtp = async (
+    values: object = {
+      phone: '',
+      setConfirmationObject: () => {},
+      setClearCaptcha: () => {},
+    }
+  ) => {
+    const { phone, setConfirmationObject, setClearCaptcha } = values as any
+    try {
+      const recaptchaVerifier = new RecaptchaVerifier(auth, 'id', {})
+      const phoneNumberWithCountryCode = '+' + phone
+      const appVerifier = recaptchaVerifier
+
+      const confirmationResult = await signInWithPhoneNumber(
+        auth,
+        phoneNumberWithCountryCode,
+        appVerifier
+      )
+      // console.log('>>>confirmationResult', confirmationResult)
+      setConfirmationObject((prev: any) => ({
+        ...prev,
+        confirmationObj: confirmationResult,
+      }))
+      if (setClearCaptcha) {
+        setClearCaptcha((prev: any) => ({
+          ...prev,
+          isRecaptcha: true,
+        }))
+      }
+      return true
+    } catch (error: any) {
+      console.log(error, 'error while sending code')
+      throw new Error(getErrorMessage(error.code || error.message || error))
+    }
+  }
+
+  verifyOtp = async (values: object = { confirmationObject: '', otp: '' }) => {
+    const { confirmationObject, otp } = values as any
+
+    const currentUser: any = auth.currentUser
+
+    try {
+      const credential = PhoneAuthProvider.credential(
+        confirmationObject.verificationId,
+        otp.replace(/-/g, '')
+      )
+      const userCreds = await linkWithCredential(currentUser, credential)
+      const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
+      await updateDoc(adminRef, { phoneNumber: userCreds.user.phoneNumber })
+
+      return true
+    } catch (error: any) {
+      console.log('Error while verifying', error)
+      throw new Error(getErrorMessage(error.code || error.message || error))
     }
   }
 }

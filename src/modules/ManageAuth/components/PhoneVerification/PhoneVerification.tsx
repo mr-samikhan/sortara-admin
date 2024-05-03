@@ -1,23 +1,20 @@
 import { FONTS } from '@vgl/constants'
-import { FormTypes } from '@vgl/types'
 import { UseFormReturn } from 'react-hook-form'
+import { FormTypes, ILoginValues } from '@vgl/types'
 import { Box, TextField, Typography } from '@mui/material'
 import { ActionButton, ParentWrapper } from '../components'
 
 interface PhoneVerificationProps {
   email?: string
   isEmail?: boolean
+  isLoading?: boolean
   phoneNumber?: string
   onVerify: () => void
   onResendOtp: () => void
+  loginValues: ILoginValues
   methods: UseFormReturn<FormTypes>
   onSubmit: (data: FormTypes) => void
   onOTPChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  loginValues: {
-    showPassword: boolean
-    phone: string
-    otp: string
-  }
 }
 
 const PhoneVerification = (props: PhoneVerificationProps) => {
@@ -27,13 +24,18 @@ const PhoneVerification = (props: PhoneVerificationProps) => {
     onSubmit,
     isEmail,
     onVerify,
+    isLoading,
     onOTPChange,
     onResendOtp,
     loginValues,
     phoneNumber,
   } = props || {}
   return (
-    <ParentWrapper methods={methods} onSubmit={onSubmit}>
+    <ParentWrapper
+      methods={methods}
+      onSubmit={onSubmit}
+      error={loginValues.error}
+    >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h2" style={fontStyle} color="black">
           {isEmail ? 'Email Verification' : 'Phone Verification'}
@@ -64,7 +66,11 @@ const PhoneVerification = (props: PhoneVerificationProps) => {
         />
       </Box>
       <Box my={3}>
-        <ActionButton buttonText="Verify" onClick={onVerify} />
+        <ActionButton
+          onClick={onVerify}
+          disabled={isLoading}
+          buttonText={isLoading ? 'Loading...' : 'Verify'}
+        />
       </Box>
     </ParentWrapper>
   )
