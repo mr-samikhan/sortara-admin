@@ -65,9 +65,10 @@ const Setup2FA = (prpos: Setup2FAProps) => {
         </Box>
         <Box my={4}>
           <ActionButton
+            buttonText="Submit"
             onClick={onSendOtp}
             disabled={isLoading}
-            buttonText={isLoading ? 'Loading...' : 'Submit'}
+            isLoading={isLoading}
           />
         </Box>
       </Box>

@@ -15,6 +15,7 @@ const Login2FAContainer = () => {
     handlePhoneChange,
   } = useLogin({
     onNext,
+    activeStep,
   })
 
   switch (activeStep) {

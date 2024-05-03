@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, Typography } from '@mui/material'
 import { Form } from '@vgl/components'
 import { COLORS } from '@vgl/constants'
 import { FormTypes } from '@vgl/types'
 import { BrandImage } from '@vgl/modules'
+import { Box, Typography } from '@mui/material'
 import { FormProvider, UseFormReturn } from 'react-hook-form'
 
 interface ParentWrapperProps {

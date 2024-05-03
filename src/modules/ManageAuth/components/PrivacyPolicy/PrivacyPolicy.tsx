@@ -4,7 +4,7 @@ import { COLORS, FONTS, PRIVACY_POLICY } from '@vgl/constants'
 import { Box, Container, Grid, IconButton, Typography } from '@mui/material'
 
 const PrivacyPolicy = () => {
-  const { onGoBack, onAgree } = useLogin({})
+  const { onGoBack, onAgree, isLoading } = useLogin({})
 
   return (
     <Container maxWidth="xl">
@@ -38,6 +38,7 @@ const PrivacyPolicy = () => {
               onClick={onAgree}
               borderRadius="14px"
               buttonText="I Agree"
+              isLoading={isLoading}
             />
           </Box>
         </Grid>

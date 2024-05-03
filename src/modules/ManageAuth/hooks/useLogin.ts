@@ -16,6 +16,7 @@ import {
 
 interface IuseLogin {
   onNext?: () => void
+  activeStep?: number
 }
 
 const useLogin = (props: IuseLogin) => {
@@ -137,19 +138,16 @@ const useLogin = (props: IuseLogin) => {
   //on go back
   const onGoBack = () => navigate(ROUTES.LOGIN_2FA)
 
-  //on agree
-  const onAgree = () => {
-    console.log('Agree')
-    navigate(ROUTES.USERS)
-  }
-
   //otp
 
   //send otp mutation
   const { mutate: onSendOTP_, isLoading: isOtpSendingLoading } = useMutation(
     Api.auth.sendOtp,
     {
-      onSuccess: () => props?.onNext && props?.onNext(),
+      onSuccess: () =>
+        props.activeStep === 0
+          ? props?.onNext && props?.onNext()
+          : console.log("Don't have next"),
       onError: (error: any) => {
         setLoginValues((prev) => ({
           ...prev,
@@ -161,10 +159,25 @@ const useLogin = (props: IuseLogin) => {
   )
 
   //onVerify Otp
-  const { mutate: onOTPVerify_, isLoading: isVerifiyingLoading } = useMutation(
-    Api.auth.verifyOtp,
-    {
-      onSucces: () => navigate(ROUTES.PRIVACY),
+  const { mutate: onOTPVerify_, isLoading: isVerifiyingLoading } = useMutation<
+    any,
+    any,
+    any
+  >(Api.auth.verifyOtp, {
+    onSuccess: () => navigate(ROUTES.PRIVACY),
+    onError: (error: any) => {
+      setLoginValues((prev) => ({
+        ...prev,
+        error: error.message,
+      }))
+      console.log(error, 'error')
+    },
+  })
+
+  //on accept privacy policy
+  const { mutate: onAcceptPrivacyPolicy, isLoading: isPrivacyPolicyLoading } =
+    useMutation(Api.admin.updateAdmin, {
+      onSuccess: () => navigate(ROUTES.USERS),
       onError: (error: any) => {
         setLoginValues((prev) => ({
           ...prev,
@@ -172,8 +185,7 @@ const useLogin = (props: IuseLogin) => {
         }))
         console.log(error, 'error')
       },
-    }
-  )
+    })
 
   //onSend otp
   const onSendOtp = () => {
@@ -187,6 +199,7 @@ const useLogin = (props: IuseLogin) => {
 
   //on otp verify
   const onOTPVerify = () => {
+    if (loginValues.otp === '' || !loginValues.confirmationObj) return
     onOTPVerify_({
       confirmationObject: loginValues.confirmationObj,
       otp: loginValues.otp,
@@ -195,10 +208,18 @@ const useLogin = (props: IuseLogin) => {
 
   //onresend otp
   const onResendOtp = () => {
+    loginValues.confirmationObj = {}
     onSendOTP_({
       phone: loginValues.phone,
       setConfirmationObject: setLoginValues,
-      setClearCaptcha: setLoginValues,
+    })
+  }
+
+  //on agree
+  const onAgree = () => {
+    onAcceptPrivacyPolicy({
+      id: user?.uid || '',
+      data: { ...user, isPrivacypolicyAccepted: true },
     })
   }
 
@@ -220,7 +241,8 @@ const useLogin = (props: IuseLogin) => {
     setLoginValues,
     handlePhoneChange,
     handleClickShowPassword,
-    isLoading: isOtpSendingLoading || isVerifiyingLoading,
+    isLoading:
+      isOtpSendingLoading || isVerifiyingLoading || isPrivacyPolicyLoading,
   }
 }
 

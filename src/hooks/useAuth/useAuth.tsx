@@ -41,9 +41,7 @@ export const useAuth = () => {
       navigate(ROUTES.RESET_PASSWORD)
     } else if (!userData.isPhoneVerified) {
       navigate(ROUTES.LOGIN_2FA)
-    }
-
-    if (!userData.isPrivacypolicyAccepted) {
+    } else if (!userData.isPrivacypolicyAccepted) {
       navigate(ROUTES.PRIVACY)
     }
   }

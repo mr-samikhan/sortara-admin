@@ -65,11 +65,15 @@ const PhoneVerification = (props: PhoneVerificationProps) => {
           value={loginValues.otp}
         />
       </Box>
+      <Box display="flex" justifyContent="center" my={2}>
+        <Box id="id"></Box>
+      </Box>
       <Box my={3}>
         <ActionButton
           onClick={onVerify}
+          buttonText="Verify"
           disabled={isLoading}
-          buttonText={isLoading ? 'Loading...' : 'Verify'}
+          isLoading={isLoading}
         />
       </Box>
     </ParentWrapper>

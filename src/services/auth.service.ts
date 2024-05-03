@@ -73,12 +73,12 @@ class Auth {
     values: object = {
       phone: '',
       setConfirmationObject: () => {},
-      setClearCaptcha: () => {},
+      // setClearCaptcha: () => {},
     }
   ) => {
-    const { phone, setConfirmationObject, setClearCaptcha } = values as any
+    const { phone, setConfirmationObject } = values as any
+    const recaptchaVerifier = new RecaptchaVerifier(auth, 'id', {})
     try {
-      const recaptchaVerifier = new RecaptchaVerifier(auth, 'id', {})
       const phoneNumberWithCountryCode = '+' + phone
       const appVerifier = recaptchaVerifier
 
@@ -87,25 +87,27 @@ class Auth {
         phoneNumberWithCountryCode,
         appVerifier
       )
-      // console.log('>>>confirmationResult', confirmationResult)
       setConfirmationObject((prev: any) => ({
         ...prev,
         confirmationObj: confirmationResult,
       }))
-      if (setClearCaptcha) {
-        setClearCaptcha((prev: any) => ({
-          ...prev,
-          isRecaptcha: true,
-        }))
+
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear()
       }
       return true
     } catch (error: any) {
+      if (recaptchaVerifier) {
+        recaptchaVerifier.clear()
+      }
       console.log(error, 'error while sending code')
       throw new Error(getErrorMessage(error.code || error.message || error))
     }
   }
 
-  verifyOtp = async (values: object = { confirmationObject: '', otp: '' }) => {
+  verifyOtp: any = async (
+    values: any = { confirmationObject: '', otp: '' }
+  ) => {
     const { confirmationObject, otp } = values as any
 
     const currentUser: any = auth.currentUser
@@ -117,7 +119,11 @@ class Auth {
       )
       const userCreds = await linkWithCredential(currentUser, credential)
       const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
-      await updateDoc(adminRef, { phoneNumber: userCreds.user.phoneNumber })
+      await updateDoc(adminRef, {
+        phoneNumber: userCreds.user.phoneNumber,
+        isNewUser: false,
+        isPhoneVerified: true,
+      })
 
       return true
     } catch (error: any) {
