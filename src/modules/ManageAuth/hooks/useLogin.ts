@@ -1,12 +1,12 @@
 import { Api } from '@vgl/services'
 import { auth } from '@vgl/firebase'
-import { FormTypes, ILoginValues } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
+import { FormTypes, ILoginValues } from '@vgl/types'
 import { RootState, loginSuccess } from '@vgl/stores'
 import { useDispatch, useSelector } from 'react-redux'
-import { UseFormReturn, set, useForm } from 'react-hook-form'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   LoginFormResolver,
@@ -219,7 +219,7 @@ const useLogin = (props: IuseLogin) => {
   const onAgree = () => {
     onAcceptPrivacyPolicy({
       id: user?.uid || '',
-      data: { ...user, isPrivacypolicyAccepted: true },
+      data: { isPrivacypolicyAccepted: true },
     })
   }
 

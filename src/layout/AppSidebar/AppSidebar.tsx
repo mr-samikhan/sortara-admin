@@ -1,8 +1,15 @@
 import React from 'react'
+import { RootState } from '@vgl/stores'
+import { useSelector } from 'react-redux'
 import { Box, Button } from '@mui/material'
 import { useBreakPoints } from '@vgl/hooks'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ADMIN_MENUS, COLORS, MODERATOR_MENUS } from '@vgl/constants'
+import {
+  COLORS,
+  ADMIN_MENUS,
+  ADMIN_TYPES,
+  MODERATOR_MENUS,
+} from '@vgl/constants'
 
 const AppSidebar = () => {
   const navigate = useNavigate()
@@ -10,12 +17,11 @@ const AppSidebar = () => {
 
   const { tabMode, mobileMode } = useBreakPoints()
 
-  const user = {
-    role: 'admin',
-  }
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const smallScreen = mobileMode || tabMode
-  const menusCheck = user.role === 'admin' ? ADMIN_MENUS : MODERATOR_MENUS
+  const menusCheck =
+    user?.role === ADMIN_TYPES.ADMIN ? ADMIN_MENUS : MODERATOR_MENUS
 
   const singlePath_ = pathname.substring(0, pathname.lastIndexOf('/'))
 
@@ -40,7 +46,7 @@ const AppSidebar = () => {
             justifyContent="center"
           >
             {menusCheck.map(({ title, path, singlePath }, index) => {
-              index = user.role === 'admin' ? index : index + 1
+              index = user?.role === ADMIN_TYPES.ADMIN ? index : index + 1
               return (
                 <Box mt={2} key={index}>
                   <Button

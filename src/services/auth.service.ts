@@ -118,11 +118,12 @@ class Auth {
         otp.replace(/-/g, '')
       )
       const userCreds = await linkWithCredential(currentUser, credential)
+      console.log('userCreds', userCreds)
       const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
       await updateDoc(adminRef, {
-        phoneNumber: userCreds.user.phoneNumber,
         isNewUser: false,
         isPhoneVerified: true,
+        phoneNumber: userCreds.user.phoneNumber,
       })
 
       return true

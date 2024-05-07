@@ -740,4 +740,7 @@ export const ADVERTISEMENT_CARD_DATA_2 = [
   },
 ]
 
-export const test = {}
+export const ADMIN_TYPES = {
+  ADMIN: 'Admin',
+  MODERATOR: 'Moderator',
+}
