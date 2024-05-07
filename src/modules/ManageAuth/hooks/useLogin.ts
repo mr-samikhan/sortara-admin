@@ -29,6 +29,8 @@ const useLogin = (props: IuseLogin) => {
   )
   console.log(user, isAuthenticated, '::::user login')
 
+  const isUpdate2FA = localStorage.getItem('isUpdate2FA')
+
   React.useEffect(() => {
     if (isLoading) return
 
@@ -175,12 +177,14 @@ const useLogin = (props: IuseLogin) => {
 
   //send otp mutation
   const { mutate: onSendOTP_, isLoading: isOtpSendingLoading } = useMutation(
-    Api.auth.sendOtp,
+    isUpdate2FA ? Api.auth.update2FA : Api.auth.sendOtp,
     {
-      onSuccess: () =>
-        props.activeStep === 0
-          ? props?.onNext && props?.onNext()
-          : console.log("Don't have next"),
+      onSuccess: () => {
+        if (props.activeStep === 0) {
+          props?.onNext && props?.onNext()
+          localStorage.removeItem('isUpdate2FA')
+        }
+      },
       onError: (error: any) => {
         setLoginValues((prev) => ({
           ...prev,
@@ -224,8 +228,8 @@ const useLogin = (props: IuseLogin) => {
   const onSendOtp = () => {
     if (loginValues.phone === '') return
     onSendOTP_({
+      currentUser: user,
       phone: loginValues.phone,
-      setClearCaptcha: setLoginValues,
       setConfirmationObject: setLoginValues,
     })
   }

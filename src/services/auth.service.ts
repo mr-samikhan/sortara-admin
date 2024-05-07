@@ -1,24 +1,24 @@
 import { ICurrentUser } from '@vgl/types'
 import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
 import {
+  doc,
   auth,
   where,
   query,
   getDocs,
+  updateDoc,
   firestore,
   collection,
   signInWithEmailAndPassword,
-  doc,
-  updateDoc,
 } from '@vgl/firebase'
 import {
+  unlink,
   PhoneAuthProvider,
   RecaptchaVerifier,
-  confirmPasswordReset,
   linkWithCredential,
-  sendPasswordResetEmail,
+  confirmPasswordReset,
   signInWithPhoneNumber,
-  unlink,
+  sendPasswordResetEmail,
 } from 'firebase/auth'
 
 interface ILogin {
@@ -166,6 +166,38 @@ class Auth {
         reject(error)
       }
     })
+  }
+
+  update2FA = async (
+    values: object = {
+      phone: '',
+      currentUser: '',
+      setConfirmationObject: () => {},
+    }
+  ) => {
+    let { currentUser } = values as any
+    const { phone, setConfirmationObject } = values as any
+    try {
+      const user = auth.currentUser
+      if (user) {
+        const result = await unlink(user, 'phone')
+        currentUser = { ...currentUser, isPhoneVerified: false }
+        console.log('Current User', currentUser)
+        //update admin data
+        await updateDoc(doc(firestore, COLLECTIONS.ADMIN, user.uid), {
+          isPhoneVerified: false,
+        })
+        console.log('Phone number unlinked', result)
+        await this.sendOtp({
+          phone: phone,
+          setConfirmationObject: setConfirmationObject,
+        })
+        return true
+      }
+    } catch (error) {
+      console.error('Error unlinking phone number:', error)
+      return error
+    }
   }
 }
 
