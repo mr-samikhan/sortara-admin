@@ -1,21 +1,24 @@
 import { ICurrentUser } from '@vgl/types'
 import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
 import {
+  doc,
   auth,
   where,
   query,
   getDocs,
+  updateDoc,
   firestore,
   collection,
   signInWithEmailAndPassword,
-  doc,
-  updateDoc,
 } from '@vgl/firebase'
 import {
+  unlink,
   PhoneAuthProvider,
   RecaptchaVerifier,
   linkWithCredential,
+  confirmPasswordReset,
   signInWithPhoneNumber,
+  sendPasswordResetEmail,
 } from 'firebase/auth'
 
 interface ILogin {
@@ -120,15 +123,80 @@ class Auth {
       const userCreds = await linkWithCredential(currentUser, credential)
       const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
       await updateDoc(adminRef, {
-        phoneNumber: userCreds.user.phoneNumber,
         isNewUser: false,
         isPhoneVerified: true,
+        phoneNumber: userCreds.user.phoneNumber,
       })
 
       return true
     } catch (error: any) {
       console.log('Error while verifying', error)
       throw new Error(getErrorMessage(error.code || error.message || error))
+    }
+  }
+
+  forgotPassword = async (email: string) => {
+    return new Promise((resolve, reject) => {
+      const actionCodeSettings = {
+        url: 'https://sortara-admin.web.app',
+        continueUrl: 'https://sortara-admin.web.app/reset-password',
+        handleCodeInApp: false,
+      }
+      sendPasswordResetEmail(auth, email, actionCodeSettings)
+        .then(() => {
+          resolve({ message: 'Email sent successfully' })
+        })
+        .catch((error) => {
+          reject(error.code || error.message)
+        })
+    })
+  }
+
+  confirmPasswordReset = async (values = { oobCode: '', newPassword: '' }) => {
+    const { oobCode, newPassword } = values || {}
+    return new Promise((resolve, reject) => {
+      try {
+        if (!oobCode && !newPassword) return
+        confirmPasswordReset(auth, oobCode, newPassword).then(() => {
+          localStorage.removeItem('oobCode')
+          resolve('Password reset successfully.')
+        })
+      } catch (error) {
+        localStorage.removeItem('oobCode')
+        reject(error)
+      }
+    })
+  }
+
+  update2FA = async (
+    values: object = {
+      phone: '',
+      currentUser: '',
+      setConfirmationObject: () => {},
+    }
+  ) => {
+    let { currentUser } = values as any
+    const { phone, setConfirmationObject } = values as any
+    try {
+      const user = auth.currentUser
+      if (user) {
+        const result = await unlink(user, 'phone')
+        currentUser = { ...currentUser, isPhoneVerified: false }
+        console.log('Current User', currentUser)
+        //update admin data
+        await updateDoc(doc(firestore, COLLECTIONS.ADMIN, user.uid), {
+          isPhoneVerified: false,
+        })
+        console.log('Phone number unlinked', result)
+        await this.sendOtp({
+          phone: phone,
+          setConfirmationObject: setConfirmationObject,
+        })
+        return true
+      }
+    } catch (error) {
+      console.error('Error unlinking phone number:', error)
+      return error
     }
   }
 }

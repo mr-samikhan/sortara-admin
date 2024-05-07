@@ -25,7 +25,10 @@ const SingleModerator = () => {
         >
           <ModeratorHero
             onReset={() => onGoBack(ROUTES.RESET_PASSWORD)}
-            onUpdate2FA={() => onGoBack(ROUTES.LOGIN_2FA)}
+            onUpdate2FA={() => {
+              localStorage.setItem('isUpdate2FA', 'isUpdate2FA')
+              onGoBack(ROUTES.LOGIN_2FA)
+            }}
             onUpdateDetails={() =>
               setModeratorStates((prev) => ({
                 ...prev,

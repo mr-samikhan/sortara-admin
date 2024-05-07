@@ -1,12 +1,12 @@
 import { Api } from '@vgl/services'
 import { auth } from '@vgl/firebase'
-import { FormTypes, ILoginValues } from '@vgl/types'
 import { ROUTES } from '@vgl/constants'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
+import { FormTypes, ILoginValues } from '@vgl/types'
 import { RootState, loginSuccess } from '@vgl/stores'
 import { useDispatch, useSelector } from 'react-redux'
-import { UseFormReturn, set, useForm } from 'react-hook-form'
+import { UseFormReturn, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   LoginFormResolver,
@@ -28,6 +28,8 @@ const useLogin = (props: IuseLogin) => {
     (state: RootState) => state.auth
   )
   console.log(user, isAuthenticated, '::::user login')
+
+  const isUpdate2FA = localStorage.getItem('isUpdate2FA')
 
   React.useEffect(() => {
     if (isLoading) return
@@ -91,14 +93,47 @@ const useLogin = (props: IuseLogin) => {
     navigate(ROUTES.FORGOT_PASSWORD)
   }
 
+  //send forgot email
+  const { mutate: onSendForgotMail, isLoading: isForgotLoading } = useMutation(
+    Api.auth.forgotPassword,
+    {
+      onSuccess: () => console.log('Forgot Password'),
+      onError: (error: any) => {
+        setLoginValues((prev) => ({
+          ...prev,
+          error: error.message,
+        }))
+        console.log(error, 'error')
+      },
+    }
+  )
+
+  //reset password verify
+  const { mutate: onResetPassword_, isLoading: isRestLoading } = useMutation(
+    Api.auth.confirmPasswordReset,
+    {
+      onSuccess: () => console.log('Password Reset'),
+      onError: (error: any) => {
+        setLoginValues((prev) => ({
+          ...prev,
+          error: error.message,
+        }))
+        console.log(error, 'error')
+      },
+    }
+  )
+
   //send Forgot email
   const sendForgotEmail = () => {
-    console.log('Forgot Password')
+    onSendForgotMail(methods.watch('email') || '')
   }
 
   //reset password
   const resetPassword = () => {
-    console.log('Password Reset')
+    onResetPassword_({
+      oobCode: localStorage.getItem('oobCode') || '',
+      newPassword: methods.watch('password') || '',
+    })
   }
 
   //on Login form submit
@@ -142,12 +177,14 @@ const useLogin = (props: IuseLogin) => {
 
   //send otp mutation
   const { mutate: onSendOTP_, isLoading: isOtpSendingLoading } = useMutation(
-    Api.auth.sendOtp,
+    isUpdate2FA ? Api.auth.update2FA : Api.auth.sendOtp,
     {
-      onSuccess: () =>
-        props.activeStep === 0
-          ? props?.onNext && props?.onNext()
-          : console.log("Don't have next"),
+      onSuccess: () => {
+        if (props.activeStep === 0) {
+          props?.onNext && props?.onNext()
+          localStorage.removeItem('isUpdate2FA')
+        }
+      },
       onError: (error: any) => {
         setLoginValues((prev) => ({
           ...prev,
@@ -191,8 +228,8 @@ const useLogin = (props: IuseLogin) => {
   const onSendOtp = () => {
     if (loginValues.phone === '') return
     onSendOTP_({
+      currentUser: user,
       phone: loginValues.phone,
-      setClearCaptcha: setLoginValues,
       setConfirmationObject: setLoginValues,
     })
   }
@@ -219,7 +256,7 @@ const useLogin = (props: IuseLogin) => {
   const onAgree = () => {
     onAcceptPrivacyPolicy({
       id: user?.uid || '',
-      data: { ...user, isPrivacypolicyAccepted: true },
+      data: { isPrivacypolicyAccepted: true },
     })
   }
 
@@ -242,7 +279,11 @@ const useLogin = (props: IuseLogin) => {
     handlePhoneChange,
     handleClickShowPassword,
     isLoading:
-      isOtpSendingLoading || isVerifiyingLoading || isPrivacyPolicyLoading,
+      isOtpSendingLoading ||
+      isVerifiyingLoading ||
+      isPrivacyPolicyLoading ||
+      isForgotLoading ||
+      isRestLoading,
   }
 }
 

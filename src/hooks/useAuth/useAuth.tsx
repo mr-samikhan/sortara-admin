@@ -3,13 +3,22 @@ import { auth } from '@vgl/firebase'
 import { ROUTES } from '@vgl/constants'
 import React, { useEffect } from 'react'
 import { ICurrentUser } from '@vgl/types'
-import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState, loginSuccess, logout } from '@vgl/stores'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 export const useAuth = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+
+  const oobCode: string | null = searchParams.get('oobCode')
+  oobCode === null
+    ? ''
+    : localStorage.setItem('oobCode', oobCode ? oobCode : '')
+
+  const queryParams = new URLSearchParams(location.search)
 
   const [isLoading, setIsLoading] = React.useState(false)
 
@@ -18,20 +27,24 @@ export const useAuth = () => {
   )
 
   useEffect(() => {
-    setIsLoading(true)
-    const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
-      if (currentUser) {
-        const data = await Api.auth.getUserProfile(currentUser.uid)
-        dispatch(loginSuccess(data))
-        navigateBasedOnUserData(data)
-      } else {
-        dispatch(logout())
-        navigate(ROUTES.LOGIN)
-      }
-      setIsLoading(false)
-    })
+    if (oobCode || queryParams.get('mode') === 'resetPassword') {
+      navigate(ROUTES.RESET_PASSWORD)
+    } else {
+      setIsLoading(true)
+      const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+        if (currentUser) {
+          const data = await Api.auth.getUserProfile(currentUser.uid)
+          dispatch(loginSuccess(data))
+          navigateBasedOnUserData(data)
+        } else {
+          dispatch(logout())
+          navigate(ROUTES.LOGIN)
+        }
+        setIsLoading(false)
+      })
 
-    return () => unsubscribe()
+      return () => unsubscribe()
+    }
 
     // eslint-disable-next-line
   }, [dispatch, auth.currentUser])
