@@ -6,7 +6,9 @@ const Api = {
     login: AuthService.login,
     sendOtp: AuthService.sendOtp,
     verifyOtp: AuthService.verifyOtp,
+    forgotPassword: AuthService.forgotPassword,
     getUserProfile: AuthService.checkAdminStatus,
+    confirmPasswordReset: AuthService.confirmPasswordReset,
   },
   admin: {
     updateAdmin: AdminService.updateAdmin,

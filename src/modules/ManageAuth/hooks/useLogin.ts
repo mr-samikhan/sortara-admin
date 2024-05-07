@@ -91,14 +91,47 @@ const useLogin = (props: IuseLogin) => {
     navigate(ROUTES.FORGOT_PASSWORD)
   }
 
+  //send forgot email
+  const { mutate: onSendForgotMail, isLoading: isForgotLoading } = useMutation(
+    Api.auth.forgotPassword,
+    {
+      onSuccess: () => console.log('Forgot Password'),
+      onError: (error: any) => {
+        setLoginValues((prev) => ({
+          ...prev,
+          error: error.message,
+        }))
+        console.log(error, 'error')
+      },
+    }
+  )
+
+  //reset password verify
+  const { mutate: onResetPassword_, isLoading: isRestLoading } = useMutation(
+    Api.auth.confirmPasswordReset,
+    {
+      onSuccess: () => console.log('Password Reset'),
+      onError: (error: any) => {
+        setLoginValues((prev) => ({
+          ...prev,
+          error: error.message,
+        }))
+        console.log(error, 'error')
+      },
+    }
+  )
+
   //send Forgot email
   const sendForgotEmail = () => {
-    console.log('Forgot Password')
+    onSendForgotMail(methods.watch('email') || '')
   }
 
   //reset password
   const resetPassword = () => {
-    console.log('Password Reset')
+    onResetPassword_({
+      oobCode: localStorage.getItem('oobCode') || '',
+      newPassword: methods.watch('password') || '',
+    })
   }
 
   //on Login form submit
@@ -242,7 +275,11 @@ const useLogin = (props: IuseLogin) => {
     handlePhoneChange,
     handleClickShowPassword,
     isLoading:
-      isOtpSendingLoading || isVerifiyingLoading || isPrivacyPolicyLoading,
+      isOtpSendingLoading ||
+      isVerifiyingLoading ||
+      isPrivacyPolicyLoading ||
+      isForgotLoading ||
+      isRestLoading,
   }
 }
 

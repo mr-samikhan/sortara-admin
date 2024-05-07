@@ -14,8 +14,11 @@ import {
 import {
   PhoneAuthProvider,
   RecaptchaVerifier,
+  confirmPasswordReset,
   linkWithCredential,
+  sendPasswordResetEmail,
   signInWithPhoneNumber,
+  unlink,
 } from 'firebase/auth'
 
 interface ILogin {
@@ -118,7 +121,6 @@ class Auth {
         otp.replace(/-/g, '')
       )
       const userCreds = await linkWithCredential(currentUser, credential)
-      console.log('userCreds', userCreds)
       const adminRef = doc(firestore, COLLECTIONS.ADMIN, userCreds.user.uid)
       await updateDoc(adminRef, {
         isNewUser: false,
@@ -131,6 +133,39 @@ class Auth {
       console.log('Error while verifying', error)
       throw new Error(getErrorMessage(error.code || error.message || error))
     }
+  }
+
+  forgotPassword = async (email: string) => {
+    return new Promise((resolve, reject) => {
+      const actionCodeSettings = {
+        url: 'https://sortara-admin.web.app',
+        continueUrl: 'https://sortara-admin.web.app/reset-password',
+        handleCodeInApp: false,
+      }
+      sendPasswordResetEmail(auth, email, actionCodeSettings)
+        .then(() => {
+          resolve({ message: 'Email sent successfully' })
+        })
+        .catch((error) => {
+          reject(error.code || error.message)
+        })
+    })
+  }
+
+  confirmPasswordReset = async (values = { oobCode: '', newPassword: '' }) => {
+    const { oobCode, newPassword } = values || {}
+    return new Promise((resolve, reject) => {
+      try {
+        if (!oobCode && !newPassword) return
+        confirmPasswordReset(auth, oobCode, newPassword).then(() => {
+          localStorage.removeItem('oobCode')
+          resolve('Password reset successfully.')
+        })
+      } catch (error) {
+        localStorage.removeItem('oobCode')
+        reject(error)
+      }
+    })
   }
 }
 
