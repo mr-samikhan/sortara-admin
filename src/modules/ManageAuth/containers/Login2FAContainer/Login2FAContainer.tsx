@@ -1,4 +1,5 @@
 import { useSteps } from '@vgl/hooks'
+import { getPhoneLast4Digits } from '@vgl/helpers'
 import { PhoneVerification, Setup2FA, useLogin } from '@vgl/modules'
 
 const Login2FAContainer = () => {
@@ -34,7 +35,6 @@ const Login2FAContainer = () => {
     case 1:
       return (
         <PhoneVerification
-          phoneNumber="1234"
           methods={methods}
           onSubmit={onSubmit}
           isLoading={isLoading}
@@ -42,6 +42,7 @@ const Login2FAContainer = () => {
           loginValues={loginValues}
           onResendOtp={onResendOtp}
           onOTPChange={onOTPChange}
+          phoneNumber={getPhoneLast4Digits(loginValues.phone)}
         />
       )
   }
