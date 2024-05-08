@@ -183,6 +183,11 @@ const useLogin = (props: IuseLogin) => {
         if (props.activeStep === 0) {
           props?.onNext && props?.onNext()
           localStorage.removeItem('isUpdate2FA')
+        } else if (props.activeStep === 1) {
+          setLoginValues((prev) => ({
+            ...prev,
+            error: 'Code resent! Check your SMS',
+          }))
         }
       },
       onError: (error: any) => {
