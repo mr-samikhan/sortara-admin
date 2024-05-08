@@ -31,6 +31,8 @@ const getErrorMessage = (error: FirebaseError | string): string => {
       return 'Mobile number wasn’t entered properly. Please try again'
     case 'auth/provider-already-linked':
       return 'This phone number is already linked with another account'
+    case 'auth/invalid-verification-code':
+      return 'Invaliid code. Please try again or select “resend the code”” to generate a new code.'
     default:
       return 'An unexpected error occurred.'
   }

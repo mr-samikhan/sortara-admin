@@ -42,6 +42,7 @@ export type ICurrentUser = {
   isNewUser: boolean
   firstName?: string
   lastName?: string
+  phoneNumber?: string
   createdAt: ICreatedAt
   isPhoneVerified?: boolean
   isPrivacypolicyAccepted?: boolean

@@ -43,6 +43,7 @@ class Auth {
           role: adminData.role,
           email: user.email || '',
           status: adminData.status,
+          phoneNumber: adminData.phoneNumber,
           isNewUser: adminData.isNewUser || false,
           name: `${adminData.firstName} ${adminData.lastName}`,
           isPhoneVerified: adminData.isPhoneVerified || false,
