@@ -1,15 +1,23 @@
 import { AppLayout } from '@vgl/layout'
-import { ACTIVITY_DATA, ROUTES } from '@vgl/constants'
+import { ICurrentUser } from '@vgl/types'
 import { Box, Grid, Typography } from '@mui/material'
+import { ACTIVITY_DATA, ROUTES } from '@vgl/constants'
+import { formatFirebaseTimestamp } from '@vgl/helpers'
 import { ActivityList, SearchTextField } from '@vgl/components'
 import {
   CustomModal,
+  useModerator,
   DetailsModal,
   ModeratorHero,
-  useModerator,
 } from '@vgl/modules'
 
-const SingleModerator = () => {
+interface ISingleModerator {
+  user: ICurrentUser | null
+}
+
+const SingleModerator = (props: ISingleModerator) => {
+  const { user } = props
+
   const { onGoBack, moderatorStates, setModeratorStates, methods, onSubmit } =
     useModerator()
 
@@ -35,12 +43,12 @@ const SingleModerator = () => {
                 isDetailsModal: true,
               }))
             }
+            role={user?.role || ''}
+            email={user?.email || ''}
             onGoBack={() => onGoBack(-1)}
-            userName="Riley Whitman"
-            email="riley@sortara.com"
-            joinedAt="March 2nd, 2025"
-            role="Cybersecurity Analyst"
-            userImage="/assets/images/profile-image.svg"
+            userImage={'/assets/images/profile-image.svg'}
+            userName={`${user?.firstName} ${user?.lastName}`}
+            joinedAt={formatFirebaseTimestamp(user?.createdAt) || ''}
           />
           <Box my={2}>
             <Typography variant="body2" my={1}>
