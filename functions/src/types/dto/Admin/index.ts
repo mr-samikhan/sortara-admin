@@ -9,6 +9,7 @@ export interface UpdateAdminDto {
   id: string
   role: string
   email: string
-  userName: string
+  firstName: string
+  lastName: string
   phoneNumber?: string
 }

@@ -3,7 +3,12 @@ import { ICurrentUser } from '@vgl/types'
 import { Box, Grid, Typography } from '@mui/material'
 import { ACTIVITY_DATA, ROUTES } from '@vgl/constants'
 import { formatFirebaseTimestamp } from '@vgl/helpers'
-import { ActivityList, SearchTextField } from '@vgl/components'
+import {
+  MuiLoader,
+  ActivityList,
+  SearchTextField,
+  MuiCustomSnackbar,
+} from '@vgl/components'
 import {
   CustomModal,
   useModerator,
@@ -18,8 +23,21 @@ interface ISingleModerator {
 const SingleModerator = (props: ISingleModerator) => {
   const { user } = props
 
-  const { onGoBack, moderatorStates, setModeratorStates, methods, onSubmit } =
-    useModerator()
+  const {
+    methods,
+    onGoBack,
+    onSubmit,
+    isLoading,
+    onUpdateLoading,
+    moderatorStates,
+    setModeratorStates,
+  } = useModerator()
+
+  const { isSnackbar, isDetailsModal } = moderatorStates
+
+  if (isLoading) {
+    return <MuiLoader />
+  }
 
   return (
     <AppLayout>
@@ -66,9 +84,9 @@ const SingleModerator = (props: ISingleModerator) => {
           <Box>
             <ActivityList data={ACTIVITY_DATA} />
           </Box>
-          {moderatorStates.isDetailsModal && (
+          {isDetailsModal && (
             <CustomModal
-              open={moderatorStates.isDetailsModal}
+              open={isDetailsModal}
               onClose={() =>
                 setModeratorStates((prev) => ({
                   ...prev,
@@ -86,14 +104,32 @@ const SingleModerator = (props: ISingleModerator) => {
               <DetailsModal
                 methods={methods}
                 onSubmit={onSubmit}
-                onClose={() =>
+                isLoading={onUpdateLoading}
+                onClose={() => {
+                  methods.reset()
                   setModeratorStates((prev) => ({
                     ...prev,
                     isDetailsModal: false,
                   }))
-                }
+                }}
               />
             </CustomModal>
+          )}
+          {isSnackbar && (
+            <MuiCustomSnackbar
+              isIcon={true}
+              open={isSnackbar}
+              message="Moderator updated"
+              description={`${methods.watch('firstName')} ${methods.watch(
+                'lastName'
+              )} updated successfully`}
+              onClose={() =>
+                setModeratorStates((prev) => ({
+                  ...prev,
+                  isSnackbar: false,
+                }))
+              }
+            />
           )}
         </Grid>
       </Grid>

@@ -8,11 +8,12 @@ const Api = {
     verifyOtp: AuthService.verifyOtp,
     update2FA: AuthService.update2FA,
     forgotPassword: AuthService.forgotPassword,
-    getUserProfile: AuthService.checkAdminStatus,
+    getUserProfile: AuthService.getCurrentUser,
     confirmPasswordReset: AuthService.confirmPasswordReset,
   },
   admin: {
     updateAdmin: AdminService.updateAdmin,
+    updateAdminViaCloudFunction: AdminService.updateAdminViaCloudFunction,
   },
 }
 export { Api }

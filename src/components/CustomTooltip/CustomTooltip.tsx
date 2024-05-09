@@ -1,5 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import { RootState } from '@vgl/stores'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef } from 'react'
 import { Box, Paper, Typography } from '@mui/material'
 
 interface CustomTooltipProps {
@@ -9,6 +11,8 @@ interface CustomTooltipProps {
 
 const CustomTooltip = (props: CustomTooltipProps) => {
   const { onLogout, onClose } = props || {}
+
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const navigate = useNavigate()
 
@@ -51,7 +55,9 @@ const CustomTooltip = (props: CustomTooltipProps) => {
             fontWeight={400}
             textAlign="center"
             onClick={() =>
-              item === 'View Profile' ? navigate('/admin/1') : onLogout()
+              item === 'View Profile'
+                ? navigate(`/admin/${user?.uid}`)
+                : onLogout()
             }
           >
             {item}
