@@ -8,7 +8,7 @@ export const updateAdmin = () =>
   https.onRequest(async (request: Request, response: Response) => {
     cors(request, response, async () => {
       try {
-        const { id, email, userName, role, phoneNumber } =
+        const { id, email, firstName, lastName, role, phoneNumber } =
           request.body as UpdateAdminDto
 
         if (!email)
@@ -28,15 +28,19 @@ export const updateAdmin = () =>
             message: 'ID field is required',
           })
 
-        if (!userName)
+        if (!firstName)
           response.status(400).json({
             success: false,
-            message: 'Username field is required',
+            message: 'firstName field is required',
+          })
+        if (!lastName)
+          response.status(400).json({
+            success: false,
+            message: 'lastName field is required',
           })
 
         const user = await auth().updateUser(id, {
           email,
-          displayName: userName,
         })
 
         await firestore()
@@ -44,13 +48,14 @@ export const updateAdmin = () =>
           .update({
             role,
             email,
-            userName,
+            firstName,
+            lastName,
             phoneNumber: phoneNumber || '',
           })
 
-        response.send(`${userName} account has been updated!`)
+        response.send(`${firstName} ${lastName} account has been updated!`)
       } catch (error: any) {
-        response.status(500).json({ error: error.message })
+        response.status(500).send({ error: error })
       }
     })
   })

@@ -1,19 +1,30 @@
 import React from 'react'
-import { ROUTES } from '@vgl/constants'
-import { useForm } from 'react-hook-form'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '@vgl/stores'
-import { useMutation } from 'react-query'
 import { Api } from '@vgl/services'
+import { ROUTES } from '@vgl/constants'
+import { updateUser } from '@vgl/stores'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useGetSingleUser } from '@vgl/hooks'
+import { useMutation, useQueryClient } from 'react-query'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 const useModerator = () => {
   const navigate = useNavigate()
 
+  const { id } = useParams()
+
+  const dispatch = useDispatch()
+  const queryClient = useQueryClient()
+
   const { pathname } = useLocation()
+
   const isCurrentUserRoute = pathname.startsWith('/admin')
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { data: user, isLoading } = useGetSingleUser({
+    id: id as string,
+    fxn: Api.auth.getUserProfile,
+    refetchLabel: 'getSingleAdmin',
+  })
 
   const [moderatorStates, setModeratorStates] = React.useState({
     isAddModal: false,
@@ -26,24 +37,20 @@ const useModerator = () => {
   })
 
   const methods = useForm({
-    defaultValues: {
-      firstName:
-        moderatorStates.isEditModal || isCurrentUserRoute
-          ? user?.firstName
-          : '',
-      lastName: isCurrentUserRoute ? user?.lastName : '',
-      email: isCurrentUserRoute ? user?.email : '',
-      phone: isCurrentUserRoute ? user?.phoneNumber : '',
-      job: isCurrentUserRoute ? user?.role : '',
-    },
+    mode: 'onChange',
   })
 
   React.useEffect(() => {
-    if (moderatorStates.isEditModal) {
-      methods.setValue('firstName', 'Riley')
+    if ((user && isCurrentUserRoute) || moderatorStates.isDetailsModal) {
+      methods.reset({
+        job: user.role,
+        email: user.email,
+        phone: user.phoneNumber,
+        lastName: user.lastName,
+        firstName: user.firstName,
+      })
     }
-    // eslint-disable-next-line
-  }, [moderatorStates.isEditModal])
+  }, [user, isCurrentUserRoute, methods, moderatorStates.isDetailsModal])
 
   const modalToggler = (key: string, val: boolean) => {
     setModeratorStates((prevState) => ({
@@ -61,19 +68,42 @@ const useModerator = () => {
   }
 
   //update admin
-  const { mutate: onUpdateAdmin } = useMutation(Api.admin.updateAdmin, {
-    onSuccess: () => console.log('goood'),
-    onError: () => console.log('error'),
+  const {
+    error,
+    isError,
+    mutate: onUpdateAdmin,
+    isLoading: onUpdateLoading,
+  } = useMutation(Api.admin.updateAdminViaCloudFunction, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('getSingleAdmin')
+      dispatch(
+        updateUser({
+          ...user,
+          ...methods.getValues(),
+          role: methods.getValues().job,
+        })
+      )
+      setModeratorStates({
+        ...moderatorStates,
+        isAddModal: false,
+        isEditModal: false,
+        isConfirmation: false,
+        isDetailsModal: false,
+        isSnackbar: true,
+      })
+    },
+    onError: (error: any) => {
+      if (isError && error.response.data.code === 'auth/email-already-exists') {
+        methods.setError('email', {
+          type: 'manual',
+          message: error.response.data.message,
+        })
+      }
+      alert(error.response.data.message)
+    },
   })
 
   const onSubmit = (data: any) => {
-    setModeratorStates({
-      ...moderatorStates,
-      isAddModal: false,
-      isEditModal: false,
-      isConfirmation: false,
-      isSnackbar: true,
-    })
     onUpdateAdmin({
       id: user?.uid || '',
       data: {
@@ -84,16 +114,19 @@ const useModerator = () => {
         role: data['job'],
       },
     })
-    console.log(data)
   }
 
   return {
+    error,
+    isError,
     methods,
     onSubmit,
     onGoBack,
+    isLoading,
     onRowClick,
     modalToggler,
     moderatorStates,
+    onUpdateLoading,
     setModeratorStates,
   }
 }

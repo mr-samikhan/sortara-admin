@@ -1,19 +1,20 @@
 import React from 'react'
 import 'react-phone-input-2/lib/style.css'
 import PhoneInput from 'react-phone-input-2'
-import { COLORS, FONTS } from '@vgl/constants'
 import { CustomTextField, Form } from '@vgl/components'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Box, Button, Paper, Typography } from '@mui/material'
+import { COLORS, FONTS, VALIDATION_PATTERNS } from '@vgl/constants'
 
 interface DetailsModalProps {
   methods: any
+  isLoading: boolean
   onClose: () => void
   onSubmit: (data: unknown) => void
 }
 
 const DetailsModal = (props: DetailsModalProps) => {
-  const { onSubmit, methods, onClose } = props
+  const { onSubmit, methods, onClose, isLoading } = props
   return (
     <React.Fragment>
       <FormProvider {...methods}>
@@ -47,6 +48,14 @@ const DetailsModal = (props: DetailsModalProps) => {
               <CustomTextField
                 fullWidth
                 name="email"
+                rules={{
+                  required: 'Email is required',
+                  pattern: {
+                    value: VALIDATION_PATTERNS.EMAIL,
+                    message:
+                      'Invalid email address input. Please re-enter email again.',
+                  },
+                }}
                 placeholder="Enter email address..."
               />
               <Typography variant="body2" color={COLORS.black.dark} my={1}>
@@ -57,6 +66,7 @@ const DetailsModal = (props: DetailsModalProps) => {
                 control={methods.control}
                 render={({ field }) => (
                   <PhoneInput
+                    value={field.value}
                     onChange={(value) => field.onChange(value)}
                     containerStyle={{
                       height: 50,
@@ -114,9 +124,10 @@ const DetailsModal = (props: DetailsModalProps) => {
                 type="submit"
                 component={Button}
                 variant="contained"
+                disabled={isLoading}
                 bgcolor={COLORS.black.dark}
               >
-                Confirm Changes
+                {isLoading ? 'Loading...' : 'Confirm Changes'}
               </Box>
             </Box>
           </Box>

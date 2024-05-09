@@ -40,6 +40,10 @@ const authReducer = createSlice({
       state.isLoading = false
       state.isAuthenticated = false
     },
+    updateUser: (state, action) => {
+      console.log('action.payload', action.payload)
+      state.user = action.payload
+    },
   },
 })
 
@@ -47,6 +51,7 @@ export const currentUser = (state: RootState) => state.auth.user
 export const selectError = (state: RootState) => state.auth.isError
 export const selectLoading = (state: RootState) => state.auth.isLoading
 
-export const { login, loginSuccess, loginFailure, logout } = authReducer.actions
+export const { login, loginSuccess, loginFailure, logout, updateUser } =
+  authReducer.actions
 
 export default authReducer.reducer

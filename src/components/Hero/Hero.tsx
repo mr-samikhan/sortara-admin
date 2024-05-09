@@ -49,7 +49,7 @@ const Hero = (props: HeroProps) => {
               fontSize="18px !important"
               fontWeight={400}
             >
-              Joined the team &nbsp;
+              Joined the team on &nbsp;
               {typeof joined === 'string' ? joined : joined?.toDateString()}
             </Typography>
           </Box>

@@ -32,7 +32,7 @@ class Auth {
     try {
       let adminData: ICurrentUser | null = null
       const { user } = await signInWithEmailAndPassword(auth, email, password)
-      adminData = await this.checkAdminStatus(user.uid)
+      adminData = await this.getCurrentUser(user.uid)
       if (!adminData) {
         auth.signOut()
         const error = getErrorMessage('auth/not-admin')
@@ -59,7 +59,7 @@ class Auth {
     }
   }
 
-  checkAdminStatus = async (uid: string) => {
+  getCurrentUser = async (uid: string) => {
     const q = query(
       collection(firestore, COLLECTIONS.ADMIN),
       where('uid', '==', uid)
