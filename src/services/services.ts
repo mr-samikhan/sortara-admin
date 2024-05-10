@@ -12,6 +12,8 @@ const Api = {
     confirmPasswordReset: AuthService.confirmPasswordReset,
   },
   admin: {
+    deleteAdmin: AdminService.deleteAdmin,
+    createAdmin: AdminService.createAdmin,
     updateAdmin: AdminService.updateAdmin,
     updateAdminViaCloudFunction: AdminService.updateAdminViaCloudFunction,
   },

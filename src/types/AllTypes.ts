@@ -39,6 +39,7 @@ export type ICurrentUser = {
   name: string
   role: string
   status: string
+  reason?: string
   isNewUser: boolean
   firstName?: string
   lastName?: string

@@ -2,11 +2,13 @@ import { COLORS } from '@vgl/constants'
 import { Switch, SwitchProps, styled } from '@mui/material'
 
 interface CustomSwitchButtonProps {
+  checked: boolean
   defaultChecked?: boolean
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const CustomSwitchButton = (props: CustomSwitchButtonProps) => {
-  const { defaultChecked } = props
+  const { defaultChecked, onChange, checked } = props
 
   const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
@@ -56,7 +58,13 @@ const CustomSwitchButton = (props: CustomSwitchButtonProps) => {
       }),
     },
   }))
-  return <IOSSwitch defaultChecked={defaultChecked} />
+  return (
+    <IOSSwitch
+      checked={checked}
+      onChange={onChange}
+      defaultChecked={defaultChecked}
+    />
+  )
 }
 
 export default CustomSwitchButton

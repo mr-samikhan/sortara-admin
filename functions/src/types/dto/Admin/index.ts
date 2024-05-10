@@ -2,7 +2,11 @@ export interface CreateAdminDto {
   role: string
   email: string
   password: string
-  userName: string
+  firstName: string
+  lastName: string
+  jobTitle?: string
+  phoneNumber?: string
+  permissions?: string[]
 }
 
 export interface UpdateAdminDto {
