@@ -30,10 +30,11 @@ const useModerator = () => {
     isAddModal: false,
     isSnackbar: false,
     isEditModal: false,
+    newModeratorName: '',
     isRemoveModal: false,
+    isDetailsModal: false,
     isConfirmation: false,
     isInactiveAdmins: false,
-    isDetailsModal: false,
   })
 
   const methods = useForm({
@@ -52,6 +53,38 @@ const useModerator = () => {
     }
   }, [user, isCurrentUserRoute, methods, moderatorStates.isDetailsModal])
 
+  //permissions
+  const [permissions, setPermissions] = React.useState<string[]>([])
+
+  const updatePermissions = (permission: string, isChecked: boolean) => {
+    setPermissions((prev) => {
+      const newPermissions = [...prev]
+      if (isChecked) {
+        if (!newPermissions.includes(permission)) {
+          newPermissions.push(permission)
+        }
+      } else {
+        const index = newPermissions.indexOf(permission)
+        if (index > -1) {
+          newPermissions.splice(index, 1)
+        }
+      }
+      return newPermissions
+    })
+  }
+
+  React.useEffect(() => {
+    const subscription = methods.watch((value, { name }) => {
+      if (name === 'admin') {
+        updatePermissions('admin', value.admin)
+      }
+      if (name === 'moderator') {
+        updatePermissions('moderator', value.moderator)
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [methods.watch])
+
   const modalToggler = (key: string, val: boolean) => {
     setModeratorStates((prevState) => ({
       ...prevState,
@@ -67,7 +100,28 @@ const useModerator = () => {
     navigate(path)
   }
 
-  //update admin
+  //add moderator
+  const { mutate: onAddAdmin, isLoading: isAddLoading } = useMutation(
+    Api.admin.createAdmin,
+    {
+      onSuccess: () => {
+        setModeratorStates({
+          ...moderatorStates,
+          isAddModal: false,
+          newModeratorName: `${methods.watch('firstName')} ${methods.watch(
+            'lastName'
+          )}`,
+          isSnackbar: true,
+        })
+        methods.reset()
+      },
+      onError: (error: any) => {
+        alert(error.response.data.message)
+      },
+    }
+  )
+
+  //update moderator
   const {
     error,
     isError,
@@ -103,17 +157,47 @@ const useModerator = () => {
     },
   })
 
+  //delete moderator
+  const { mutate: onDeleteModerator_, isLoading: onDelLoading } = useMutation(
+    Api.admin.deleteAdmin,
+    {
+      onSuccess: () => modalToggler('isConfirmation', false),
+      onError: (error) => console.log(error),
+    }
+  )
+
   const onSubmit = (data: any) => {
-    onUpdateAdmin({
-      id: user?.uid || '',
-      data: {
-        firstName: data['firstName'],
-        lastName: data['lastName'],
-        email: data['email'],
-        phoneNumber: data['phone'],
-        role: data['job'],
-      },
-    })
+    if (moderatorStates.isAddModal) {
+      onAddAdmin({
+        data: {
+          ...data,
+          role: 'Moderator',
+          password: 'Abcd@123',
+          jobTitle: data['jobTitle'],
+          phoneNumber: data['phone'],
+          permissions: permissions || [],
+        },
+      })
+    } else if (moderatorStates.isEditModal) {
+      onUpdateAdmin({
+        id: user?.uid || '',
+        data: {
+          firstName: data['firstName'],
+          lastName: data['lastName'],
+          email: data['email'],
+          phoneNumber: data['phone'],
+          role: data['job'],
+        },
+      })
+    } else if (moderatorStates.isConfirmation) {
+      onDeleteModerator_({
+        id: 'IJ2NULfLJEZFWX5XBFzaTbvEd522',
+        data: {
+          status: 'inactive',
+          reason: methods.watch('reason'),
+        },
+      })
+    }
   }
 
   return {
@@ -125,6 +209,8 @@ const useModerator = () => {
     isLoading,
     onRowClick,
     modalToggler,
+    onDelLoading,
+    isAddLoading,
     moderatorStates,
     onUpdateLoading,
     setModeratorStates,

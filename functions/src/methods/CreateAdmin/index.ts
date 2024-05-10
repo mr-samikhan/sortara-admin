@@ -8,8 +8,16 @@ export const createAdmin = () =>
   https.onRequest(async (request: Request, response: Response) => {
     cors(request, response, async () => {
       try {
-        const { email, userName, password, role } =
-          request.body as CreateAdminDto
+        const {
+          role,
+          email,
+          lastName,
+          password,
+          jobTitle,
+          firstName,
+          phoneNumber,
+          permissions,
+        } = request.body as CreateAdminDto
 
         if (!email)
           response
@@ -28,10 +36,15 @@ export const createAdmin = () =>
             message: 'Password field is required',
           })
 
-        if (!userName)
+        if (!firstName)
           response.status(400).json({
             success: false,
-            message: 'Username field is required',
+            message: 'First Name field is required',
+          })
+        if (!lastName)
+          response.status(400).json({
+            success: false,
+            message: 'Last Name field is required',
           })
 
         const user = await auth().createUser({
@@ -39,19 +52,26 @@ export const createAdmin = () =>
           password,
           disabled: false,
           emailVerified: true,
-          displayName: userName,
         })
 
-        await firestore().doc(`/${COLLECTIONS.ADMINS}/${user.uid}`).create({
-          role,
-          email,
-          userName,
-          uid: user.uid,
-          createdAt: new Date(),
-        })
+        await firestore()
+          .doc(`/${COLLECTIONS.ADMINS}/${user.uid}`)
+          .create({
+            role,
+            email,
+            lastName,
+            jobTitle,
+            firstName,
+            phoneNumber,
+            uid: user.uid,
+            joinedAt: new Date(),
+            createdAt: new Date(),
+            permissions: permissions || [],
+          })
 
-        response.send(`${userName} account has been created!`)
+        response.send(`${firstName} ${lastName} account has been created!`)
       } catch (error: any) {
+        console.log('error while creating admin', error)
         response.status(500).json({ error: error.message })
       }
     })

@@ -141,7 +141,15 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
               </Typography>
               <Box my={2} display="flex" justifyContent="space-between">
                 <Typography variant="body2">Admin: Inactive</Typography>
-                <CustomSwitchButton defaultChecked={false} />
+                <Controller
+                  name="admin"
+                  render={({ field: { onChange, value } }) => (
+                    <CustomSwitchButton
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
+                />
               </Box>
               <Typography variant="body2" fontWeight={400}>
                 Allows admin to manage permissions for all admins/moderators
@@ -150,7 +158,16 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
                 <Typography variant="body2">
                   Moderation Manager: Inactive
                 </Typography>
-                <CustomSwitchButton defaultChecked={false} />
+                <Controller
+                  name="moderator"
+                  render={({ field: { onChange, value } }) => (
+                    <CustomSwitchButton
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    />
+                  )}
+                />
+                {/* <CustomSwitchButton defaultChecked={false} /> */}
               </Box>
               <Typography my={1} variant="body2" fontWeight={400}>
                 Allows moderator to manage Sortara users and advertisement
@@ -171,10 +188,10 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
               <Box
                 fullWidth
                 type="submit"
-                disabled={disabled}
                 component={Button}
                 variant="contained"
                 bgcolor="#161C20"
+                disabled={isLoading || disabled}
               >
                 {isLoading ? 'Loading...' : buttonText || 'Add'}
               </Box>

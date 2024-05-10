@@ -12,8 +12,14 @@ import {
 } from '@vgl/modules'
 
 const ModeratorContainer = () => {
-  const { modalToggler, moderatorStates, methods, onSubmit, onRowClick } =
-    useModerator()
+  const {
+    methods,
+    onSubmit,
+    onRowClick,
+    isAddLoading,
+    modalToggler,
+    moderatorStates,
+  } = useModerator()
   const {
     isAddModal,
     isSnackbar,
@@ -21,6 +27,7 @@ const ModeratorContainer = () => {
     isRemoveModal,
     isConfirmation,
     isInactiveAdmins,
+    newModeratorName,
   } = moderatorStates
 
   return (
@@ -43,6 +50,7 @@ const ModeratorContainer = () => {
           <AddModeratorModal
             methods={methods}
             onSubmit={onSubmit}
+            isLoading={isAddLoading}
             onCancel={() => modalToggler('isAddModal', false)}
           />
         </CustomModal>
@@ -118,7 +126,7 @@ const ModeratorContainer = () => {
           message="New Moderator added!"
           sx={{ width: '600px !important' }}
           onClose={() => modalToggler('isSnackbar', false)}
-          description="Riley Whitman has been successfully added as a Moderator. We have sent them an invite email to set up their account."
+          description={`${newModeratorName} has been successfully added as a Moderator. We have sent them an invite email to set up their account.`}
         />
       )}
     </AppLayout>
