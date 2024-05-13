@@ -62,3 +62,16 @@ export type ILoginValues = {
   showPassword: boolean
   confirmationObj: object
 }
+
+export type IModerators = {
+  id: string
+  name: string
+  role: string
+  email: string
+  status: string
+  jobTitle: string
+  lastName: string
+  userImage: string
+  firstName: string
+  phoneNumber: string
+}

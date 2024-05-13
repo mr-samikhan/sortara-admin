@@ -1,10 +1,9 @@
 import React from 'react'
 import 'react-phone-input-2/lib/style.css'
-import PhoneInput from 'react-phone-input-2'
-import { CustomTextField, Form } from '@vgl/components'
-import { Controller, FormProvider } from 'react-hook-form'
+import { FormProvider } from 'react-hook-form'
+import { COLORS, VALIDATION_PATTERNS } from '@vgl/constants'
 import { Box, Button, Paper, Typography } from '@mui/material'
-import { COLORS, FONTS, VALIDATION_PATTERNS } from '@vgl/constants'
+import { CountryCodeInput, CustomTextField, Form } from '@vgl/components'
 
 interface DetailsModalProps {
   methods: any
@@ -61,42 +60,7 @@ const DetailsModal = (props: DetailsModalProps) => {
               <Typography variant="body2" color={COLORS.black.dark} my={1}>
                 Phone Number
               </Typography>
-              <Controller
-                name="phone"
-                control={methods.control}
-                render={({ field }) => (
-                  <PhoneInput
-                    value={field.value}
-                    onChange={(value) => field.onChange(value)}
-                    containerStyle={{
-                      height: 50,
-                      width: '100%',
-                    }}
-                    inputStyle={{
-                      height: 50,
-                      width: '100%',
-                      fontSize: 16,
-                      fontWeight: 700,
-                      borderRadius: 4,
-                      fontFamily: FONTS.DMSANS,
-                      color: COLORS.grey.dark,
-                    }}
-                    buttonStyle={{
-                      borderRight: 'none',
-                      backgroundColor: '#FFFF',
-                    }}
-                    country={'us'}
-                  />
-                )}
-              />
-              {
-                //show error message
-                methods.watch('phone') === '' && (
-                  <Typography color="error" variant="caption">
-                    Phone number is required
-                  </Typography>
-                )
-              }
+              <CountryCodeInput name="phone" methods={methods} />
               <Typography variant="body2" color={COLORS.black.dark} my={1}>
                 Job Title
               </Typography>

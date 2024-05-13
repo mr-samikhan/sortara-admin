@@ -5,7 +5,7 @@ export const getPhoneLast4Digits = (phone: string) => {
 }
 
 export const formatFirebaseTimestamp = (firebaseTimestamp: any) => {
-  if (!firebaseTimestamp) return ''
+  if (!firebaseTimestamp) return 'N/A'
   const date = firebaseTimestamp.toDate()
 
   function getOrdinalSuffix(day: number) {
