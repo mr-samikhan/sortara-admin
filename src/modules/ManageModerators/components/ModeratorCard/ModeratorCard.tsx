@@ -1,6 +1,8 @@
 import React from 'react'
 import { COLORS } from '@vgl/constants'
+import { IModerators } from '@vgl/types'
 import { useBreakPoints } from '@vgl/hooks'
+import { NoRecordFound } from '@vgl/components'
 import { ModeratorTooltip } from '../components'
 import {
   Box,
@@ -13,6 +15,7 @@ import {
 } from '@mui/material'
 
 export interface ModeratorCard {
+  id: string
   name: string
   role: string
   email: string
@@ -21,11 +24,11 @@ export interface ModeratorCard {
 }
 
 interface ModeratorCardProps {
-  data: ModeratorCard[]
+  data: IModerators[] | undefined
   onInfoClick?: () => void
-  onSingleItem: (id: string) => void
-  onUpdateDetails: (item: ModeratorCard) => void
-  onResetPassword: (item: ModeratorCard) => void
+  onSingleItem: (item: IModerators) => void
+  onUpdateDetails: (item: IModerators) => void
+  onResetPassword: (item: IModerators) => void
 }
 
 const ModeratorCard = (props: ModeratorCardProps) => {
@@ -49,7 +52,10 @@ const ModeratorCard = (props: ModeratorCardProps) => {
   return (
     <React.Fragment>
       <Grid container spacing={3} my={1}>
-        {data.map((item, index) => (
+        <Grid item md={12} xs={12} sm={12}>
+          <NoRecordFound data={data} />
+        </Grid>
+        {data?.map((item, index) => (
           <Grid item md={3} xs={6} sm={6}>
             <Box
               elevation={0}
@@ -87,7 +93,7 @@ const ModeratorCard = (props: ModeratorCardProps) => {
                 height={120}
                 component={Avatar}
                 src={item.userImage}
-                onClick={() => onSingleItem(item.name)}
+                onClick={() => onSingleItem(item)}
               />
               <Typography variant={mobileMode ? 'body1' : 'body2'}>
                 {item.name}

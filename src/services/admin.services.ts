@@ -1,8 +1,16 @@
 import axios from 'axios'
-import { firestore } from '@vgl/firebase'
-import { ICurrentUser } from '@vgl/types'
-import { doc, updateDoc } from 'firebase/firestore'
+import {
+  doc,
+  query,
+  getDocs,
+  orderBy,
+  updateDoc,
+  firestore,
+  collection,
+} from '@vgl/firebase'
+import { ICurrentUser, IModerators } from '@vgl/types'
 import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 
 class Admin {
   updateAdmin = async (values = { id: '', data: {} }) => {
@@ -39,12 +47,30 @@ class Admin {
     }
   }
 
-  getAdmins = async () => {
+  getAdmins = async (): Promise<IModerators[]> => {
     try {
-      return true
+      const admins: IModerators[] = []
+      const querySnapshot = await getDocs(
+        query(
+          collection(firestore, COLLECTIONS.ADMIN),
+          orderBy('createdAt', 'desc')
+        )
+      )
+      querySnapshot.forEach((doc: DocumentSnapshot<DocumentData>) => {
+        const data = doc.data() as IModerators
+        admins.push({
+          ...data,
+          id: doc.id,
+          role: data.jobTitle || 'N/A',
+          status: data.status || 'active',
+          userImage: data.userImage || '',
+          name: `${data.firstName} ${data.lastName}`,
+        })
+      })
+      return admins
     } catch (error: any) {
       const errorMessage = getErrorMessage(error)
-      return errorMessage
+      throw errorMessage
     }
   }
 

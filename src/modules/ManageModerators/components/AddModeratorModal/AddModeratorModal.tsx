@@ -1,10 +1,14 @@
 import React from 'react'
+import { FONTS } from '@vgl/constants'
 import 'react-phone-input-2/lib/style.css'
-import PhoneInput from 'react-phone-input-2'
-import { COLORS, FONTS } from '@vgl/constants'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Box, Button, Link, Typography } from '@mui/material'
-import { CustomSwitchButton, CustomTextField, Form } from '@vgl/components'
+import {
+  Form,
+  CustomTextField,
+  CountryCodeInput,
+  CustomSwitchButton,
+} from '@vgl/components'
 
 interface AddModeratorModalProps {
   methods: any
@@ -91,39 +95,7 @@ const AddModeratorModal = (props: AddModeratorModalProps) => {
                   Phone Number
                 </Typography>
                 <Box mt={2}>
-                  <Controller
-                    name="phone"
-                    defaultValue=""
-                    render={({ field }) => (
-                      <PhoneInput
-                        country={'us'}
-                        onChange={(value) => field.onChange(value)}
-                        //style
-                        containerStyle={{
-                          height: 50,
-                          width: '100%',
-                        }}
-                        inputStyle={{
-                          height: 50,
-                          width: '100%',
-                          fontSize: 16,
-                          fontWeight: 700,
-                          borderRadius: 4,
-                          fontFamily: FONTS.DMSANS,
-                          color: COLORS.grey.dark,
-                        }}
-                        buttonStyle={{
-                          borderRight: 'none',
-                          backgroundColor: '#FFFF',
-                        }}
-                      />
-                    )}
-                  />
-                  {methods.formState.errors.phone && (
-                    <Typography fontSize={10} color="error">
-                      {methods.formState.errors.phone.message}
-                    </Typography>
-                  )}
+                  <CountryCodeInput name="phone" methods={methods} />
                 </Box>
               </Box>
               <Box>

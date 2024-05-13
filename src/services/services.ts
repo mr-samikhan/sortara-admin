@@ -12,6 +12,7 @@ const Api = {
     confirmPasswordReset: AuthService.confirmPasswordReset,
   },
   admin: {
+    getAdmins: AdminService.getAdmins,
     deleteAdmin: AdminService.deleteAdmin,
     createAdmin: AdminService.createAdmin,
     updateAdmin: AdminService.updateAdmin,

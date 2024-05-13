@@ -1,5 +1,6 @@
 import { AppLayout } from '@vgl/layout'
 import { ICurrentUser } from '@vgl/types'
+import { useLocation } from 'react-router-dom'
 import { Box, Grid, Typography } from '@mui/material'
 import { ACTIVITY_DATA, ROUTES } from '@vgl/constants'
 import { formatFirebaseTimestamp } from '@vgl/helpers'
@@ -21,7 +22,11 @@ interface ISingleModerator {
 }
 
 const SingleModerator = (props: ISingleModerator) => {
+  const { state } = useLocation()
+
   const { user } = props
+
+  const currentUser = state?.user || user
 
   const {
     methods,
@@ -61,12 +66,16 @@ const SingleModerator = (props: ISingleModerator) => {
                 isDetailsModal: true,
               }))
             }
-            role={user?.role || ''}
-            email={user?.email || ''}
+            role={currentUser?.role || ''}
+            email={currentUser?.email || ''}
             onGoBack={() => onGoBack(-1)}
             userImage={'/assets/images/profile-image.svg'}
-            userName={`${user?.firstName} ${user?.lastName}`}
-            joinedAt={formatFirebaseTimestamp(user?.createdAt) || ''}
+            userName={`${currentUser?.firstName} ${currentUser?.lastName}`}
+            joinedAt={
+              user
+                ? formatFirebaseTimestamp(currentUser?.createdAt)
+                : new Date(currentUser?.createdAt?.seconds * 1000)
+            }
           />
           <Box my={2}>
             <Typography variant="body2" my={1}>

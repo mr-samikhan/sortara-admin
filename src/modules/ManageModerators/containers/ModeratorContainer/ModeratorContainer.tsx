@@ -1,6 +1,7 @@
 import { AppLayout } from '@vgl/layout'
-import { MuiCustomSnackbar } from '@vgl/components'
-import { COLORS, MODERATOR_CARD_DATA } from '@vgl/constants'
+import { COLORS } from '@vgl/constants'
+import { useGetModerators } from '@vgl/hooks'
+import { MuiCustomSnackbar, MuiLoader } from '@vgl/components'
 import {
   CustomModal,
   useModerator,
@@ -19,6 +20,8 @@ const ModeratorContainer = () => {
     isAddLoading,
     modalToggler,
     moderatorStates,
+    onUpdateDetails,
+    clearOutValues,
   } = useModerator()
   const {
     isAddModal,
@@ -30,6 +33,10 @@ const ModeratorContainer = () => {
     newModeratorName,
   } = moderatorStates
 
+  const { moderators, moderatorsLoading } = useGetModerators({})
+
+  if (moderatorsLoading) return <MuiLoader />
+
   return (
     <AppLayout isHeader isSearchTextField isSidebar>
       <ModeratorHeader
@@ -37,9 +44,9 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
+        data={moderators}
         onSingleItem={onRowClick}
-        data={MODERATOR_CARD_DATA}
-        onUpdateDetails={() => modalToggler('isEditModal', true)}
+        onUpdateDetails={onUpdateDetails}
         onResetPassword={(item) => console.log('Reset Password', item)}
       />
       {isAddModal && (
@@ -51,7 +58,10 @@ const ModeratorContainer = () => {
             methods={methods}
             onSubmit={onSubmit}
             isLoading={isAddLoading}
-            onCancel={() => modalToggler('isAddModal', false)}
+            onCancel={() => {
+              methods.reset()
+              modalToggler('isAddModal', false)
+            }}
           />
         </CustomModal>
       )}
@@ -66,7 +76,10 @@ const ModeratorContainer = () => {
             buttonText="Update"
             title="Update details"
             onRemove={() => modalToggler('isRemoveModal', true)}
-            onCancel={() => modalToggler('isEditModal', false)}
+            onCancel={() => {
+              clearOutValues()
+              modalToggler('isEditModal', false)
+            }}
           />
         </CustomModal>
       )}

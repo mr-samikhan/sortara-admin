@@ -1,8 +1,8 @@
 import React from 'react'
 import { Api } from '@vgl/services'
-import { ROUTES } from '@vgl/constants'
 import { updateUser } from '@vgl/stores'
 import { useForm } from 'react-hook-form'
+import { IModerators } from '@vgl/types'
 import { useDispatch } from 'react-redux'
 import { useGetSingleUser } from '@vgl/hooks'
 import { useMutation, useQueryClient } from 'react-query'
@@ -20,12 +20,6 @@ const useModerator = () => {
 
   const isCurrentUserRoute = pathname.startsWith('/admin')
 
-  const { data: user, isLoading } = useGetSingleUser({
-    id: id as string,
-    fxn: Api.auth.getUserProfile,
-    refetchLabel: 'getSingleAdmin',
-  })
-
   const [moderatorStates, setModeratorStates] = React.useState({
     isAddModal: false,
     isSnackbar: false,
@@ -37,12 +31,21 @@ const useModerator = () => {
     isInactiveAdmins: false,
   })
 
+  const { isAddModal, isEditModal, isDetailsModal, isConfirmation } =
+    moderatorStates
+
+  const { data: user, isLoading } = useGetSingleUser({
+    id: id as string,
+    fxn: Api.auth.getUserProfile,
+    refetchLabel: 'getSingleAdmin',
+  })
+
   const methods = useForm({
     mode: 'onChange',
   })
 
   React.useEffect(() => {
-    if ((user && isCurrentUserRoute) || moderatorStates.isDetailsModal) {
+    if ((user && isCurrentUserRoute) || isDetailsModal) {
       methods.reset({
         job: user.role,
         email: user.email,
@@ -51,7 +54,7 @@ const useModerator = () => {
         firstName: user.firstName,
       })
     }
-  }, [user, isCurrentUserRoute, methods, moderatorStates.isDetailsModal])
+  }, [user, isCurrentUserRoute, methods, isDetailsModal])
 
   //permissions
   const [permissions, setPermissions] = React.useState<string[]>([])
@@ -83,6 +86,7 @@ const useModerator = () => {
       }
     })
     return () => subscription.unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [methods.watch])
 
   const modalToggler = (key: string, val: boolean) => {
@@ -92,8 +96,9 @@ const useModerator = () => {
     }))
   }
 
-  const onRowClick = (id: string) => {
-    navigate(`${ROUTES.MODERATOR}${id}`)
+  const onRowClick = (item: IModerators) => {
+    //navigate and send state
+    navigate('/moderator/' + item.id, { state: { user: { ...item } } })
   }
 
   const onGoBack = (path: any) => {
@@ -167,7 +172,16 @@ const useModerator = () => {
   )
 
   const onSubmit = (data: any) => {
-    if (moderatorStates.isAddModal) {
+    const dataTobeSent = {
+      firstName: data['firstName'],
+      lastName: data['lastName'],
+      email: data['email'],
+      phoneNumber: data['phone'],
+      role: data['jobTitle'],
+      permissions: permissions || [],
+    }
+
+    if (isAddModal) {
       onAddAdmin({
         data: {
           ...data,
@@ -178,18 +192,12 @@ const useModerator = () => {
           permissions: permissions || [],
         },
       })
-    } else if (moderatorStates.isEditModal) {
+    } else if (isEditModal) {
       onUpdateAdmin({
         id: user?.uid || '',
-        data: {
-          firstName: data['firstName'],
-          lastName: data['lastName'],
-          email: data['email'],
-          phoneNumber: data['phone'],
-          role: data['job'],
-        },
+        data: { ...dataTobeSent },
       })
-    } else if (moderatorStates.isConfirmation) {
+    } else if (isConfirmation) {
       onDeleteModerator_({
         id: 'IJ2NULfLJEZFWX5XBFzaTbvEd522',
         data: {
@@ -197,7 +205,33 @@ const useModerator = () => {
           reason: methods.watch('reason'),
         },
       })
+    } else if (isCurrentUserRoute || isDetailsModal) {
+      onUpdateAdmin({
+        id: user?.uid || '',
+        data: { ...dataTobeSent },
+      })
     }
+  }
+
+  const onUpdateDetails = (item: IModerators) => {
+    methods.reset({
+      email: item.email,
+      jobTitle: item.role,
+      phone: item.phoneNumber,
+      lastName: item.lastName,
+      firstName: item.firstName,
+    })
+    modalToggler('isEditModal', true)
+  }
+
+  const clearOutValues = () => {
+    methods.reset({
+      email: '',
+      jobTitle: '',
+      phone: '',
+      lastName: '',
+      firstName: '',
+    })
   }
 
   return {
@@ -211,7 +245,9 @@ const useModerator = () => {
     modalToggler,
     onDelLoading,
     isAddLoading,
+    clearOutValues,
     moderatorStates,
+    onUpdateDetails,
     onUpdateLoading,
     setModeratorStates,
   }
