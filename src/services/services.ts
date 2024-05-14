@@ -16,6 +16,7 @@ const Api = {
     deleteAdmin: AdminService.deleteAdmin,
     createAdmin: AdminService.createAdmin,
     updateAdmin: AdminService.updateAdmin,
+    filterAdmins: AdminService.filterAdmins,
     updateAdminViaCloudFunction: AdminService.updateAdminViaCloudFunction,
   },
 }

@@ -22,11 +22,14 @@ const ModeratorContainer = () => {
     moderatorStates,
     onUpdateDetails,
     clearOutValues,
+    onUpdateLoading,
+    onResetPassword,
   } = useModerator()
   const {
     isAddModal,
     isSnackbar,
     isEditModal,
+    selectedItem,
     isRemoveModal,
     isConfirmation,
     isInactiveAdmins,
@@ -47,7 +50,7 @@ const ModeratorContainer = () => {
         data={moderators}
         onSingleItem={onRowClick}
         onUpdateDetails={onUpdateDetails}
-        onResetPassword={(item) => console.log('Reset Password', item)}
+        onResetPassword={onResetPassword}
       />
       {isAddModal && (
         <CustomModal
@@ -75,6 +78,7 @@ const ModeratorContainer = () => {
             onSubmit={onSubmit}
             buttonText="Update"
             title="Update details"
+            isLoading={onUpdateLoading}
             onRemove={() => modalToggler('isRemoveModal', true)}
             onCancel={() => {
               clearOutValues()
@@ -139,7 +143,9 @@ const ModeratorContainer = () => {
           message="New Moderator added!"
           sx={{ width: '600px !important' }}
           onClose={() => modalToggler('isSnackbar', false)}
-          description={`${newModeratorName} has been successfully added as a Moderator. We have sent them an invite email to set up their account.`}
+          description={`${
+            selectedItem?.firstName || newModeratorName
+          } has been successfully added as a Moderator. We have sent them an invite email to set up their account.`}
         />
       )}
     </AppLayout>

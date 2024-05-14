@@ -12,8 +12,6 @@ interface CountryCodeInputProps {
 const CountryCodeInput = (props: CountryCodeInputProps) => {
   const { name, methods } = props || {}
 
-  console.log(methods.formState.errors, 'methods.formState.errors')
-
   return (
     <React.Fragment>
       <Controller

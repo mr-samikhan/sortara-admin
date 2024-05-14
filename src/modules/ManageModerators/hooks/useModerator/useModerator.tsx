@@ -2,11 +2,15 @@ import React from 'react'
 import { Api } from '@vgl/services'
 import { updateUser } from '@vgl/stores'
 import { useForm } from 'react-hook-form'
-import { IModerators } from '@vgl/types'
 import { useDispatch } from 'react-redux'
 import { useGetSingleUser } from '@vgl/hooks'
 import { useMutation, useQueryClient } from 'react-query'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import {
+  IModerators,
+  IModeratorFormValues,
+  IModeratorStateValues,
+} from '@vgl/types'
 
 const useModerator = () => {
   const navigate = useNavigate()
@@ -20,19 +24,26 @@ const useModerator = () => {
 
   const isCurrentUserRoute = pathname.startsWith('/admin')
 
-  const [moderatorStates, setModeratorStates] = React.useState({
-    isAddModal: false,
-    isSnackbar: false,
-    isEditModal: false,
-    newModeratorName: '',
-    isRemoveModal: false,
-    isDetailsModal: false,
-    isConfirmation: false,
-    isInactiveAdmins: false,
-  })
+  const [moderatorStates, setModeratorStates] =
+    React.useState<IModeratorStateValues>({
+      isAddModal: false,
+      isSnackbar: false,
+      isEditModal: false,
+      newModeratorName: '',
+      isRemoveModal: false,
+      isDetailsModal: false,
+      isConfirmation: false,
+      isInactiveAdmins: false,
+      selectedItem: null,
+    })
 
-  const { isAddModal, isEditModal, isDetailsModal, isConfirmation } =
-    moderatorStates
+  const {
+    isAddModal,
+    isEditModal,
+    isDetailsModal,
+    isConfirmation,
+    selectedItem,
+  } = moderatorStates
 
   const { data: user, isLoading } = useGetSingleUser({
     id: id as string,
@@ -101,7 +112,7 @@ const useModerator = () => {
     navigate('/moderator/' + item.id, { state: { user: { ...item } } })
   }
 
-  const onGoBack = (path: any) => {
+  const onGoBack = (path: string) => {
     navigate(path)
   }
 
@@ -134,14 +145,23 @@ const useModerator = () => {
     isLoading: onUpdateLoading,
   } = useMutation(Api.admin.updateAdminViaCloudFunction, {
     onSuccess: () => {
-      queryClient.invalidateQueries('getSingleAdmin')
-      dispatch(
-        updateUser({
-          ...user,
-          ...methods.getValues(),
-          role: methods.getValues().job,
+      if (isEditModal) {
+        queryClient.invalidateQueries('getAdmins')
+        setModeratorStates({
+          ...moderatorStates,
+          selectedItem: null,
         })
-      )
+      } else {
+        queryClient.invalidateQueries('getSingleAdmin')
+        dispatch(
+          updateUser({
+            ...user,
+            ...methods.getValues(),
+            role: methods.getValues().job,
+          })
+        )
+      }
+
       setModeratorStates({
         ...moderatorStates,
         isAddModal: false,
@@ -166,12 +186,21 @@ const useModerator = () => {
   const { mutate: onDeleteModerator_, isLoading: onDelLoading } = useMutation(
     Api.admin.deleteAdmin,
     {
-      onSuccess: () => modalToggler('isConfirmation', false),
+      onSuccess: () => {
+        queryClient.invalidateQueries('getAdmins')
+        modalToggler('isConfirmation', false)
+      },
       onError: (error) => console.log(error),
     }
   )
 
-  const onSubmit = (data: any) => {
+  //reset password
+  const { mutate: onResetPassword_ } = useMutation(Api.auth.forgotPassword, {
+    onSuccess: () => console.log('email sent'),
+    onError: () => console.log('Error while sending reset email'),
+  })
+
+  const onSubmit = (data: IModeratorFormValues) => {
     const dataTobeSent = {
       firstName: data['firstName'],
       lastName: data['lastName'],
@@ -194,12 +223,12 @@ const useModerator = () => {
       })
     } else if (isEditModal) {
       onUpdateAdmin({
-        id: user?.uid || '',
+        id: selectedItem?.id || '',
         data: { ...dataTobeSent },
       })
     } else if (isConfirmation) {
       onDeleteModerator_({
-        id: 'IJ2NULfLJEZFWX5XBFzaTbvEd522',
+        id: selectedItem?.id || '',
         data: {
           status: 'inactive',
           reason: methods.watch('reason'),
@@ -221,6 +250,11 @@ const useModerator = () => {
       lastName: item.lastName,
       firstName: item.firstName,
     })
+    setModeratorStates((prev: any) => ({
+      ...prev,
+      selectedItem: item,
+    }))
+
     modalToggler('isEditModal', true)
   }
 
@@ -232,6 +266,10 @@ const useModerator = () => {
       lastName: '',
       firstName: '',
     })
+  }
+
+  const onResetPassword = (item: IModerators) => {
+    onResetPassword_(item.email)
   }
 
   return {
@@ -249,6 +287,7 @@ const useModerator = () => {
     moderatorStates,
     onUpdateDetails,
     onUpdateLoading,
+    onResetPassword,
     setModeratorStates,
   }
 }

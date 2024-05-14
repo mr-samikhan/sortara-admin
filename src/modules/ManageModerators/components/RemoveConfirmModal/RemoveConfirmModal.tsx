@@ -1,13 +1,14 @@
 import React from 'react'
 import { COLORS, FONTS } from '@vgl/constants'
 import { FormProvider } from 'react-hook-form'
+import { IModeratorFormValues } from '@vgl/types'
 import { Box, Button, Typography } from '@mui/material'
 import { CustomTextField, Form } from '@vgl/components'
 
 interface RemoveConfirmModalProps {
   methods: any
   onCancel: () => void
-  onSubmit: (data: unknown) => void
+  onSubmit: (data: IModeratorFormValues) => void
 }
 
 const RemoveConfirmModal = (props: RemoveConfirmModalProps) => {

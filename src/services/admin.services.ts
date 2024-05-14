@@ -16,7 +16,10 @@ class Admin {
   updateAdmin = async (values = { id: '', data: {} }) => {
     const { id, data } = values as { id: string; data: ICurrentUser }
     try {
-      await updateDoc(doc(firestore, COLLECTIONS.ADMIN, id), data)
+      await updateDoc(doc(firestore, COLLECTIONS.ADMIN, id), {
+        ...data,
+        updatedAt: new Date(),
+      })
       return true
     } catch (error: any) {
       console.log('error while updating admin', error)
@@ -58,13 +61,14 @@ class Admin {
       )
       querySnapshot.forEach((doc: DocumentSnapshot<DocumentData>) => {
         const data = doc.data() as IModerators
+        if (data.status === 'inactive') return
         admins.push({
           ...data,
           id: doc.id,
           role: data.jobTitle || 'N/A',
-          status: data.status || 'active',
           userImage: data.userImage || '',
           name: `${data.firstName} ${data.lastName}`,
+          status: data.status === 'active' ? 'Active' : data.status || 'N/A',
         })
       })
       return admins
@@ -110,6 +114,23 @@ class Admin {
       const errorMessage = getErrorMessage(error)
       return errorMessage
     }
+  }
+
+  filterAdmins = async (search: string, data: IModerators[]) => {
+    if (!search) return data
+    const admins: IModerators[] = []
+    data.forEach((doc: IModerators) => {
+      if (
+        doc.name.toLowerCase().includes(search.toLowerCase()) ||
+        doc.email.toLowerCase().includes(search.toLowerCase()) ||
+        doc.role.toLowerCase().includes(search.toLowerCase()) ||
+        doc.status.toLowerCase().includes(search.toLowerCase())
+      ) {
+        admins.push(doc)
+      }
+    })
+
+    return admins
   }
 }
 
