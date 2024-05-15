@@ -75,3 +75,26 @@ export type IModerators = {
   firstName: string
   phoneNumber: string
 }
+
+export type IModeratorFormValues = {
+  id?: string
+  job?: string
+  email: string
+  phone: string
+  jobTitle: string
+  lastName: string
+  firstName: string
+}
+
+export type IModeratorStateValues = {
+  filteredData: any
+  isAddModal: boolean
+  isSnackbar: boolean
+  isEditModal: boolean
+  isRemoveModal: boolean
+  isDetailsModal: boolean
+  isConfirmation: boolean
+  newModeratorName: string
+  isInactiveAdmins: boolean
+  selectedItem: IModeratorFormValues | null
+}

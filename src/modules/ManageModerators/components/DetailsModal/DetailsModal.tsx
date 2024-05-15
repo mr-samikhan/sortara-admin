@@ -1,6 +1,7 @@
 import React from 'react'
 import 'react-phone-input-2/lib/style.css'
 import { FormProvider } from 'react-hook-form'
+import { IModeratorFormValues } from '@vgl/types'
 import { COLORS, VALIDATION_PATTERNS } from '@vgl/constants'
 import { Box, Button, Paper, Typography } from '@mui/material'
 import { CountryCodeInput, CustomTextField, Form } from '@vgl/components'
@@ -9,7 +10,7 @@ interface DetailsModalProps {
   methods: any
   isLoading: boolean
   onClose: () => void
-  onSubmit: (data: unknown) => void
+  onSubmit: (data: IModeratorFormValues) => void
 }
 
 const DetailsModal = (props: DetailsModalProps) => {
@@ -18,7 +19,7 @@ const DetailsModal = (props: DetailsModalProps) => {
     <React.Fragment>
       <FormProvider {...methods}>
         <Form
-          onSubmit={methods.handleSubmit((data: unknown) => {
+          onSubmit={methods.handleSubmit((data: IModeratorFormValues) => {
             onSubmit(data)
           })}
         >
@@ -66,7 +67,7 @@ const DetailsModal = (props: DetailsModalProps) => {
               </Typography>
               <CustomTextField
                 fullWidth
-                name="job"
+                name="jobTitle"
                 placeholder="Enter job title..."
               />
             </Box>

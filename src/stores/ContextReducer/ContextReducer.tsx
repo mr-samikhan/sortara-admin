@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export interface IContext {
   rowData: any
   listValue: string
+  searchValue: string
   tabValue: 'users' | 'reports' | 'suspended' | 'resolved' | string
 }
 
@@ -11,6 +12,7 @@ const initialState: IContext = {
   rowData: null,
   tabValue: 'users',
   listValue: 'all',
+  searchValue: '',
 }
 
 export const contextReducer = createSlice({
@@ -29,11 +31,20 @@ export const contextReducer = createSlice({
     ON_REMOVE_ITEM: (state, action) => {
       state.rowData = action.payload
     },
+    ON_SEARCH_CHANGE: (state, action) => {
+      state.searchValue = action.payload
+    },
   },
 })
 
 export const tabValue = (state: RootState) => state.context.tabValue
-export const { ON_TAB_CHANGE, ON_LIST_CHANGE, ON_VIEW_ITEM, ON_REMOVE_ITEM } =
-  contextReducer.actions
+
+export const {
+  ON_VIEW_ITEM,
+  ON_TAB_CHANGE,
+  ON_LIST_CHANGE,
+  ON_REMOVE_ITEM,
+  ON_SEARCH_CHANGE,
+} = contextReducer.actions
 
 export default contextReducer.reducer

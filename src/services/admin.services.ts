@@ -1,4 +1,7 @@
 import axios from 'axios'
+import { ICurrentUser, IModerators } from '@vgl/types'
+import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import {
   doc,
   query,
@@ -8,15 +11,15 @@ import {
   firestore,
   collection,
 } from '@vgl/firebase'
-import { ICurrentUser, IModerators } from '@vgl/types'
-import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 
 class Admin {
   updateAdmin = async (values = { id: '', data: {} }) => {
     const { id, data } = values as { id: string; data: ICurrentUser }
     try {
-      await updateDoc(doc(firestore, COLLECTIONS.ADMIN, id), data)
+      await updateDoc(doc(firestore, COLLECTIONS.ADMIN, id), {
+        ...data,
+        updatedAt: new Date(),
+      })
       return true
     } catch (error: any) {
       console.log('error while updating admin', error)
@@ -58,13 +61,14 @@ class Admin {
       )
       querySnapshot.forEach((doc: DocumentSnapshot<DocumentData>) => {
         const data = doc.data() as IModerators
+        if (data.status === 'inactive') return
         admins.push({
           ...data,
           id: doc.id,
-          role: data.jobTitle || 'N/A',
-          status: data.status || 'active',
           userImage: data.userImage || '',
+          role: data.jobTitle || data.role || 'N/A',
           name: `${data.firstName} ${data.lastName}`,
+          status: data.status === 'active' ? 'Active' : data.status || 'N/A',
         })
       })
       return admins
@@ -110,6 +114,24 @@ class Admin {
       const errorMessage = getErrorMessage(error)
       return errorMessage
     }
+  }
+
+  filterAdmins = (search: string, data: IModerators[]) => {
+    if (!search) return data
+    const admins: IModerators[] = []
+    data.filter((doc: IModerators) => {
+      if (
+        doc.name.toLowerCase().includes(search.toLowerCase()) ||
+        doc.email.toLowerCase().includes(search.toLowerCase()) ||
+        doc.role.toLowerCase().includes(search.toLowerCase()) ||
+        doc.status.toLowerCase().includes(search.toLowerCase()) ||
+        doc.phoneNumber.toLowerCase().includes(search.toLowerCase())
+      ) {
+        admins.push(doc)
+      }
+    })
+
+    return admins
   }
 }
 

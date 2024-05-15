@@ -13,6 +13,8 @@ import {
 } from '@vgl/modules'
 
 const ModeratorContainer = () => {
+  const { moderators, moderatorsLoading } = useGetModerators({})
+
   const {
     methods,
     onSubmit,
@@ -22,18 +24,20 @@ const ModeratorContainer = () => {
     moderatorStates,
     onUpdateDetails,
     clearOutValues,
-  } = useModerator()
+    onUpdateLoading,
+    onResetPassword,
+  } = useModerator({ moderators: moderators || [] })
   const {
     isAddModal,
     isSnackbar,
     isEditModal,
+    selectedItem,
     isRemoveModal,
     isConfirmation,
     isInactiveAdmins,
     newModeratorName,
+    filteredData,
   } = moderatorStates
-
-  const { moderators, moderatorsLoading } = useGetModerators({})
 
   if (moderatorsLoading) return <MuiLoader />
 
@@ -44,10 +48,10 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
-        data={moderators}
+        data={filteredData || moderators}
         onSingleItem={onRowClick}
         onUpdateDetails={onUpdateDetails}
-        onResetPassword={(item) => console.log('Reset Password', item)}
+        onResetPassword={onResetPassword}
       />
       {isAddModal && (
         <CustomModal
@@ -75,6 +79,7 @@ const ModeratorContainer = () => {
             onSubmit={onSubmit}
             buttonText="Update"
             title="Update details"
+            isLoading={onUpdateLoading}
             onRemove={() => modalToggler('isRemoveModal', true)}
             onCancel={() => {
               clearOutValues()
@@ -139,7 +144,9 @@ const ModeratorContainer = () => {
           message="New Moderator added!"
           sx={{ width: '600px !important' }}
           onClose={() => modalToggler('isSnackbar', false)}
-          description={`${newModeratorName} has been successfully added as a Moderator. We have sent them an invite email to set up their account.`}
+          description={`${
+            selectedItem?.firstName || newModeratorName
+          } has been successfully added as a Moderator. We have sent them an invite email to set up their account.`}
         />
       )}
     </AppLayout>

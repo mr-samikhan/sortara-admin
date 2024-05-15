@@ -50,6 +50,7 @@ export const updateAdmin = () =>
             email,
             firstName,
             lastName,
+            updatedAt: new Date(),
             phoneNumber: phoneNumber || '',
           })
 

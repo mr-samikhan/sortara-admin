@@ -1,39 +1,74 @@
-import React from 'react'
 import { Api } from '@vgl/services'
-import { updateUser } from '@vgl/stores'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { IModerators } from '@vgl/types'
-import { useDispatch } from 'react-redux'
 import { useGetSingleUser } from '@vgl/hooks'
+import { RootState, updateUser } from '@vgl/stores'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQueryClient } from 'react-query'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import {
+  IModerators,
+  IModeratorFormValues,
+  IModeratorStateValues,
+} from '@vgl/types'
 
-const useModerator = () => {
-  const navigate = useNavigate()
+interface IUseModerator {
+  moderators: IModerators[] | undefined
+}
+
+const useModerator = (props: IUseModerator) => {
+  const { moderators } = props || {}
 
   const { id } = useParams()
-
   const dispatch = useDispatch()
-  const queryClient = useQueryClient()
-
+  const navigate = useNavigate()
   const { pathname } = useLocation()
+  const queryClient = useQueryClient()
 
   const isCurrentUserRoute = pathname.startsWith('/admin')
 
-  const [moderatorStates, setModeratorStates] = React.useState({
-    isAddModal: false,
-    isSnackbar: false,
-    isEditModal: false,
-    newModeratorName: '',
-    isRemoveModal: false,
-    isDetailsModal: false,
-    isConfirmation: false,
-    isInactiveAdmins: false,
-  })
+  const { searchValue } = useSelector((state: RootState) => state.context)
 
-  const { isAddModal, isEditModal, isDetailsModal, isConfirmation } =
-    moderatorStates
+  const [moderatorStates, setModeratorStates] =
+    React.useState<IModeratorStateValues>({
+      isAddModal: false,
+      isSnackbar: false,
+      isEditModal: false,
+      selectedItem: null,
+      filteredData: null,
+      isRemoveModal: false,
+      newModeratorName: '',
+      isDetailsModal: false,
+      isConfirmation: false,
+      isInactiveAdmins: false,
+    })
 
+  const {
+    isAddModal,
+    isEditModal,
+    selectedItem,
+    isConfirmation,
+    isDetailsModal,
+  } = moderatorStates
+
+  //fiter moderators
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      const filteredRes = Api.admin.filterAdmins(searchValue, moderators)
+      setModeratorStates({
+        ...moderatorStates,
+        filteredData: filteredRes,
+      })
+    } else {
+      setModeratorStates((prevState) => ({
+        ...prevState,
+        filteredData: null,
+      }))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
+
+  //get single user
   const { data: user, isLoading } = useGetSingleUser({
     id: id as string,
     fxn: Api.auth.getUserProfile,
@@ -47,8 +82,8 @@ const useModerator = () => {
   React.useEffect(() => {
     if ((user && isCurrentUserRoute) || isDetailsModal) {
       methods.reset({
-        job: user.role,
         email: user.email,
+        jobTitle: user.role,
         phone: user.phoneNumber,
         lastName: user.lastName,
         firstName: user.firstName,
@@ -101,7 +136,7 @@ const useModerator = () => {
     navigate('/moderator/' + item.id, { state: { user: { ...item } } })
   }
 
-  const onGoBack = (path: any) => {
+  const onGoBack = (path: string | number) => {
     navigate(path)
   }
 
@@ -134,14 +169,23 @@ const useModerator = () => {
     isLoading: onUpdateLoading,
   } = useMutation(Api.admin.updateAdminViaCloudFunction, {
     onSuccess: () => {
-      queryClient.invalidateQueries('getSingleAdmin')
-      dispatch(
-        updateUser({
-          ...user,
-          ...methods.getValues(),
-          role: methods.getValues().job,
+      if (isEditModal) {
+        queryClient.invalidateQueries('getAdmins')
+        setModeratorStates({
+          ...moderatorStates,
+          selectedItem: null,
         })
-      )
+      } else {
+        queryClient.invalidateQueries('getSingleAdmin')
+        dispatch(
+          updateUser({
+            ...user,
+            ...methods.getValues(),
+            role: methods.getValues().job,
+          })
+        )
+      }
+
       setModeratorStates({
         ...moderatorStates,
         isAddModal: false,
@@ -166,12 +210,21 @@ const useModerator = () => {
   const { mutate: onDeleteModerator_, isLoading: onDelLoading } = useMutation(
     Api.admin.deleteAdmin,
     {
-      onSuccess: () => modalToggler('isConfirmation', false),
+      onSuccess: () => {
+        queryClient.invalidateQueries('getAdmins')
+        modalToggler('isConfirmation', false)
+      },
       onError: (error) => console.log(error),
     }
   )
 
-  const onSubmit = (data: any) => {
+  //reset password
+  const { mutate: onResetPassword_ } = useMutation(Api.auth.forgotPassword, {
+    onSuccess: () => console.log('email sent'),
+    onError: () => console.log('Error while sending reset email'),
+  })
+
+  const onSubmit = (data: IModeratorFormValues) => {
     const dataTobeSent = {
       firstName: data['firstName'],
       lastName: data['lastName'],
@@ -194,12 +247,12 @@ const useModerator = () => {
       })
     } else if (isEditModal) {
       onUpdateAdmin({
-        id: user?.uid || '',
+        id: selectedItem?.id || '',
         data: { ...dataTobeSent },
       })
     } else if (isConfirmation) {
       onDeleteModerator_({
-        id: 'IJ2NULfLJEZFWX5XBFzaTbvEd522',
+        id: selectedItem?.id || '',
         data: {
           status: 'inactive',
           reason: methods.watch('reason'),
@@ -221,6 +274,11 @@ const useModerator = () => {
       lastName: item.lastName,
       firstName: item.firstName,
     })
+    setModeratorStates((prev: any) => ({
+      ...prev,
+      selectedItem: item,
+    }))
+
     modalToggler('isEditModal', true)
   }
 
@@ -232,6 +290,10 @@ const useModerator = () => {
       lastName: '',
       firstName: '',
     })
+  }
+
+  const onResetPassword = (item: IModerators) => {
+    onResetPassword_(item.email)
   }
 
   return {
@@ -249,6 +311,7 @@ const useModerator = () => {
     moderatorStates,
     onUpdateDetails,
     onUpdateLoading,
+    onResetPassword,
     setModeratorStates,
   }
 }

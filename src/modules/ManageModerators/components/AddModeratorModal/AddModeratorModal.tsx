@@ -1,6 +1,7 @@
 import React from 'react'
 import { FONTS } from '@vgl/constants'
 import 'react-phone-input-2/lib/style.css'
+import { IModeratorFormValues } from '@vgl/types'
 import { Controller, FormProvider } from 'react-hook-form'
 import { Box, Button, Link, Typography } from '@mui/material'
 import {
@@ -18,7 +19,7 @@ interface AddModeratorModalProps {
   buttonText?: string
   onCancel?: () => void
   onRemove?: () => void
-  onSubmit: (data: unknown) => void
+  onSubmit: (data: IModeratorFormValues) => void
 }
 
 const AddModeratorModal = (props: AddModeratorModalProps) => {
