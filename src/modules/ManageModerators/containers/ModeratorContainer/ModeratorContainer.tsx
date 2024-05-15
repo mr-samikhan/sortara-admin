@@ -11,6 +11,7 @@ import {
   RemoveConfirmModal,
   ViewInActiveModal,
 } from '@vgl/modules'
+import { IModerators } from 'types/AllTypes'
 
 const ModeratorContainer = () => {
   const { moderators, moderatorsLoading } = useGetModerators({})
@@ -41,6 +42,13 @@ const ModeratorContainer = () => {
 
   if (moderatorsLoading) return <MuiLoader />
 
+  const moderators_ =
+    moderators?.filter((item) => item.status === 'Active') || []
+
+  const filteredData_ = filteredData?.filter(
+    (item: IModerators) => item.status === 'Active'
+  )
+
   return (
     <AppLayout isHeader isSearchTextField isSidebar>
       <ModeratorHeader
@@ -48,7 +56,7 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
-        data={filteredData || moderators}
+        data={filteredData_ || moderators_}
         onSingleItem={onRowClick}
         onUpdateDetails={onUpdateDetails}
         onResetPassword={onResetPassword}
@@ -131,6 +139,9 @@ const ModeratorContainer = () => {
           onClose={() => modalToggler('isInactiveAdmins', false)}
         >
           <ViewInActiveModal
+            data={
+              moderators?.filter((item) => item.status === 'inactive') || []
+            }
             onClose={() => modalToggler('isInactiveAdmins', false)}
           />
         </CustomModal>

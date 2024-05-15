@@ -17,6 +17,7 @@ const Api = {
     createAdmin: AdminService.createAdmin,
     updateAdmin: AdminService.updateAdmin,
     filterAdmins: AdminService.filterAdmins,
+    getInActiveAdmins: AdminService.getInActiveAdmins,
     updateAdminViaCloudFunction: AdminService.updateAdminViaCloudFunction,
   },
 }

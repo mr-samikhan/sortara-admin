@@ -8,8 +8,15 @@ export const updateAdmin = () =>
   https.onRequest(async (request: Request, response: Response) => {
     cors(request, response, async () => {
       try {
-        const { id, email, firstName, lastName, role, phoneNumber } =
-          request.body as UpdateAdminDto
+        const {
+          id,
+          email,
+          firstName,
+          lastName,
+          role,
+          phoneNumber,
+          permissions,
+        } = request.body as UpdateAdminDto
 
         if (!email)
           response
@@ -51,6 +58,7 @@ export const updateAdmin = () =>
             firstName,
             lastName,
             updatedAt: new Date(),
+            permissions: permissions || [],
             phoneNumber: phoneNumber || '',
           })
 
