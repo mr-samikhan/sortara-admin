@@ -1,4 +1,7 @@
 import axios from 'axios'
+import { ICurrentUser, IModerators } from '@vgl/types'
+import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
+import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import {
   doc,
   query,
@@ -8,9 +11,6 @@ import {
   firestore,
   collection,
 } from '@vgl/firebase'
-import { ICurrentUser, IModerators } from '@vgl/types'
-import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
-import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 
 class Admin {
   updateAdmin = async (values = { id: '', data: {} }) => {
@@ -65,8 +65,8 @@ class Admin {
         admins.push({
           ...data,
           id: doc.id,
-          role: data.jobTitle || 'N/A',
           userImage: data.userImage || '',
+          role: data.jobTitle || data.role || 'N/A',
           name: `${data.firstName} ${data.lastName}`,
           status: data.status === 'active' ? 'Active' : data.status || 'N/A',
         })
@@ -116,15 +116,16 @@ class Admin {
     }
   }
 
-  filterAdmins = async (search: string, data: IModerators[]) => {
+  filterAdmins = (search: string, data: IModerators[]) => {
     if (!search) return data
     const admins: IModerators[] = []
-    data.forEach((doc: IModerators) => {
+    data.filter((doc: IModerators) => {
       if (
         doc.name.toLowerCase().includes(search.toLowerCase()) ||
         doc.email.toLowerCase().includes(search.toLowerCase()) ||
         doc.role.toLowerCase().includes(search.toLowerCase()) ||
-        doc.status.toLowerCase().includes(search.toLowerCase())
+        doc.status.toLowerCase().includes(search.toLowerCase()) ||
+        doc.phoneNumber.toLowerCase().includes(search.toLowerCase())
       ) {
         admins.push(doc)
       }

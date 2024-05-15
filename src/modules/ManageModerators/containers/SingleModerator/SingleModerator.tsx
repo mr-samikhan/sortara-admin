@@ -36,7 +36,7 @@ const SingleModerator = (props: ISingleModerator) => {
     onUpdateLoading,
     moderatorStates,
     setModeratorStates,
-  } = useModerator()
+  } = useModerator({ moderators: [] })
 
   const { isSnackbar, isDetailsModal } = moderatorStates
 

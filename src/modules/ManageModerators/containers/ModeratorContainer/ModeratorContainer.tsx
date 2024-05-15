@@ -13,6 +13,8 @@ import {
 } from '@vgl/modules'
 
 const ModeratorContainer = () => {
+  const { moderators, moderatorsLoading } = useGetModerators({})
+
   const {
     methods,
     onSubmit,
@@ -24,7 +26,7 @@ const ModeratorContainer = () => {
     clearOutValues,
     onUpdateLoading,
     onResetPassword,
-  } = useModerator()
+  } = useModerator({ moderators: moderators || [] })
   const {
     isAddModal,
     isSnackbar,
@@ -34,9 +36,8 @@ const ModeratorContainer = () => {
     isConfirmation,
     isInactiveAdmins,
     newModeratorName,
+    filteredData,
   } = moderatorStates
-
-  const { moderators, moderatorsLoading } = useGetModerators({})
 
   if (moderatorsLoading) return <MuiLoader />
 
@@ -47,7 +48,7 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
-        data={moderators}
+        data={filteredData || moderators}
         onSingleItem={onRowClick}
         onUpdateDetails={onUpdateDetails}
         onResetPassword={onResetPassword}

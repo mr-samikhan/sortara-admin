@@ -1,10 +1,10 @@
 import React from 'react'
-import { COLORS, FONTS, ROUTES } from '@vgl/constants'
 import MobileHeader from './MobileHeader'
 import { CustomModal } from '@vgl/modules'
 import { useBreakPoints } from '@vgl/hooks'
 import { useNavigate } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
+import { COLORS, FONTS, ROUTES } from '@vgl/constants'
 import { Avatar, Box, Grid, IconButton, Typography } from '@mui/material'
 import { CustomTooltip, LogoutModal, SearchTextField } from '@vgl/components'
 

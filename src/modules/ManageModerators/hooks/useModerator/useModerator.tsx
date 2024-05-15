@@ -1,9 +1,9 @@
-import React from 'react'
 import { Api } from '@vgl/services'
-import { updateUser } from '@vgl/stores'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
 import { useGetSingleUser } from '@vgl/hooks'
+import { RootState, updateUser } from '@vgl/stores'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQueryClient } from 'react-query'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
@@ -12,39 +12,63 @@ import {
   IModeratorStateValues,
 } from '@vgl/types'
 
-const useModerator = () => {
-  const navigate = useNavigate()
+interface IUseModerator {
+  moderators: IModerators[] | undefined
+}
+
+const useModerator = (props: IUseModerator) => {
+  const { moderators } = props || {}
 
   const { id } = useParams()
-
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
   const queryClient = useQueryClient()
 
-  const { pathname } = useLocation()
-
   const isCurrentUserRoute = pathname.startsWith('/admin')
+
+  const { searchValue } = useSelector((state: RootState) => state.context)
 
   const [moderatorStates, setModeratorStates] =
     React.useState<IModeratorStateValues>({
       isAddModal: false,
       isSnackbar: false,
       isEditModal: false,
-      newModeratorName: '',
+      selectedItem: null,
+      filteredData: null,
       isRemoveModal: false,
+      newModeratorName: '',
       isDetailsModal: false,
       isConfirmation: false,
       isInactiveAdmins: false,
-      selectedItem: null,
     })
 
   const {
     isAddModal,
     isEditModal,
-    isDetailsModal,
-    isConfirmation,
     selectedItem,
+    isConfirmation,
+    isDetailsModal,
   } = moderatorStates
 
+  //fiter moderators
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      const filteredRes = Api.admin.filterAdmins(searchValue, moderators)
+      setModeratorStates({
+        ...moderatorStates,
+        filteredData: filteredRes,
+      })
+    } else {
+      setModeratorStates((prevState) => ({
+        ...prevState,
+        filteredData: null,
+      }))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
+
+  //get single user
   const { data: user, isLoading } = useGetSingleUser({
     id: id as string,
     fxn: Api.auth.getUserProfile,
@@ -58,8 +82,8 @@ const useModerator = () => {
   React.useEffect(() => {
     if ((user && isCurrentUserRoute) || isDetailsModal) {
       methods.reset({
-        job: user.role,
         email: user.email,
+        jobTitle: user.role,
         phone: user.phoneNumber,
         lastName: user.lastName,
         firstName: user.firstName,
@@ -112,7 +136,7 @@ const useModerator = () => {
     navigate('/moderator/' + item.id, { state: { user: { ...item } } })
   }
 
-  const onGoBack = (path: string) => {
+  const onGoBack = (path: string | number) => {
     navigate(path)
   }
 
