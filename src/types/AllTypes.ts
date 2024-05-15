@@ -45,6 +45,7 @@ export type ICurrentUser = {
   lastName?: string
   phoneNumber?: string
   createdAt: ICreatedAt
+  permissions?: string[]
   isPhoneVerified?: boolean
   isPrivacypolicyAccepted?: boolean
 }
@@ -71,9 +72,11 @@ export type IModerators = {
   status: string
   jobTitle: string
   lastName: string
+  reason?: string
   userImage: string
   firstName: string
   phoneNumber: string
+  permissions?: string[]
 }
 
 export type IModeratorFormValues = {

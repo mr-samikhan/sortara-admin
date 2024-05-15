@@ -40,6 +40,7 @@ class Admin {
           lastName: data_.lastName,
           firstName: data_.firstName,
           phoneNumber: data_.phoneNumber,
+          permissions: data_.permissions,
         }
       )
       // console.log('updated', data)
@@ -61,13 +62,14 @@ class Admin {
       )
       querySnapshot.forEach((doc: DocumentSnapshot<DocumentData>) => {
         const data = doc.data() as IModerators
-        if (data.status === 'inactive') return
+        // if (data.status === 'inactive') return
         admins.push({
           ...data,
           id: doc.id,
           userImage: data.userImage || '',
           role: data.jobTitle || data.role || 'N/A',
           name: `${data.firstName} ${data.lastName}`,
+          permissions: data.permissions || [],
           status: data.status === 'active' ? 'Active' : data.status || 'N/A',
         })
       })
@@ -132,6 +134,34 @@ class Admin {
     })
 
     return admins
+  }
+
+  getInActiveAdmins = async (): Promise<IModerators[]> => {
+    try {
+      const admins: IModerators[] = []
+      const querySnapshot = await getDocs(
+        query(
+          collection(firestore, COLLECTIONS.ADMIN),
+          orderBy('createdAt', 'desc')
+        )
+      )
+      querySnapshot.forEach((doc: DocumentSnapshot<DocumentData>) => {
+        const data = doc.data() as IModerators
+        if (data.status === 'active' || data.status === 'Active') return
+        admins.push({
+          ...data,
+          id: doc.id,
+          reason: data.reason || 'N/A',
+          userImage: data.userImage || '',
+          role: data.jobTitle || data.role || 'N/A',
+          name: `${data.firstName} ${data.lastName}`,
+        })
+      })
+      return admins
+    } catch (error: any) {
+      const errorMessage = getErrorMessage(error)
+      throw errorMessage
+    }
   }
 }
 

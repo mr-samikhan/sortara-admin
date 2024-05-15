@@ -1,21 +1,24 @@
 import React from 'react'
 import { COLORS } from '@vgl/constants'
+import { IModerators } from '@vgl/types'
+import { NoRecordFound } from '@vgl/components'
 import { Box, Link, Typography } from '@mui/material'
 
 interface ViewInActiveModalProps {
   onClose: () => void
+  data: IModerators[] | undefined
 }
 
 const ViewInActiveModal = (props: ViewInActiveModalProps) => {
-  const { onClose } = props
+  const { onClose, data } = props
   return (
     <React.Fragment>
       <Box width="100%">
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
           mb={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
         >
           <Typography variant="body2" fontWeight={400}>
             In-Active Admins
@@ -32,12 +35,13 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
           </Box>
         </Box>
         <Box maxHeight={450} overflow="auto">
-          {[0, 1, 2, 3].map((index) => (
+          <NoRecordFound data={data} />
+          {data?.map((item, index) => (
             <Box
-              key={index}
               mt={1}
               m="auto"
               width={352}
+              key={index}
               display="flex"
               alignItems="center"
               flexDirection="column"
@@ -57,7 +61,7 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
                   />
                   <Box>
                     <Typography textAlign="start" variant="body2">
-                      Emily Johnson
+                      {item.name}
                     </Typography>
                     <Typography
                       textAlign="start"
@@ -65,26 +69,34 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
                       fontWeight={400}
                       color="#4D4D4D"
                     >
-                      Network Administrator
+                      {item.role}
                     </Typography>
                     <Typography
                       textAlign="start"
                       fontSize={18}
                       fontWeight={400}
                     >
-                      email@example.com
+                      {item.email}
                     </Typography>
                   </Box>
                 </Box>
               </Box>
               <Typography
-                my={1}
+                mt={1}
                 width="100%"
                 variant="body2"
                 fontWeight={400}
                 textAlign="start"
               >
                 Note for account termination:
+              </Typography>
+              <Typography
+                width="100%"
+                variant="body2"
+                fontWeight={400}
+                textAlign="start"
+              >
+                {item.reason}
               </Typography>
               <Box
                 width={352}

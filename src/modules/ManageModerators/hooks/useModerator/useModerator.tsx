@@ -87,6 +87,8 @@ const useModerator = (props: IUseModerator) => {
         phone: user.phoneNumber,
         lastName: user.lastName,
         firstName: user.firstName,
+        admin: user.permissions?.includes('admin'),
+        moderator: user.permissions?.includes('moderator'),
       })
     }
   }, [user, isCurrentUserRoute, methods, isDetailsModal])
@@ -220,7 +222,10 @@ const useModerator = (props: IUseModerator) => {
 
   //reset password
   const { mutate: onResetPassword_ } = useMutation(Api.auth.forgotPassword, {
-    onSuccess: () => console.log('email sent'),
+    onSuccess: () =>
+      alert(
+        'Reset email sent successfully.Check your mail for further instruction.'
+      ),
     onError: () => console.log('Error while sending reset email'),
   })
 
@@ -273,7 +278,10 @@ const useModerator = (props: IUseModerator) => {
       phone: item.phoneNumber,
       lastName: item.lastName,
       firstName: item.firstName,
+      admin: item.permissions?.includes('admin'),
+      moderator: item.permissions?.includes('moderator'),
     })
+    setPermissions(item.permissions || [])
     setModeratorStates((prev: any) => ({
       ...prev,
       selectedItem: item,

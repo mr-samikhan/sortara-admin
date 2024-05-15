@@ -16,4 +16,5 @@ export interface UpdateAdminDto {
   firstName: string
   lastName: string
   phoneNumber?: string
+  permissions?: string[]
 }
