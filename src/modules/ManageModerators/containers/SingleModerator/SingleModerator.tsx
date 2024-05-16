@@ -1,8 +1,8 @@
 import { AppLayout } from '@vgl/layout'
+import { ROUTES } from '@vgl/constants'
 import { ICurrentUser } from '@vgl/types'
 import { useLocation } from 'react-router-dom'
 import { Box, Grid, Typography } from '@mui/material'
-import { ACTIVITY_DATA, ROUTES } from '@vgl/constants'
 import { formatFirebaseTimestamp } from '@vgl/helpers'
 import {
   MuiLoader,
@@ -33,12 +33,13 @@ const SingleModerator = (props: ISingleModerator) => {
     onGoBack,
     onSubmit,
     isLoading,
+    singleUser,
     onUpdateLoading,
     moderatorStates,
     setModeratorStates,
   } = useModerator({ moderators: [] })
 
-  const { isSnackbar, isDetailsModal } = moderatorStates
+  const { isSnackbar, isDetailsModal, filteredData } = moderatorStates
 
   if (isLoading) {
     return <MuiLoader />
@@ -91,7 +92,7 @@ const SingleModerator = (props: ISingleModerator) => {
             />
           </Box>
           <Box>
-            <ActivityList data={ACTIVITY_DATA} />
+            <ActivityList data={filteredData || singleUser?.activities || []} />
           </Box>
           {isDetailsModal && (
             <CustomModal

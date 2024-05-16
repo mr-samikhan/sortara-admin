@@ -1,10 +1,18 @@
 import axios from 'axios'
-import { ICurrentUser, IModerators } from '@vgl/types'
+import { format } from 'date-fns'
 import { COLLECTIONS, getErrorMessage } from '@vgl/constants'
 import { DocumentData, DocumentSnapshot } from 'firebase/firestore'
 import {
+  IActivity,
+  IModerators,
+  ICurrentUser,
+  ICurrentStatus,
+} from '@vgl/types'
+import {
   doc,
   query,
+  where,
+  getDoc,
   getDocs,
   orderBy,
   updateDoc,
@@ -67,13 +75,64 @@ class Admin {
           ...data,
           id: doc.id,
           userImage: data.userImage || '',
+          permissions: data.permissions || [],
           role: data.jobTitle || data.role || 'N/A',
           name: `${data.firstName} ${data.lastName}`,
-          permissions: data.permissions || [],
-          status: data.status === 'active' ? 'Active' : data.status || 'N/A',
+          status: data.currentStatus?.status || 'N/A',
         })
       })
       return admins
+    } catch (error: any) {
+      const errorMessage = getErrorMessage(error)
+      throw errorMessage
+    }
+  }
+
+  getAdmin = async (id: string): Promise<IModerators> => {
+    try {
+      const adminDoc = await getDoc(doc(firestore, COLLECTIONS.ADMIN, id))
+      if (adminDoc.exists()) {
+        const adminData = adminDoc.data()
+
+        // Fetch related activities
+        const activitiesQuery = query(
+          collection(firestore, COLLECTIONS.ADMIN_ACTIVITIES),
+          where('adminId', '==', id)
+        )
+        const activitiesSnapshot = await getDocs(activitiesQuery)
+        const activities: IActivity[] = activitiesSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          ref: doc.data().ref || '',
+          url: doc.data().url || '',
+          title: doc.data().title || '',
+          createdAt: format(
+            new Date(doc.data().createdAt.toDate()),
+            "MMMM do, yyyy 'at' h:mm a 'EST'"
+          ) as any,
+        })) as IActivity[]
+
+        return {
+          ...adminData,
+          activities,
+          id: adminDoc.id,
+          email: adminData.email || 'N/A',
+          userImage: adminData.userImage || '',
+          jobTitle: adminData.jobTitle || 'N/A',
+          lastName: adminData.lastName || 'N/A',
+          firstName: adminData.firstName || 'N/A',
+          permissions: adminData.permissions || [],
+          phoneNumber: adminData.phoneNumber || 'N/A',
+          role: adminData.jobTitle || adminData.role || 'N/A',
+          name: `${adminData.firstName} ${adminData.lastName}`,
+          status:
+            adminData.status === 'active'
+              ? 'Active'
+              : adminData.status || 'N/A',
+        }
+      } else {
+        throw new Error('user/not-found')
+      }
     } catch (error: any) {
       const errorMessage = getErrorMessage(error)
       throw errorMessage
@@ -84,7 +143,7 @@ class Admin {
     const { data: data_ } = values as { data: ICurrentUser }
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_FIREBASE_LOCAL_URL}/createAdmin`,
+        `${import.meta.env.VITE_FIREBASE_URL}/createAdmin`,
         { ...data_ }
       )
       return data
@@ -100,13 +159,13 @@ class Admin {
   }: {
     id: string
     data: {
-      status: string
       reason: string
+      currentStatus: ICurrentStatus
     }
   }) => {
     try {
       // const { data } = await axios.post(
-      //   `${import.meta.env.VITE_FIREBASE_LOCAL_URL}/deleteAdmin`,
+      //   `${import.meta.env.VITE_FIREBASE_URL}/deleteAdmin`,
       //   { id }
       // )
       // return data
@@ -118,16 +177,18 @@ class Admin {
     }
   }
 
-  filterAdmins = (search: string, data: IModerators[]) => {
+  filterAdmins = (search: string, data: IModerators[] | undefined) => {
     if (!search) return data
     const admins: IModerators[] = []
-    data.filter((doc: IModerators) => {
+    data?.filter((doc: IModerators) => {
       if (
-        doc.name.toLowerCase().includes(search.toLowerCase()) ||
-        doc.email.toLowerCase().includes(search.toLowerCase()) ||
-        doc.role.toLowerCase().includes(search.toLowerCase()) ||
-        doc.status.toLowerCase().includes(search.toLowerCase()) ||
-        doc.phoneNumber.toLowerCase().includes(search.toLowerCase())
+        doc.name?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.email?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.role?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.status?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.phoneNumber?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.title?.toLowerCase().includes(search.toLowerCase()) ||
+        doc.description?.toLowerCase().includes(search.toLowerCase())
       ) {
         admins.push(doc)
       }

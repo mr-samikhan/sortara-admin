@@ -1,5 +1,6 @@
 import { AppLayout } from '@vgl/layout'
 import { COLORS } from '@vgl/constants'
+import { IModerators } from 'types/AllTypes'
 import { useGetModerators } from '@vgl/hooks'
 import { MuiCustomSnackbar, MuiLoader } from '@vgl/components'
 import {
@@ -11,7 +12,6 @@ import {
   RemoveConfirmModal,
   ViewInActiveModal,
 } from '@vgl/modules'
-import { IModerators } from 'types/AllTypes'
 
 const ModeratorContainer = () => {
   const { moderators, moderatorsLoading } = useGetModerators({})
@@ -32,21 +32,21 @@ const ModeratorContainer = () => {
     isAddModal,
     isSnackbar,
     isEditModal,
+    filteredData,
     selectedItem,
     isRemoveModal,
     isConfirmation,
     isInactiveAdmins,
     newModeratorName,
-    filteredData,
   } = moderatorStates
 
   if (moderatorsLoading) return <MuiLoader />
 
   const moderators_ =
-    moderators?.filter((item) => item.status === 'Active') || []
+    moderators?.filter((item) => item.currentStatus?.status === 'active') || []
 
   const filteredData_ = filteredData?.filter(
-    (item: IModerators) => item.status === 'Active'
+    (item: IModerators) => item.currentStatus?.status === 'active'
   )
 
   return (
@@ -56,10 +56,10 @@ const ModeratorContainer = () => {
         onViewInactiveAdmins={() => modalToggler('isInactiveAdmins', true)}
       />
       <ModeratorCard
-        data={filteredData_ || moderators_}
         onSingleItem={onRowClick}
         onUpdateDetails={onUpdateDetails}
         onResetPassword={onResetPassword}
+        data={filteredData_ || moderators_}
       />
       {isAddModal && (
         <CustomModal
@@ -140,7 +140,9 @@ const ModeratorContainer = () => {
         >
           <ViewInActiveModal
             data={
-              moderators?.filter((item) => item.status === 'inactive') || []
+              moderators?.filter(
+                (item) => item.currentStatus?.status === 'inactive'
+              ) || []
             }
             onClose={() => modalToggler('isInactiveAdmins', false)}
           />

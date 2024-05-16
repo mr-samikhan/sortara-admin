@@ -82,7 +82,7 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
                 </Box>
               </Box>
               <Typography
-                mt={1}
+                my={1}
                 width="100%"
                 variant="body2"
                 fontWeight={400}
@@ -90,14 +90,14 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
               >
                 Note for account termination:
               </Typography>
-              <Typography
+              {/* <Typography
                 width="100%"
                 variant="body2"
                 fontWeight={400}
                 textAlign="start"
               >
                 {item.reason}
-              </Typography>
+              </Typography> */}
               <Box
                 width={352}
                 borderRadius="4px"
@@ -111,7 +111,7 @@ const ViewInActiveModal = (props: ViewInActiveModalProps) => {
                   fontWeight={400}
                   color={COLORS.grey.dark}
                 >
-                  Contract ended on 12/12/2023
+                  {item.reason}
                 </Typography>
               </Box>
             </Box>

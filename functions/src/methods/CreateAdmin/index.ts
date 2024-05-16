@@ -17,6 +17,8 @@ export const createAdmin = () =>
           firstName,
           phoneNumber,
           permissions,
+          currentStatus,
+          statusHistory,
         } = request.body as CreateAdminDto
 
         if (!email)
@@ -64,6 +66,8 @@ export const createAdmin = () =>
             firstName,
             phoneNumber,
             uid: user.uid,
+            statusHistory,
+            currentStatus,
             joinedAt: new Date(),
             createdAt: new Date(),
             permissions: permissions || [],

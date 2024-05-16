@@ -16,6 +16,8 @@ export const updateAdmin = () =>
           role,
           phoneNumber,
           permissions,
+          currentStatus,
+          statusHistory,
         } = request.body as UpdateAdminDto
 
         if (!email)
@@ -57,6 +59,8 @@ export const updateAdmin = () =>
             email,
             firstName,
             lastName,
+            currentStatus,
+            statusHistory,
             updatedAt: new Date(),
             permissions: permissions || [],
             phoneNumber: phoneNumber || '',
