@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore'
+
 export type ILoginForm = {
   email: string
   password: string
@@ -64,19 +66,29 @@ export type ILoginValues = {
   confirmationObj: object
 }
 
+export type ICurrentStatus = {
+  date: Timestamp
+  status: 'pending' | 'active' | 'inactive'
+}
+
 export type IModerators = {
   id: string
   name: string
   role: string
   email: string
   status: string
+  title?: string
   jobTitle: string
   lastName: string
   reason?: string
   userImage: string
   firstName: string
   phoneNumber: string
+  description?: string
   permissions?: string[]
+  activities?: IActivity[]
+  currentStatus?: ICurrentStatus
+  statusHistory?: ICurrentStatus[]
 }
 
 export type IModeratorFormValues = {
@@ -100,4 +112,15 @@ export type IModeratorStateValues = {
   newModeratorName: string
   isInactiveAdmins: boolean
   selectedItem: IModeratorFormValues | null
+}
+
+export type IActivity = {
+  id: string
+  ref: string
+  url: string
+  title: string
+  activity: string
+  collection: string
+  description: string
+  createdAt: ICreatedAt
 }

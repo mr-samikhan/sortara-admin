@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase-admin/firestore'
+
 export interface CreateAdminDto {
   role: string
   email: string
@@ -7,6 +9,14 @@ export interface CreateAdminDto {
   jobTitle?: string
   phoneNumber?: string
   permissions?: string[]
+  currentStatus?: {
+    date: Timestamp
+    status: 'active' | 'inactive' | 'pending'
+  }
+  statusHistory?: {
+    date: Timestamp
+    status: 'active' | 'inactive' | 'pending'
+  }[]
 }
 
 export interface UpdateAdminDto {
@@ -17,4 +27,12 @@ export interface UpdateAdminDto {
   lastName: string
   phoneNumber?: string
   permissions?: string[]
+  currentStatus?: {
+    date: Timestamp
+    status: 'active' | 'inactive' | 'pending'
+  }
+  statusHistory?: {
+    date: Timestamp
+    status: 'active' | 'inactive' | 'pending'
+  }[]
 }

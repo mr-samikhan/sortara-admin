@@ -114,10 +114,12 @@ const ModeratorCard = (props: ModeratorCardProps) => {
                 component={Chip}
                 fontWeight={400}
                 borderRadius="4px"
-                label={item.status}
                 fontSize={{ xs: 15, md: 20 }}
+                label={item.status === 'active' ? 'Active' : item.status}
                 bgcolor={
-                  item.status === 'Active' ? 'success.main' : COLORS.warning
+                  item.status === 'active' || item.status === 'Active'
+                    ? 'success.main'
+                    : COLORS.warning
                 }
               />
             </Box>

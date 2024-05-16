@@ -1,7 +1,8 @@
 const COLLECTIONS = {
-  ADMIN: 'admins',
-  USERS: 'users',
   ADS: 'ads',
+  USERS: 'users',
+  ADMIN: 'admins',
+  ADMIN_ACTIVITIES: 'admin-activities',
 }
 
 export default COLLECTIONS

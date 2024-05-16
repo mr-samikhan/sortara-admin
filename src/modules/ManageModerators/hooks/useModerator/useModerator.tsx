@@ -2,6 +2,7 @@ import { Api } from '@vgl/services'
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useGetSingleUser } from '@vgl/hooks'
+import { Timestamp } from 'firebase/firestore'
 import { RootState, updateUser } from '@vgl/stores'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQueryClient } from 'react-query'
@@ -54,7 +55,10 @@ const useModerator = (props: IUseModerator) => {
   //fiter moderators
   useEffect(() => {
     if (searchValue.length > 0) {
-      const filteredRes = Api.admin.filterAdmins(searchValue, moderators)
+      const filteredRes = Api.admin.filterAdmins(
+        searchValue,
+        id ? user?.activities : moderators
+      )
       setModeratorStates({
         ...moderatorStates,
         filteredData: filteredRes,
@@ -71,7 +75,7 @@ const useModerator = (props: IUseModerator) => {
   //get single user
   const { data: user, isLoading } = useGetSingleUser({
     id: id as string,
-    fxn: Api.auth.getUserProfile,
+    fxn: Api.admin.getAdmin,
     refetchLabel: 'getSingleAdmin',
   })
 
@@ -147,6 +151,7 @@ const useModerator = (props: IUseModerator) => {
     Api.admin.createAdmin,
     {
       onSuccess: () => {
+        queryClient.invalidateQueries('getAdmins')
         setModeratorStates({
           ...moderatorStates,
           isAddModal: false,
@@ -231,12 +236,14 @@ const useModerator = (props: IUseModerator) => {
 
   const onSubmit = (data: IModeratorFormValues) => {
     const dataTobeSent = {
-      firstName: data['firstName'],
-      lastName: data['lastName'],
+      statusHistory: [],
       email: data['email'],
-      phoneNumber: data['phone'],
       role: data['jobTitle'],
+      lastName: data['lastName'],
+      phoneNumber: data['phone'],
+      firstName: data['firstName'],
       permissions: permissions || [],
+      // currentStatus: { date: new Date(), status: 'active' },
     }
 
     if (isAddModal) {
@@ -244,10 +251,12 @@ const useModerator = (props: IUseModerator) => {
         data: {
           ...data,
           role: 'Moderator',
+          statusHistory: [],
           password: 'Abcd@123',
           jobTitle: data['jobTitle'],
           phoneNumber: data['phone'],
           permissions: permissions || [],
+          currentStatus: { date: new Date(), status: 'active' },
         },
       })
     } else if (isEditModal) {
@@ -259,8 +268,8 @@ const useModerator = (props: IUseModerator) => {
       onDeleteModerator_({
         id: selectedItem?.id || '',
         data: {
-          status: 'inactive',
           reason: methods.watch('reason'),
+          currentStatus: { date: Timestamp.now(), status: 'inactive' },
         },
       })
     } else if (isCurrentUserRoute || isDetailsModal) {
@@ -318,6 +327,7 @@ const useModerator = (props: IUseModerator) => {
     clearOutValues,
     moderatorStates,
     onUpdateDetails,
+    singleUser: user,
     onUpdateLoading,
     onResetPassword,
     setModeratorStates,
