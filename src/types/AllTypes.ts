@@ -124,3 +124,27 @@ export type IActivity = {
   description: string
   createdAt: ICreatedAt
 }
+
+export type IAds = {
+  id: string
+  url: string
+  title: string
+  isLive: boolean
+  location: string
+  createdBy: string
+  buttons: string[]
+  endDate: string
+  createdAt: string
+  startDate: string
+  priorityRanking: string
+  imageUrls: {
+    web: string
+    mobile: string
+    tablet: string
+  }
+  targetUsers: {
+    city: string
+    state: string
+    country: string
+  }
+}

@@ -1,22 +1,15 @@
 import React from 'react'
+import { IAds } from '@vgl/types'
 import { COLORS, FONTS } from '@vgl/constants'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 
-interface AdsData {
-  rank: string
-  status: string
-  location: string
-  endDate?: string
-  startDate?: string
-  advertisementTitle: string
-}
 interface AdsProps {
+  data: IAds[]
   title?: string
-  data: AdsData[]
   hideCloneIcon?: boolean
-  onEdit?: (item: any) => void
-  onClone?: (item: any) => void
-  onRowClick?: (item: any) => void
+  onEdit?: (item: IAds) => void
+  onClone?: (item: IAds) => void
+  onRowClick?: (item: IAds) => void
 }
 
 const Ads = (props: AdsProps) => {
@@ -38,7 +31,7 @@ const Ads = (props: AdsProps) => {
       <Box display="flex" flexDirection="column" gap={2}>
         {data.map(
           (
-            { advertisementTitle, location, rank, startDate, endDate, status },
+            { title, location, priorityRanking, startDate, endDate, isLive },
             index
           ) => (
             <React.Fragment key={index}>
@@ -55,7 +48,7 @@ const Ads = (props: AdsProps) => {
                   alignItems="center"
                 >
                   <Typography fontSize={24} fontWeight={500}>
-                    {advertisementTitle}
+                    {title}
                   </Typography>
                   <Box display="flex" gap={2}>
                     <IconButton onClick={() => onEdit && onEdit(data[index])}>
@@ -78,7 +71,7 @@ const Ads = (props: AdsProps) => {
                     {location}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
-                    {rank}
+                    {priorityRanking}
                   </Typography>
                   <Typography variant="body2" fontWeight={400}>
                     {startDate} to {endDate}
@@ -88,7 +81,7 @@ const Ads = (props: AdsProps) => {
                       Status:
                     </Typography>
                     <Typography variant="body2" fontWeight={400}>
-                      {status}
+                      {isLive ? 'Active' : 'Inactive'}
                     </Typography>
                   </Box>
                 </Box>

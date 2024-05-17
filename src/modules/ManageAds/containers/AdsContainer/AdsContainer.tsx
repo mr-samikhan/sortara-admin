@@ -1,12 +1,17 @@
+import { useGetAds } from '@vgl/hooks'
 import { AppLayout } from '@vgl/layout'
 import { Ads, useAds } from '@vgl/modules'
 import { Box, Button } from '@mui/material'
 import { ADS_DATA, ROUTES } from '@vgl/constants'
-import { MuiCustomSnackbar } from '@vgl/components'
+import { MuiCustomSnackbar, MuiLoader } from '@vgl/components'
 
 const AdsContainer = () => {
   const { navigate, onPressEdit, onModalToggle, adValues } = useAds()
   const { isSnackbar } = adValues || {}
+
+  const { ads, adsLoading } = useGetAds({})
+
+  if (adsLoading) return <MuiLoader />
 
   return (
     <AppLayout isHeader isSidebar isSearchTextField navigationText="Manage Ads">
@@ -24,14 +29,14 @@ const AdsContainer = () => {
         <Ads
           title="Live Ads"
           onEdit={onPressEdit}
-          data={ADS_DATA.slice(0, 1)}
+          data={ads || []}
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])
             onModalToggle('isSnackbar', true)
           }}
         />
         <Ads
-          data={ADS_DATA}
+          data={ads || []}
           title="Scheduled Ads"
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])
@@ -39,7 +44,7 @@ const AdsContainer = () => {
           }}
         />
         <Ads
-          data={ADS_DATA.slice(0, 1)}
+          data={ads || []}
           title="Archived"
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])

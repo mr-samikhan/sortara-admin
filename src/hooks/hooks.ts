@@ -1,5 +1,6 @@
 export * from './useSteps'
 export * from './useAuth/useAuth'
+export * from './useGetAds/useGetAds'
 export * from './useNavigation/useNavigation'
 export * from './usePagination/usePagination'
 export * from './useBreakpoints/useBreakpoints'

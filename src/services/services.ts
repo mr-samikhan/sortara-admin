@@ -1,4 +1,5 @@
 import { AuthService } from './auth.service'
+import { AdsServices } from './ads.services'
 import { AdminService } from './admin.services'
 
 const Api = {
@@ -20,6 +21,9 @@ const Api = {
     filterAdmins: AdminService.filterAdmins,
     getInActiveAdmins: AdminService.getInActiveAdmins,
     updateAdminViaCloudFunction: AdminService.updateAdminViaCloudFunction,
+  },
+  ads: {
+    getAds: AdsServices.getAds,
   },
 }
 export { Api }
