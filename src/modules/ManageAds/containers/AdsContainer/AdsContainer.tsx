@@ -29,23 +29,23 @@ const AdsContainer = () => {
         <Ads
           title="Live Ads"
           onEdit={onPressEdit}
-          data={ads || []}
+          data={ads?.filter((item) => item.isLive) || []}
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])
             onModalToggle('isSnackbar', true)
           }}
         />
         <Ads
-          data={ads || []}
           title="Scheduled Ads"
+          data={ads?.filter((item) => !item.isLive) || []}
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])
             onModalToggle('isSnackbar', true)
           }}
         />
         <Ads
-          data={ads || []}
           title="Archived"
+          data={ads?.filter((item) => item.isArchive) || []}
           onClone={() => {
             ADS_DATA.push(ADS_DATA[0])
             onModalToggle('isSnackbar', true)

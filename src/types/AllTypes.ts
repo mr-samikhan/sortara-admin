@@ -130,12 +130,13 @@ export type IAds = {
   url: string
   title: string
   isLive: boolean
+  endDate: string
   location: string
   createdBy: string
   buttons: string[]
-  endDate: string
   createdAt: string
   startDate: string
+  isArchive: boolean
   priorityRanking: string
   imageUrls: {
     web: string

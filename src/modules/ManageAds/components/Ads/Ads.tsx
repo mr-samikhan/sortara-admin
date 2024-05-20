@@ -2,6 +2,7 @@ import React from 'react'
 import { IAds } from '@vgl/types'
 import { COLORS, FONTS } from '@vgl/constants'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
+import { NoRecordFound } from '@vgl/components'
 
 interface AdsProps {
   data: IAds[]
@@ -28,6 +29,7 @@ const Ads = (props: AdsProps) => {
           {title}
         </Typography>
       </Box>
+      <NoRecordFound data={data} />
       <Box display="flex" flexDirection="column" gap={2}>
         {data.map(
           (

@@ -24,6 +24,7 @@ const Api = {
   },
   ads: {
     getAds: AdsServices.getAds,
+    createAd: AdsServices.createAd,
   },
 }
 export { Api }
