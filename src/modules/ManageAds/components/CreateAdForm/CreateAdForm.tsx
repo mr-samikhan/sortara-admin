@@ -11,6 +11,7 @@ import {
   CustomDropdown,
   CustomTextField,
   CustomAutoComplete,
+  DateRangeInput,
 } from '@vgl/components'
 import {
   FONTS,
@@ -33,7 +34,7 @@ const CreateAdForm = (props: CreateAdFormProps) => {
 
   const { state } = useLocation()
 
-  const { adValues, setAdValues } = useAds()
+  const { adValues, setAdValues, isLoading } = useAds()
 
   const { mobileMode } = useBreakPoints()
 
@@ -130,11 +131,12 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                   name="website"
                   placeholder="Website URL"
                 />
-                <CustomTextField
+                {/* <CustomTextField
                   fullWidth
                   name="start-end-date"
                   placeholder="Start Date (mm/dd/year)  - End Date (mm/dd/year )"
-                />
+                /> */}
+                <DateRangeInput />
                 <Controller
                   name="rank"
                   defaultValue=""
@@ -185,12 +187,13 @@ const CreateAdForm = (props: CreateAdFormProps) => {
                     borderRadius="16px"
                     variant="contained"
                     bgcolor={COLORS.pear}
+                    disabled={isLoading}
                     sx={{
                       color: COLORS.black.main,
                     }}
                     startIcon={<img src="/assets/icons/save-alt.svg" />}
                   >
-                    Save
+                    {isLoading ? 'Loading...' : 'Save'}
                   </Box>
                 </Box>
               )}

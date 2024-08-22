@@ -96,6 +96,7 @@ const useAds = () => {
     onPressEdit,
     setAdValues,
     onModalToggle,
+    isLoading: isAdCreationLoading,
   }
 }
 
