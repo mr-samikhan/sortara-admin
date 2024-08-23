@@ -1,27 +1,27 @@
-import React from 'react'
-import { ADS_DATA, COLORS, ROUTES } from '@vgl/constants'
-import { SearchTextField } from '@vgl/components'
-import { Ads, AdvertisementCard } from '@vgl/modules'
-import { Box, Chip, Grid, Typography } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
+import { ADS_DATA, COLORS, ROUTES } from "@vgl/constants";
+import { SearchTextField } from "@vgl/components";
+import { Ads, AdvertisementCard } from "@vgl/modules";
+import { Box, Chip, Grid, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface IAdvertisement {
-  dropdownValue: string
+  dropdownValue: string;
 }
 
 interface AnalyticAdvertismentsProps {
-  advertisementValue?: IAdvertisement
+  advertisementValue?: IAdvertisement;
 }
 
 const AnalyticAdvertisments = (props: AnalyticAdvertismentsProps) => {
-  const { advertisementValue } = props || {}
+  const { advertisementValue } = props || {};
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const value = advertisementValue?.dropdownValue
+  const value = advertisementValue?.dropdownValue;
 
   switch (value) {
-    case 'summary':
+    case "summary":
       return (
         <Grid
           item
@@ -30,7 +30,7 @@ const AnalyticAdvertisments = (props: AnalyticAdvertismentsProps) => {
           md={12}
           display="flex"
           mb={{ xs: 2, md: 0 }}
-          flexDirection={{ xs: 'column', md: 'row' }}
+          flexDirection={{ xs: "column", md: "row" }}
         >
           <AdvertisementCard
             count={5}
@@ -43,7 +43,7 @@ const AnalyticAdvertisments = (props: AnalyticAdvertismentsProps) => {
             title="Active In-App Ads"
           />
         </Grid>
-      )
+      );
 
     default:
       return (
@@ -81,14 +81,14 @@ const AnalyticAdvertisments = (props: AnalyticAdvertismentsProps) => {
             </Grid>
           </React.Fragment>
         </Grid>
-      )
+      );
   }
-}
+};
 
-export default AnalyticAdvertisments
+export default AnalyticAdvertisments;
 
 const inputStyle = {
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '10px !important',
+  "& .MuiOutlinedInput-root": {
+    borderRadius: "10px !important",
   },
-}
+};
