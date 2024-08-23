@@ -1,8 +1,8 @@
-import React from 'react'
-import { ROUTES } from '@vgl/constants'
-import { NotFound } from '@vgl/components'
-import { Route, Routes as ReactRoutes } from 'react-router-dom'
-import SecureRoutes from './components/SecureRoutes/SecureRoutes'
+import React from "react";
+import { ROUTES } from "@vgl/constants";
+import { NotFound } from "@vgl/components";
+import { Route, Routes as ReactRoutes } from "react-router-dom";
+import SecureRoutes from "./components/SecureRoutes/SecureRoutes";
 import {
   ManageAds,
   ManageAuth,
@@ -10,7 +10,7 @@ import {
   ManageProfile,
   ManageAnalytics,
   ManageModerators,
-} from '@vgl/screens'
+} from "@vgl/screens";
 import {
   PrivacyPolicy,
   SingleModerator,
@@ -18,7 +18,7 @@ import {
   CreateAdContainer,
   SingleUserContainer,
   AdvertisementContainer,
-} from '@vgl/modules'
+} from "@vgl/modules";
 
 const Routes = () => {
   return (
@@ -36,7 +36,10 @@ const Routes = () => {
           <Route path={ROUTES.ADMIN} element={<ManageProfile />} />
           <Route path={ROUTES.USER} element={<SingleUserContainer />} />
           <Route path={ROUTES.ANALYTICS} element={<ManageAnalytics />} />
-          <Route path={ROUTES.MODERATOR} element={<SingleModerator />} />
+          <Route
+            path={ROUTES.MODERATOR}
+            element={<SingleModerator user={null} />}
+          />
           <Route path={ROUTES.MODERATORS} element={<ManageModerators />} />
           <Route path={ROUTES.CREATE_AD} element={<CreateAdContainer />} />
           <Route
@@ -47,7 +50,7 @@ const Routes = () => {
         <Route path="*" element={<NotFound />} />
       </ReactRoutes>
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default Routes
+export default Routes;
